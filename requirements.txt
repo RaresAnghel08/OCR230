@@ -1,0 +1,7 @@
+Flask
+easyocr
+pillow
+numpy
+re
+os-sys
+shutil
