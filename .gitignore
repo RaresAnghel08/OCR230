@@ -1,0 +1,15 @@
+# Ignoră tot din folderul FORMULARE
+FORMULARE/*
+
+# Exceptă fișierul README.md din folderul FORMULARE
+!FORMULARE/README.md
+
+# Ignoră tot din folderul fisiere
+fisiere/*
+
+# Exceptă fișierul README.md din folderul fisiere
+!fisiere/README.md
+
+# Ignoră fișierele din .venv și .pycache
+.venv/*
+.pycache/*
