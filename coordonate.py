@@ -13,5 +13,6 @@ coordonate = [
     (96, 480, 150, 500),   # Bloc (zona 11)
     (222, 480, 250, 500),  # Scara (zona 12)
     (305, 480, 338, 500),  # Etaj (zona 13)
-    (383, 478, 416, 502)   # Apartament (zona 14)
+    (383, 478, 416, 502),  # Apartament (zona 14)
+    (456, 464, 980, 487)   # Telefon (zona 15)
 ]
