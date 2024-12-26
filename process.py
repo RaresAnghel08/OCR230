@@ -135,7 +135,7 @@ def proceseaza_fisier(image_path, output_folder):
                 if debug_switch:
                     debug_afisare(idx, "Telefon", text_initial, text_filtrat)
             elif idx == 15:  # 2 ani (zona 16)
-                if text_initial:
+                if text_initial!= "":
                     doiani = "Da"
                 else:
                     doiani = "Nu"
