@@ -65,7 +65,7 @@ def run_processing():
 # Creăm fereastra principală
 root = tk.Tk()
 root.title("Procesare Formulare")
-root.geometry("400x400")
+root.geometry("400x300")
 
 # Adăugăm widgeturi
 label_input = tk.Label(root, text="Selectează folderul de input:")
