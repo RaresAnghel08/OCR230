@@ -11,6 +11,7 @@ def filtru_litere(text):
     return ''.join(re.findall(r'[a-zA-ZăâîșțĂÂÎȘȚ ]', text))  # Păstrează doar literele
 
 def filtru_nume(text):
+    text.replace(" @", "@")  # Elimină spațiul din fața simbolului @
     text = text.replace('-', ' ')  # Înlocuiește cratimele cu spațiu
     text = text.replace(',', ' ')  # Înlocuiește virgulele cu spațiu
     # Adaugă un spațiu înainte de literele mari care sunt urmate de litere mici
