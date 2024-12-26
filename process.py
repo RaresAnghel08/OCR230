@@ -1,6 +1,12 @@
 from imports import *
+import os
+import sys
+# from generare_adresa import corecteaza_adresa
 
 reader = easyocr.Reader(['en', 'ro'], gpu=False)
+
+# folder_input = "fisiere"
+# folder_output = "FORMULARE"
 
 def proceseaza_zona(coord, idx, image):
     zona_decupata = image.crop(coord)  # Decupează zona
@@ -12,7 +18,7 @@ def proceseaza_zona(coord, idx, image):
     return text
 
 # Funcție pentru procesarea fișierelor
-def proceseaza_fisier(image_path):
+def proceseaza_fisier(image_path, output_folder):
     # Încarcă imaginea
     image = Image.open(image_path)
 
@@ -30,8 +36,9 @@ def proceseaza_fisier(image_path):
     nume = ""
     cnp_total = ""
     email = ""
-    phone=""
+    phone = ""
     debug_switch = False
+    
     # Funcție auxiliară pentru debug
     def debug_afisare(idx, nume_camp, text_initial, text_filtrat):
         print(f"Zona {idx + 1}: {nume_camp}")
@@ -76,13 +83,12 @@ def proceseaza_fisier(image_path):
                 if debug_switch:
                     debug_afisare(idx, "CNP", text_initial, text_filtrat)
             elif idx == 6:  # Email (zona 7)
-                # before the word com we have to put a dot, but if there is a dot before com, we don't have to put another one
-                text = text.replace(' ', '.')  # Replace spaces with dots
-                # text = text.replace('..', '.')  # Replace double dots with single dots
-                text = text.replace('com.', 'com')  # Replace com. with com
-                #define find
-                if text.find('.com') == -1:
-                    text = text.replace('com', '.com')  # Add . before com
+                text_filtrat = text_initial.replace(' ', '.')  # Înlocuiește spațiile cu puncte
+                text_filtrat = text_filtrat.replace('..', '.')  # Înlocuiește punctele duble
+                text_filtrat = text_filtrat.replace('com.', 'com')  # Înlocuiește "com." cu "com"
+                if text_filtrat.find('.com') == -1:
+                    text_filtrat = text_filtrat.replace('com', '.com')  # Adaugă un punct înainte de "com"
+                email = text_filtrat  # Actualizează variabila email
                 if debug_switch:
                     debug_afisare(idx, "Email", text_initial, text_filtrat)
             elif idx == 7:  # Județ (zona 8)
@@ -143,13 +149,13 @@ def proceseaza_fisier(image_path):
         adresa += f" Ap. {apartament}"
     if cp:
         adresa += f" CP. {cp}"
-
+    
     # Nume fișier nou
     nume_fisier = os.path.basename(image_path)
     nume_fisier_nou = f"{nume} {prenume}.jpg"
 
     # Creează folderul pentru localitate
-    folder_localitate = os.path.join(folder_output, capitalize_words(localitate))
+    folder_localitate = os.path.join(output_folder, capitalize_words(localitate))
     if not os.path.exists(folder_localitate):
         os.makedirs(folder_localitate)
 
@@ -159,7 +165,7 @@ def proceseaza_fisier(image_path):
 
     # Creează fișierul text
     fisier_txt = os.path.join(folder_localitate, f"{nume} {prenume}.txt")
-    with open(fisier_txt, 'w', encoding='utf-8') as f:  # Specifică codificarea UTF-8
+    with open(fisier_txt, 'w', encoding='utf-8') as f:
         f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{email}\n{phone}")
 
     print(f"Imaginea {nume_fisier_nou} a fost mutată și redenumită în folderul {folder_localitate}")

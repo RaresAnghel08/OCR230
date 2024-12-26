@@ -1,0 +1,2 @@
+import openai
+openai.api_key = "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"

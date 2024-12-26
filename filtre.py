@@ -1,4 +1,6 @@
 import re
+import os
+import sys
 
 # Funcție pentru a păstra doar cifre (fără spații)
 def filtru_cifre(text):
