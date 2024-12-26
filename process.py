@@ -37,6 +37,7 @@ def proceseaza_fisier(image_path, output_folder):
     cnp_total = ""
     email = ""
     phone = ""
+    doiani = ""
     debug_switch = False
     
     # Funcție auxiliară pentru debug
@@ -133,6 +134,13 @@ def proceseaza_fisier(image_path, output_folder):
                 phone = text_filtrat
                 if debug_switch:
                     debug_afisare(idx, "Telefon", text_initial, text_filtrat)
+            elif idx == 15:  # 2 ani (zona 16)
+                if text_initial:
+                    doiani = "Da"
+                else:
+                    doiani = "Nu"
+                if debug_switch:
+                    debug_afisare(idx, "2 ani", text_initial, doiani)
         except Exception as e:
             print(f"Eroare la procesarea zonei {idx + 1}: {e}")
             continue
@@ -166,7 +174,7 @@ def proceseaza_fisier(image_path, output_folder):
     # Creează fișierul text
     fisier_txt = os.path.join(folder_localitate, f"{nume} {prenume}.txt")
     with open(fisier_txt, 'w', encoding='utf-8') as f:
-        f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{email}\n{phone}")
+        f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{email}\n{phone}\n{doiani}")
 
     print(f"Imaginea {nume_fisier_nou} a fost mutată și redenumită în folderul {folder_localitate}")
     print(f"Fișierul text {fisier_txt} a fost creat.")
