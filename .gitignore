@@ -14,6 +14,5 @@ fisiere/*
 .venv/*
 .pycache/*
 
-# ignora main.exe din dist si main.pkg din build/main
-dist/main.exe
-build/main/main.pkg
+# ignora folderul aplicatie si toate fisierele din el
+aplicatie/*

@@ -1,23 +1,12 @@
-# -*- mode: python ; coding: utf-8 -*-
 from imports import *
 import os
 import sys
 import tkinter as tk
 from tkinter import filedialog, messagebox
-from tkinter import PhotoImage  # Import pentru imagine
+from tkinter import PhotoImage
 from PIL import Image
 import pystray
 from pystray import MenuItem as item
-
-# Functie pentru a obtine calea corecta a fișierelor
-def get_resource_path(relative_path):
-    try:
-        # Calea corectă pentru executabile create cu PyInstaller
-        base_path = sys._MEIPASS
-    except Exception:
-        # În cazul rulării din sursa originală
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
 
 # Funcție pentru selectarea folderului de input
 def select_folder_input():
@@ -76,18 +65,21 @@ root.title("Procesare Formulare")
 root.geometry("400x300")
 
 # Setează calea corectă pentru icoane
-icon_path = get_resource_path('images/favicon.ico')
+icon_path = 'images/favicon.ico'
 icon_image = Image.open(icon_path)  # Folosim PIL pentru a deschide icoana
 
 # Setăm imaginea favicon pentru Tkinter
-favicon = PhotoImage(file=get_resource_path('images/favicon.png'))
+favicon = PhotoImage(file='images/favicon.png')
 root.iconphoto(False, favicon)
 
 # Setăm icoana pentru taskbar folosind pystray
 def on_quit(icon, item):
-    icon.stop()
+    icon.stop()  # Oprire icon pentru taskbar
 
+# Creăm și rulăm iconița din taskbar
 icon = pystray.Icon("test_icon", icon_image, menu=pystray.Menu(item('Quit', on_quit)))
+
+# Rulăm aplicația pystray în fundal
 icon.run_detached()
 
 # Adăugăm widgeturi
@@ -111,6 +103,13 @@ button_output.pack(pady=5)
 
 button_run = tk.Button(root, text="Rulează Procesarea", command=run_processing)
 button_run.pack(pady=20)
+
+# Funcție pentru a închide aplicația corect
+def on_close():
+    icon.stop()  # Oprim icon-ul din taskbar când se închide aplicația
+    root.quit()   # Oprim fereastra Tkinter
+
+root.protocol("WM_DELETE_WINDOW", on_close)  # Setează comportamentul la închiderea ferestrei
 
 # Rulăm aplicația Tkinter
 root.mainloop()
