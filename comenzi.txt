@@ -1,0 +1,8 @@
+recreere exe
+Remove-Item -Recurse -Force build, dist, main.spec
+pyinstaller --onefile --windowed --icon=images/favicon.ico main.py
+
+recompilare spec
+pyinstaller main.spec
+
+pyinstaller --noconsole --onefile --icon=images/favicon.ico main.py

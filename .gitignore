@@ -13,3 +13,7 @@ fisiere/*
 # Ignoră fișierele din .venv și .pycache
 .venv/*
 .pycache/*
+
+# ignora main.exe din dist si main.pkg din build/main
+dist/main.exe
+build/main/main.pkg

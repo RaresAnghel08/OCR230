@@ -1,15 +1,23 @@
+# -*- mode: python ; coding: utf-8 -*-
 from imports import *
 import os
 import sys
 import tkinter as tk
 from tkinter import filedialog, messagebox
-# from generare_adresa import corecteaza_adresa
+from tkinter import PhotoImage  # Import pentru imagine
+from PIL import Image
+import pystray
+from pystray import MenuItem as item
 
-# Creează un obiect EasyOCR Reader cu GPU activat
-reader = easyocr.Reader(['en', 'ro'], gpu=False)
-
-folder_input = ""
-folder_output = ""
+# Functie pentru a obtine calea corecta a fișierelor
+def get_resource_path(relative_path):
+    try:
+        # Calea corectă pentru executabile create cu PyInstaller
+        base_path = sys._MEIPASS
+    except Exception:
+        # În cazul rulării din sursa originală
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 # Funcție pentru selectarea folderului de input
 def select_folder_input():
@@ -66,6 +74,21 @@ def run_processing():
 root = tk.Tk()
 root.title("Procesare Formulare")
 root.geometry("400x300")
+
+# Setează calea corectă pentru icoane
+icon_path = get_resource_path('images/favicon.ico')
+icon_image = Image.open(icon_path)  # Folosim PIL pentru a deschide icoana
+
+# Setăm imaginea favicon pentru Tkinter
+favicon = PhotoImage(file=get_resource_path('images/favicon.png'))
+root.iconphoto(False, favicon)
+
+# Setăm icoana pentru taskbar folosind pystray
+def on_quit(icon, item):
+    icon.stop()
+
+icon = pystray.Icon("test_icon", icon_image, menu=pystray.Menu(item('Quit', on_quit)))
+icon.run_detached()
 
 # Adăugăm widgeturi
 label_input = tk.Label(root, text="Selectează folderul de input:")
