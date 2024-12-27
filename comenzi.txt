@@ -6,3 +6,6 @@ recompilare spec
 pyinstaller main.spec
 
 pyinstaller --noconsole --onefile --icon=images/favicon.ico main.py
+
+interfata grafica 
+auto-py-to-exe
