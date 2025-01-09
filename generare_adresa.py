@@ -1,9 +1,9 @@
-import openai
+# import openai
 import os
 import sys
 from filtre import capitalize_words
 # from api_keys import openai_api_key
-openai.api_key = "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"
+# openai.api_key = "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"
 
 # def corecteaza_adresa(adresa):
 #     try:

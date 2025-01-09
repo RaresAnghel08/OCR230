@@ -3,7 +3,7 @@ import os
 import sys
 # from generare_adresa import corecteaza_adresa
 
-reader = easyocr.Reader(['en', 'ro'], gpu=False)
+reader = easyocr.Reader(['en', 'ro'], gpu=True)
 
 # folder_input = "fisiere"
 # folder_output = "FORMULARE"

@@ -9,3 +9,5 @@ pyinstaller --noconsole --onefile --icon=images/favicon.ico main.py
 
 interfata grafica 
 auto-py-to-exe
+
+python -m venv .venv
