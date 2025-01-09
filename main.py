@@ -36,28 +36,23 @@ def run_processing():
         os.makedirs(folder_output)
 
     # Obținem lista de fișiere din folderul de intrare
-    files = [f for f in os.listdir(folder_input) if f.lower().endswith(('jpg', 'jpeg', 'png'))]
+    files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith(('jpg', 'jpeg', 'png'))]
 
     # Verificăm dacă sunt fișiere de procesat
     if not files:
         messagebox.showinfo("Info", "Nu au fost găsite fișiere de procesat în folderul de intrare.")
         return
 
-    # Procesăm fiecare fișier din folder
-    for file_name in files:
-        # Construim calea completă a fișierului
-        file_path = os.path.join(folder_input, file_name)
-        
-        # Apelăm funcția proceseaza_fisier pentru fiecare imagine
-        print(f"Se procesează fișierul: {file_name}")
-        try:
-            proceseaza_fisier(file_path, folder_output)
-        except Exception as e:
-            print(f"Eroare la procesarea fișierului {file_name}: {e}")
-            messagebox.showerror("Eroare", f"Eroare la procesarea fișierului {file_name}: {e}")
-    
-    # Afișăm un mesaj de succes
-    messagebox.showinfo("Succes", "Procesarea fișierelor a fost finalizată.")
+    try:
+        # Procesăm fișierele în paralel folosind funcția dedicată
+        print("Se procesează fișierele în paralel...")
+        proceseaza_fisiere_in_paralel(files, folder_output, coordonate)
+
+        # Afișăm un mesaj de succes
+        messagebox.showinfo("Succes", "Procesarea fișierelor a fost finalizată.")
+    except Exception as e:
+        print(f"Eroare în timpul procesării: {e}")
+        messagebox.showerror("Eroare", f"Eroare în timpul procesării: {e}")
 
 # Splash screen
 splash = tk.Tk()
