@@ -1,13 +1,15 @@
 from imports import *
 import os
 import sys
-# from generare_adresa import corecteaza_adresa
+import shutil
+import easyocr
+from PIL import Image
+import numpy as np
+from concurrent.futures import ThreadPoolExecutor
 
 reader = easyocr.Reader(['en', 'ro'], gpu=True)
 
-# folder_input = "fisiere"
-# folder_output = "FORMULARE"
-
+# Funcția pentru procesarea unei zone
 def proceseaza_zona(coord, idx, image):
     zona_decupata = image.crop(coord)  # Decupează zona
     # Mărimim imaginea pentru o procesare mai detaliată
@@ -18,7 +20,7 @@ def proceseaza_zona(coord, idx, image):
     return text
 
 # Funcție pentru procesarea fișierelor
-def proceseaza_fisier(image_path, output_folder):
+def proceseaza_fisier(image_path, output_folder, coordonate):
     # Încarcă imaginea
     image = Image.open(image_path)
 
@@ -135,7 +137,7 @@ def proceseaza_fisier(image_path, output_folder):
                 if debug_switch:
                     debug_afisare(idx, "Telefon", text_initial, text_filtrat)
             elif idx == 15:  # 2 ani (zona 16)
-                if text_initial!= "":
+                if text_initial != "":
                     doiani = "Da"
                 else:
                     doiani = "Nu"
@@ -178,3 +180,8 @@ def proceseaza_fisier(image_path, output_folder):
 
     print(f"Imaginea {nume_fisier_nou} a fost mutată și redenumită în folderul {folder_localitate}")
     print(f"Fișierul text {fisier_txt} a fost creat.")
+
+# Funcție pentru procesarea fișierelor în paralel
+def proceseaza_fisiere_in_paralel(fisiere, output_folder, coordonate):
+    with ThreadPoolExecutor() as executor:
+        executor.map(lambda fisier: proceseaza_fisier(fisier, output_folder, coordonate), fisiere)

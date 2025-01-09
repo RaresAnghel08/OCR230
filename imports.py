@@ -5,7 +5,7 @@ import easyocr
 import numpy as np
 from coordonate import coordonate
 from filtre import *
-from process import proceseaza_fisier, proceseaza_zona
+from process import proceseaza_fisier, proceseaza_zona, proceseaza_fisiere_in_paralel
 from folders import *
 # from openai import OpenAI
 # from generare_adresa import corecteaza_adresa
