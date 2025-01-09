@@ -5,4 +5,4 @@ numpy
 re
 os-sys
 shutil
-pystray
+pystray==0.3.3
