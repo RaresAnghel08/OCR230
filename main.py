@@ -63,7 +63,7 @@ splash.overrideredirect(True)
 from PIL import ImageTk
 
 # Setăm imaginea splash
-splash_image = Image.open("images/cover.png").convert("RGBA")
+splash_image = Image.open("Assets/cover.png").convert("RGBA")
 splash_photo = ImageTk.PhotoImage(splash_image)
 splash_label = tk.Label(splash, image=splash_photo)  # Sau bg=None pentru transparență completă
 splash_label.pack()
@@ -79,11 +79,11 @@ root.title("Procesare Formulare")
 root.geometry("400x300+760+390")
 
 # Setează calea corectă pentru icoane
-icon_path = 'images/favicon.ico'
+icon_path = 'Assets/favicon.ico'
 icon_image = Image.open(icon_path)  # Folosim PIL pentru a deschide icoana
 
 # Setăm imaginea favicon pentru Tkinter
-favicon = PhotoImage(file='images/favicon.png')
+favicon = PhotoImage(file='Assets/favicon.png')
 root.iconphoto(False, favicon)
 
 # Adăugăm widgeturi
