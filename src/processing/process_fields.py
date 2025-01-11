@@ -1,4 +1,4 @@
-from filtre import capitalize_words, filtru_nume, filtru_litere, filtru_cifre
+from src.processing.filtre import capitalize_words, filtru_nume, filtru_litere, filtru_cifre
 
 def process_fields(text_initial, idx, debug_switch=False):
     text_filtrat = ""
