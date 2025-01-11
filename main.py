@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter.ttk import Progressbar
 from PIL import Image, ImageTk
-from utils import select_folder_input, select_folder_output, update_progress
-from ocr import initialize_reader, run_processing, run_processing_threaded
-from splash import show_splash
+from src.utils.utils import select_folder_input, select_folder_output, update_progress
+from src.ocr.ocr import initialize_reader, run_processing, run_processing_threaded
+from src.ui.splash import show_splash
 import easyocr
 
 def create_main_window(root):

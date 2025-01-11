@@ -3,8 +3,8 @@ import tkinter as tk
 from tkinter import messagebox
 import threading
 import easyocr
-from process import set_reader, proceseaza_fisier
-from utils import update_progress
+from src.processing.process import set_reader, proceseaza_fisier
+from src.utils.utils import update_progress
 
 # Inițializăm reader-ul cu o valoare implicită pentru GPU
 reader = None

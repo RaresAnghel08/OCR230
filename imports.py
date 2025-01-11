@@ -6,8 +6,5 @@ import numpy as np
 import re
 import sys
 
-from coordonate import coordonate
-from filtre import *
-from folders import *
-# from openai import OpenAI
-# from generare_adresa import corecteaza_adresa
+from src.processing.coordonate import coordonate
+from src.processing.filtre import *

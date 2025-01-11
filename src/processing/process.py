@@ -20,8 +20,8 @@ def proceseaza_zona(coord, idx, image):
 
 # Funcție pentru procesarea fișierelor
 def proceseaza_fisier(image_path, output_folder, coordonate):
-    from filtre import capitalize_words, filtru_nume, filtru_litere, filtru_cifre  # Importăm filtrele necesare
-    from process_fields import process_fields  # Importăm funcția process_fields
+    from src.processing.filtre import capitalize_words, filtru_nume, filtru_litere, filtru_cifre  # Importăm filtrele necesare
+    from src.processing.process_fields import process_fields  # Importăm funcția process_fields
 
     image = Image.open(image_path)  # Încarcă imaginea
 
