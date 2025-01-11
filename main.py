@@ -8,6 +8,7 @@ from splash import show_splash
 import easyocr
 
 def create_main_window(root):
+    root.deiconify()  # Afișăm fereastra principală
     root.title("Procesare Formulare")
 
     # Dimensiunile ferestrei Tkinter
@@ -71,6 +72,8 @@ def create_main_window(root):
 
     root.protocol("WM_DELETE_WINDOW", on_close)  # Setează comportamentul la închiderea ferestrei
 
-# Creăm fereastra principală
+# Creăm fereastra principală și o ascundem inițial
 root = tk.Tk()
+root.withdraw()  # Ascundem fereastra principală inițial
 show_splash(root, create_main_window)
+root.mainloop()  # Pornim bucla principală
