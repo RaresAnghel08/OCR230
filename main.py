@@ -1,19 +1,13 @@
 from imports import *
 import os
 import threading
-import ctypes
 import tkinter as tk
 from tkinter import filedialog, messagebox
-from tkinter import PhotoImage
 from tkinter.ttk import Progressbar
-from PIL import Image, ImageTk, ImageEnhance
+from PIL import Image, ImageTk
 import easyocr
 from concurrent.futures import ThreadPoolExecutor
 from process import set_reader, proceseaza_fisier, proceseaza_fisiere_in_paralel
-
-# Setați AppUserModelID pentru a rezolva problema icon-ului din taskbar
-myappid = u'mycompany.myproduct.subproduct.version'
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 # Inițializăm reader-ul cu o valoare implicită pentru GPU
 reader = None
@@ -139,15 +133,7 @@ position_down = int(screen_height/2 - window_height/2)
 # Setăm dimensiunea și poziția ferestrei Tkinter
 root.geometry(f"{window_width}x{window_height}+{position_right}+{position_down}")
 
-# Setarea icon-ului pentru fereastra principală
 root.iconbitmap('Assets/favicon.ico')
-
-# Load the icon image using PIL
-icon = Image.open("Assets/favicon.png")
-icon = ImageTk.PhotoImage(icon)
-
-# Set the taskbar icon
-root.iconphoto(True, icon)
 
 # Setăm background-ul pentru fereastra principală 
 bg_image = Image.open("Assets/favicon40transparenta.png").convert("RGBA")
