@@ -14,6 +14,7 @@ def set_reader(ocr_reader):
 # Funcția pentru procesarea unei zone
 def proceseaza_zona(coord, idx, image):
     zona_decupata = image.crop(coord)  # Decupează zona
+    zona_decupata = zona_decupata.resize((zona_decupata.width * 4, zona_decupata.height * 4))  # Mărire imagine
     zona_np = np.array(zona_decupata)  # Convertește în array NumPy
     rezultate = reader.readtext(zona_np)  # OCR
     text = " ".join([rezultat[1] for rezultat in rezultate])  # Extrage textul
