@@ -18,3 +18,13 @@ fisiere/*
 aplicatie/*
 
 output/*
+
+# Ignoră toate directoarele __pycache__ și fișierele din acestea
+__pycache__/
+src/ocr/__pycache__/
+src/ui/__pycache__/
+src/processing/__pycache__/
+src/utils/__pycache__/
+
+
+

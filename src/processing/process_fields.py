@@ -1,14 +1,30 @@
 from src.processing.filtre import capitalize_words, filtru_nume, filtru_litere, filtru_cifre
 
 def process_fields(text_initial, idx, debug_switch=False):
-    text_filtrat = ""
-    
+    # Inițializăm toate variabilele
+    prenume = ""
+    nume = ""
+    initiala_tatalui = ""
+    strada = ""
+    numar = ""
+    cnp_total = ""
+    email = ""
+    judet = ""
+    localitate = ""
+    cp = ""
+    bloc = ""
+    scara = ""
+    etaj = ""
+    apartament = ""
+    phone = ""
+    doiani = ""
+
     def debug_afisare(idx, nume_camp, text_initial, text_filtrat):
         print(f"Zona {idx + 1}: {nume_camp}")
         print(f"Text inițial: {text_initial}")
         print(f"Text filtrat: {text_filtrat}")
         print("*" * 50)
-
+    
     try:
         if idx == 0:  # Prenume (zona 1)
             text_filtrat = capitalize_words(filtru_nume(text_initial))
@@ -37,7 +53,7 @@ def process_fields(text_initial, idx, debug_switch=False):
                 debug_afisare(idx, "Număr", text_initial, text_filtrat)
         elif idx == 5:  # CNP (zona 6)
             text_filtrat = filtru_cifre(text_initial)
-            cnp_total += text_filtrat
+            cnp_total = text_filtrat  # Inițializăm cnp_total
             if debug_switch:
                 debug_afisare(idx, "CNP", text_initial, text_filtrat)
         elif idx == 6:  # Email (zona 7)
@@ -101,4 +117,4 @@ def process_fields(text_initial, idx, debug_switch=False):
     except Exception as e:
         print(f"Eroare la procesarea zonei {idx + 1}: {e}")
     
-    return text_filtrat, prenume, nume, initiala_tatalui, strada, numar, cnp_total, email, judet, localitate, cp, bloc, scara, etaj, apartament, phone, doiani
+    return prenume, nume, initiala_tatalui, strada, numar, cnp_total, email, judet, localitate, cp, bloc, scara, etaj, apartament, phone, doiani

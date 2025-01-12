@@ -3,9 +3,14 @@ from tkinter import filedialog, messagebox
 from tkinter.ttk import Progressbar
 from PIL import Image, ImageTk
 from src.utils.utils import select_folder_input, select_folder_output, update_progress
-from src.ocr.ocr import initialize_reader, run_processing, run_processing_threaded
+from src.ocr.ocr import initialize_reader, run_processing_threaded
 from src.ui.splash import show_splash
+from src.processing.coordonate import coordonate  # Importăm coordonate
 import easyocr
+
+# Variabile globale pentru folderele de input și output
+folder_input = None
+folder_output = None
 
 def create_main_window(root):
     root.deiconify()  # Afișăm fereastra principală
@@ -20,16 +25,16 @@ def create_main_window(root):
     screen_height = root.winfo_screenheight()
 
     # Calculăm poziția centrului pentru fereastra Tkinter
-    position_right = int(screen_width/2 - window_width/2)
-    position_down = int(screen_height/2 - window_height/2)
+    position_right = int(screen_width / 2 - window_width / 2)
+    position_down = int(screen_height / 2 - window_height / 2)
 
     # Setăm dimensiunea și poziția ferestrei Tkinter
     root.geometry(f"{window_width}x{window_height}+{position_right}+{position_down}")
 
-    root.iconbitmap('Assets/favicon.ico')
+    root.iconbitmap('assets/favicon.ico')
 
-    # Setăm background-ul pentru fereastra principală 
-    bg_image = Image.open("Assets/favicon40transparenta.png").convert("RGBA")
+    # Setăm background-ul pentru fereastra principală
+    bg_image = Image.open("assets/favicon40transparenta.png").convert("RGBA")
     bg_photo = ImageTk.PhotoImage(bg_image)
     background_label = tk.Label(root, image=bg_photo)
     background_label.image = bg_photo  # Păstrăm referința la imagine
@@ -42,7 +47,14 @@ def create_main_window(root):
     entry_input = tk.Entry(root, width=40)
     entry_input.pack(pady=5)
 
-    button_input = tk.Button(root, text="Selectează Input", command=lambda: select_folder_input(entry_input))
+    def on_select_folder_input():
+        global folder_input
+        folder_input = filedialog.askdirectory(title="Selectează folderul de input")
+        if folder_input:
+            entry_input.delete(0, tk.END)
+            entry_input.insert(0, folder_input)
+
+    button_input = tk.Button(root, text="Selectează Input", command=on_select_folder_input)
     button_input.pack(pady=5)
 
     label_output = tk.Label(root, text="Selectează folderul de output:", bg='white')
@@ -51,7 +63,14 @@ def create_main_window(root):
     entry_output = tk.Entry(root, width=40)
     entry_output.pack(pady=5)
 
-    button_output = tk.Button(root, text="Selectează Output", command=lambda: select_folder_output(entry_output))
+    def on_select_folder_output():
+        global folder_output
+        folder_output = filedialog.askdirectory(title="Selectează folderul de output")
+        if folder_output:
+            entry_output.delete(0, tk.END)
+            entry_output.insert(0, folder_output)
+
+    button_output = tk.Button(root, text="Selectează Output", command=on_select_folder_output)
     button_output.pack(pady=5)
 
     # Adăugăm un checkbox pentru utilizarea GPU-ului
@@ -59,7 +78,7 @@ def create_main_window(root):
     checkbox_gpu = tk.Checkbutton(root, text="Folosește GPU", variable=gpu_var, bg='white')
     checkbox_gpu.pack(pady=10)
 
-    button_run = tk.Button(root, text="Rulează Procesarea", command=lambda: run_processing_threaded(gpu_var, progress_bar))
+    button_run = tk.Button(root, text="Rulează Procesarea", command=lambda: run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, coordonate))
     button_run.pack(pady=20)
 
     # Adăugăm Progressbar
@@ -68,7 +87,7 @@ def create_main_window(root):
 
     # Funcție pentru a închide aplicația corect
     def on_close():
-        root.quit()   # Oprim fereastra Tkinter
+        root.quit()  # Oprim fereastra Tkinter
 
     root.protocol("WM_DELETE_WINDOW", on_close)  # Setează comportamentul la închiderea ferestrei
 

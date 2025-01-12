@@ -15,9 +15,7 @@ def initialize_reader(gpu_var):
     reader = easyocr.Reader(['en', 'ro'], gpu=use_gpu)
     set_reader(reader)  # Setează reader-ul în process.py
 
-def run_processing(gpu_var, progress_bar):
-    from main import folder_input, folder_output, coordonate  # Importăm variabilele necesare din main
-
+def run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonate):
     # Inițializează reader-ul OCR
     initialize_reader(gpu_var)
 
@@ -55,5 +53,5 @@ def run_processing(gpu_var, progress_bar):
         print(f"Eroare în timpul procesării: {e}")
         messagebox.showerror("Eroare", f"Eroare în timpul procesării: {e}")
 
-def run_processing_threaded(gpu_var, progress_bar):
-    threading.Thread(target=lambda: run_processing(gpu_var, progress_bar)).start()
+def run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, coordonate):
+    threading.Thread(target=lambda: run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonate)).start()
