@@ -11,3 +11,5 @@ interfata grafica
 auto-py-to-exe
 
 python -m venv .venv
+
+pyinstaller --noconfirm --onefile --windowed --icon "D:\GITHUB\f230\images\favicon.ico" --name "F230-OCR" --clean --add-data "D:\GITHUB\f230\images;images/"  "D:\GITHUB\f230\main.py"
