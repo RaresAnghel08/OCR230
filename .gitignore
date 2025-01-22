@@ -16,3 +16,5 @@ fisiere/*
 
 # ignora folderul aplicatie si toate fisierele din el
 aplicatie/*
+
+output/*
