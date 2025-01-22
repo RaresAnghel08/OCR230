@@ -17,9 +17,6 @@ fisiere/*
 # ignora folderul aplicatie si toate fisierele din el
 aplicatie/*
 
-<<<<<<< HEAD
-output/*
-=======
 output/*
 
 # Ignoră toate directoarele __pycache__ și fișierele din acestea
@@ -31,4 +28,3 @@ src/utils/__pycache__/
 
 
 
->>>>>>> 3cc59e988c0cbcca86295141f0c1aaf25c4eed4e
