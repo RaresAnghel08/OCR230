@@ -1,57 +1,30 @@
-from src.processing.filtre import capitalize_words, filtru_nume, filtru_litere, filtru_cifre
-
+from src.processing.filtre import capitalize_words, filtru_nume, filtru_litere, filtru_cifre,replace_diacritics
 
 def cautare_anaf(localitate):
     lower_localitate = localitate.lower()
+    
     from src.anaf.alba import alba
-    for judet, unitati in alba.items():
-        for unitate, localitati in unitati.items():
-            for loc in localitati:
-                if loc.lower() == lower_localitate:
-                    return unitate
     from src.anaf.bucuresti import bucuresti
-    for judet, unitati in bucuresti.items():
-        for unitate, localitati in unitati.items():
-            for loc in localitati:
-                if loc.lower() == lower_localitate:
-                    return unitate
     from src.anaf.cluj import cluj
-    for judet, unitati in cluj.items():
-        for unitate, localitati in unitati.items():
-            for loc in localitati:
-                if loc.lower() == lower_localitate:
-                    return unitate
     from src.anaf.craiova import craiova
-    for judet, unitati in craiova.items():
-        for unitate, localitati in unitati.items():
-            for loc in localitati:
-                if loc.lower() == lower_localitate:
-                    return unitate
     from src.anaf.galati import galati
-    for judet, unitati in galati.items():
-        for unitate, localitati in unitati.items():
-            for loc in localitati:
-                if loc.lower() == lower_localitate:
-                    return unitate
-    from src.anaf.iasi import iasi 
-    for judet, unitati in iasi.items():
-        for unitate, localitati in unitati.items():
-            for loc in localitati:
-                if loc.lower() == lower_localitate:
-                    return unitate
+    from src.anaf.iasi import iasi
     from src.anaf.ploiesti import ploiesti
-    for judet, unitati in ploiesti.items():
-        for unitate, localitati in unitati.items():
-            for loc in localitati:
-                if loc.lower() == lower_localitate:
-                    return unitate
     from src.anaf.timisoara import timisoara
-    for judet, unitati in timisoara.items():
-        for unitate, localitati in unitati.items():
-            for loc in localitati:
-                if loc.lower() == lower_localitate:
-                    return unitate
-    return "Unknown"
+
+    anaf_data = [alba, bucuresti, cluj, craiova, galati, iasi, ploiesti, timisoara]
+
+    for data in anaf_data:
+        for directie in data.items():
+            if isinstance(directie, dict):
+                for judet, unitati in directie.items():
+                    if isinstance(unitati, dict):  # Verifică dacă unitati este un dicționar
+                        for unitate, localitati in unitati.items():
+                            if isinstance(localitati, list):  # Verifică dacă localitati este o listă
+                                for loc in localitati:
+                                    if loc.lower() == lower_localitate:
+                                        return unitate, judet, directie
+    return "Unknown", "Unknown", "Unknown"
 
 # Example usage:
 # print(cautare_anaf("Bacău"))
@@ -74,6 +47,9 @@ def process_fields(text_initial, idx, debug_switch=False):
     phone = ""
     doiani = ""
     folder_localitate = ""
+    folder_localitate_mic = ""
+    folder_localitate_med = ""
+    folder_localitate_mare = ""
     def debug_afisare(idx, nume_camp, text_initial, text_filtrat):
         print(f"Zona {idx + 1}: {nume_camp}")
         print(f"Text inițial: {text_initial}")
@@ -122,6 +98,7 @@ def process_fields(text_initial, idx, debug_switch=False):
                 debug_afisare(idx, "Email", text_initial, text_filtrat)
         elif idx == 7:  # Județ (zona 8)
             text_filtrat = capitalize_words(text_initial)
+            text_filtrat = replace_diacritics(text_filtrat)
             judet = text_filtrat
             if debug_switch:
                 debug_afisare(idx, "Județ", text_initial, text_filtrat)
@@ -129,10 +106,16 @@ def process_fields(text_initial, idx, debug_switch=False):
             text_initial = text_initial.replace('-', ' ')  # Înlocuiește cratimele cu spațiu
             text_initial = text_initial.replace(',', ' ')  # Înlocuiește virgulele cu spațiu
             text_filtrat = capitalize_words(text_initial)
+            text_filtrat = replace_diacritics(text_filtrat)
+            #strip text
+            text_filtrat = text_filtrat.strip()
             localitate = text_filtrat
-            folder_localitate = cautare_anaf(localitate) # Caută localitatea în baza de date ANAF
-            if folder_localitate == "":
-                folder_localitate = "Unknown"
+            folder_localitate_mic, folder_localitate_med, folder_localitate_mare = cautare_anaf(localitate) # Caută localitatea în baza de date ANAF
+            if folder_localitate_mic == "":
+                folder_localitate = localitate
+                #debug_afisare(idx, "Localitate", text_initial, text_filtrat)
+                print(cautare_anaf(localitate))
+                print(f"Localitatea {localitate} nu a fost găsită în baza de date ANAF")
             if debug_switch:
                 debug_afisare(idx, "Localitate", text_initial, text_filtrat)
         elif idx == 9:  # Cod postal (zona 10)
@@ -175,4 +158,4 @@ def process_fields(text_initial, idx, debug_switch=False):
     except Exception as e:
         print(f"Eroare la procesarea zonei {idx + 1}: {e}")
     
-    return prenume, nume, initiala_tatalui, strada, numar, cnp_total, email, judet, localitate, cp, bloc, scara, etaj, apartament, phone, doiani, folder_localitate
+    return prenume, nume, initiala_tatalui, strada, numar, cnp_total, email, judet, localitate, cp, bloc, scara, etaj, apartament, phone, doiani, folder_localitate, folder_localitate_med, folder_localitate_mare
