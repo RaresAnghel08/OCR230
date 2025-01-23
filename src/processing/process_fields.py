@@ -15,16 +15,14 @@ def cautare_anaf(localitate):
     anaf_data = [alba, bucuresti, cluj, craiova, galati, iasi, ploiesti, timisoara]
 
     for data in anaf_data:
-        for directie in data.items():
-            if isinstance(directie, dict):
-                for judet, unitati in directie.items():
-                    if isinstance(unitati, dict):  # Verifică dacă unitati este un dicționar
-                        for unitate, localitati in unitati.items():
-                            if isinstance(localitati, list):  # Verifică dacă localitati este o listă
-                                for loc in localitati:
-                                    if loc.lower() == lower_localitate:
-                                        return unitate, judet, directie
-    return "Unknown", "Unknown", "Unknown"
+        for judet, unitati in data.items():
+            if isinstance(unitati, dict):  # Verifică dacă unitati este un dicționar
+                for unitate, localitati in unitati.items():
+                    if isinstance(localitati, list):  # Verifică dacă localitati este o listă
+                        for loc in localitati:
+                            if loc.lower() == lower_localitate:
+                                return unitate
+    return "Unknown"
 
 # Example usage:
 # print(cautare_anaf("Bacău"))
@@ -158,4 +156,4 @@ def process_fields(text_initial, idx, debug_switch=False):
     except Exception as e:
         print(f"Eroare la procesarea zonei {idx + 1}: {e}")
     
-    return prenume, nume, initiala_tatalui, strada, numar, cnp_total, email, judet, localitate, cp, bloc, scara, etaj, apartament, phone, doiani, folder_localitate, folder_localitate_med, folder_localitate_mare
+    return prenume, nume, initiala_tatalui, strada, numar, cnp_total, email, judet, localitate, cp, bloc, scara, etaj, apartament, phone, doiani, folder_localitate
