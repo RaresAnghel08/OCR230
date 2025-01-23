@@ -11,7 +11,7 @@ ploiesti = {
             "Stoenesti", "Schitu Golesti", "Valea Mare Pravat", "Rucar", "Vladesti"
         ],
         "Unitatea Fiscala Municipala Curtea de Arges": [
-            "Albestii de Arges", "Arefu", "Baiculesti", "Braduleț", "Cepari", "Cicanesti", "Ciofrangeni", "Corbeni", 
+            "Albestii de Arges", "Arefu", "Baiculesti", "Bradulet", "Cepari", "Cicanesti", "Ciofrangeni", "Corbeni", 
             "Corbi", "Curtea de Arges", "Domnesti", "Malureni", "Musatesti", "Nucsoara", "Poienarii de Arges", 
             "Salatrucu", "Suici", "Tigveni", "Valea Danului", "Valea Iasului"
         ],

@@ -6,7 +6,7 @@ timisoara ={
             "Vinga", "Vladimirescu", "Zadareni", "Zimandu Nou"
         ],
         "Unitatea Fiscala Oraseneasca Chisineu Cris": [
-            "Apateu", "Chisineu-Cris", "Graniceri", "Misca", "Pilu", "Sintea Mare", "Socodor", "Sepreus", "Simand", 
+            "Apateu", "Chisineu Cris", "Graniceri", "Misca", "Pilu", "Sintea Mare", "Socodor", "Sepreus", "Simand", 
             "Zarand", "Zerind"
         ],
         "Unitatea Fiscala Oraseneasca Lipova": [
@@ -24,8 +24,8 @@ timisoara ={
             "Barzava", "Bata", "Birchis", "Petris", "Savarsin", "Varadia de Mures"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice CARAS-SEVERIN": {
-        "Administratia Judeteana a Finantelor Publice CARAS-SEVERIN": [
+    "Administratia Judeteana a Finantelor Publice CARAS SEVERIN": {
+        "Administratia Judeteana a Finantelor Publice CARAS SEVERIN": [
             "Anina", "Berzovia", "Bocsa", "Brebu", "Brebu Nou", "Carasova", "Doclin", "Dognecea", "Ezeris", "Farliug", 
             "Goruia", "Lupac", "Maureni", "Ocna de Fier", "Ramna", "Resita", "Tarnova", "Valiug", "Vermes", "Zorlentu Mare"
         ],
@@ -71,13 +71,13 @@ timisoara ={
         ],
         "Unitatea Fiscala Oraseneasca Hateg": [
             "Baru", "Bretea Romana", "Densus", "General Berthelot", "Hateg", "Pui", "Rau de Mori", "Rachitova", 
-            "Santamaria-Orlea", "Sarmizegetusa", "Salasu de Sus", "Totesti"
+            "Santamaria Orlea", "Sarmizegetusa", "Salasu de Sus", "Totesti"
         ]
     },
     "Administratia Judeteana a Finantelor Publice TIMIS": {
         "Administratia Judeteana a Finantelor Publice TIMIS": [
             "Becicherecu Mic", "Biled", "Bogda", "Bucovat", "Dudestii Noi", "Dumbravita", "Fibis", "Foeni", "Ghiroda", 
-            "Giarmata", "Giroc", "Giulvaz", "Masloc", "Mosnita-Noua", "Ortisoara", "Parta", "Peciu Nou", "Pischia", 
+            "Giarmata", "Giroc", "Giulvaz", "Masloc", "Mosnita Noua", "Ortisoara", "Parta", "Peciu Nou", "Pischia", 
             "Recas", "Remetea Mare", "Sanandrei", "Sanmihaiu Roman", "Satchinez", "Sacalaz", "Sag", "Sandra", "Timisoara"
         ],
         "Unitatea Fiscala Municipala Lugoj": [
@@ -102,5 +102,4 @@ timisoara ={
             "Sanpetru Mare", "Saravale", "Teremia Mare", "Tomnatic", "Valcani", "Varias"
         ]
     }
-    
 }

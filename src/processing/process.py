@@ -29,13 +29,13 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     # Inițializăm variabilele pentru fiecare câmp
     strada, numar, localitate, judet, bloc, scara, etaj, apartament, cp, prenume, nume, cnp_total, email, phone, doiani = [""] * 15
     initiala_tatalui = ""
+    folder_localitate_sec = ""
 
     # Parcurgem coordonatele și procesăm fiecare zonă
     for idx, coord in enumerate(coordonate):
         text_initial = proceseaza_zona(coord, idx, image)
         print(f"Text inițial pentru zona {idx}: {text_initial}")  # Debug: Afișăm textul inițial
-        temp_prenume, temp_nume, temp_initiala_tatalui, temp_strada, temp_numar, temp_cnp_total, temp_email, temp_judet, temp_localitate, temp_cp, temp_bloc, temp_scara, temp_etaj, temp_apartament, temp_phone, temp_doiani = process_fields(text_initial, idx, True)  # debug_switch este True pentru debug
-        
+        temp_prenume, temp_nume, temp_initiala_tatalui, temp_strada, temp_numar, temp_cnp_total, temp_email, temp_judet, temp_localitate, temp_cp, temp_bloc, temp_scara, temp_etaj, temp_apartament, temp_phone, temp_doiani,temp_folder_localitate = process_fields(text_initial, idx, False)  # debug_switch este True pentru debug
         # Atribuire valorilor returnate la variabilele finale
         if temp_prenume:
             prenume = temp_prenume
@@ -69,7 +69,10 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
             phone = temp_phone
         if temp_doiani:
             doiani = temp_doiani
-
+        if temp_folder_localitate:
+            folder_localitate_sec = temp_folder_localitate
+        #else:
+            #folder_localitate_sec = localitate
         # Debug: Afișăm valorile actualizate după fiecare iterație
         print(f"Variabile după process_fields: prenume={prenume}, nume={nume}, strada={strada}, etc.")  # Debug
 
@@ -94,7 +97,7 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     nume_fisier_nou = f"{nume} {prenume}.jpg"
 
     # Creează folderul pentru localitate
-    folder_localitate = os.path.join(output_folder, capitalize_words(localitate))
+    folder_localitate = os.path.join(output_folder, capitalize_words(folder_localitate_sec))
     if not os.path.exists(folder_localitate):
         os.makedirs(folder_localitate)
 

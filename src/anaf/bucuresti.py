@@ -1,11 +1,11 @@
 bucuresti = {
     "Directia Generala Regionala a Finantelor Publice BUCURESTI": {
-        "sector 1":"sector 1",
-        "sector 2":"sector 2",
-        "sector 3":"sector 3",
-        "sector 4":"sector 4",
-        "sector 5":"sector 5",
-        "sector 6":"sector 6"
+        "sector 1":["sector 1","1"],
+        "sector 2":["sector 2","2"],
+        "sector 3":["sector 3","3"],
+        "sector 4":["sector 4","4"],
+        "sector 5":["sector 5","5"],
+        "sector 6":["sector 6","6"]
     },
     "ILFOV": {
         "ILFOV": [

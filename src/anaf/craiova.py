@@ -1,12 +1,12 @@
 craiova={
     "Administratia Judeteana a Finantelor Publice DOLJ": {
         "Administratia Judeteana a Finantelor Publice DOLJ": [
-            "Almăj", "Amărăștii de Jos", "Amărăștii de Sus", "Apele Vii", "Argetoaia", "Botoșești-Paia", "Brabova", 
-            "Bratovoești", "Breasta", "Bucovăț", "Bulzești", "Cârcea", "Carpen", "Castranova", "Celaru", "Cernătești", 
-            "Coșoveni", "Craiova", "Daneți", "Dioști", "Dobrotești", "Drăgotești", "Ghercești", "Ghindeni", "Gogoșu", 
-            "Goiești", "Grecești", "Ișalnița", "Întorsura", "Leu", "Lipov", "Malu Mare", "Mischii Mârșani", "Murgași", 
-            "Pielești", "Pleșoi", "Podari", "Predești", "Radovan", "Robănești", "Rojiște", "Sălcuța", "Seaca de Pădure", 
-            "Secu", "Sopot", "Șimnicu de Sus", "Teasc", "Terpezița", "Teslui", "Țuglui", "Vârvoru de Jos", "Vela", "Verbița"
+            "Almaj", "Amarastii de Jos", "Amarastii de Sus", "Apele Vii", "Argetoaia", "Botosesti Paia", "Brabova", 
+            "Bratovoesti", "Breasta", "Bucovat", "Bulzesti", "Carcea", "Carpen", "Castranova", "Celaru", "Cernatesti", 
+            "Cosoveni", "Craiova", "Daneti", "Diosti", "Dobrotesti", "Dragotesti", "Ghercesti", "Ghindeni", "Gogosu", 
+            "Goiesti", "Grecesti", "Isalnita", "intorsura", "Leu", "Lipov", "Malu Mare", "Mischii Marsani", "Murgasi", 
+            "Pielesti", "Plesoi", "Podari", "Predesti", "Radovan", "Robanesti", "Rojiste", "Salcuta", "Seaca de Padure", 
+            "Secu", "Sopot", "simnicu de Sus", "Teasc", "Terpezita", "Teslui", "tuglui", "Varvoru de Jos", "Vela", "Verbita"
         ],
         "Unitatea Fiscala Oraseneasca Calafat": [
             "Calafat", "Caraula", "Cetate", "Ciupercenii Noi", "Desa", "Ghidici", "Maglavit", "Motatei", "Piscu Vechi",
@@ -30,14 +30,14 @@ craiova={
     },
     "Administratia Judeteana a Finantelor Publice GORJ" : {
         "Administratia Judeteana a Finantelor Publice GORJ": [
-            "Arcani", "Balanesti", "Balesti", "Bumbesti-Jiu", "Ciuperceni", "Danesti", "Dragutesti", "Godinesti", "Lelesti", "Musetesti", 
-            "Pestisani", "Runcu", "Schela", "Stanesti", "Targu-Jiu", "Tismana", "Turcinesti"
+            "Arcani", "Balanesti", "Balesti", "Bumbesti Jiu", "Ciuperceni", "Danesti", "Dragutesti", "Godinesti", "Lelesti", "Musetesti", 
+            "Pestisani", "Runcu", "Schela", "Stanesti", "Targu Jiu", "Tismana", "Turcinesti"
         ],
         "Unitatea Fiscala Oraseneasca Motru": [
             "Bolbosi", "Borascu", "Catunele", "Dragotesti", "Glogova", "Matasari", "Motru", "Pades", "Samarinesti", "Slivilesti", "Vagiulesti"
         ],
         "Unitatea Fiscala Oraseneasca Novaci": [
-            "Alimpesti", "Baia de Fier", "Bengesti-Ciocadia", "Bumbesti-Pitic", "Crasna", "Novaci", "Polovragi", "Sacelu"
+            "Alimpesti", "Baia de Fier", "Bengesti Ciocadia", "Bumbesti Pitic", "Crasna", "Novaci", "Polovragi", "Sacelu"
         ],
         "Unitatea Fiscala Oraseneasca Targu Carbunesti": [
             "Albeni", "Aninoasa", "Barbatesti", "Berlesti", "Bustuchin", "Capreni", "Cruset", "Danciulesti", "Hurezani", "Jupanesti", "Licurici", "Logresti",
@@ -49,11 +49,11 @@ craiova={
     },
     "Administratia Judeteana a Finantelor Publice MEHEDINTI": {
         "Administratia Judeteana a Finantelor Publice MEHEDINTI": [
-            "Balvanesti", "Breznita-Ocol", "Cazanesti", "Drobeta-Turnu Severin", "Godeanu", "Hinova", "Husnicioara", "Ilovat", "Izvoru Barzii",
+            "Balvanesti", "Breznita Ocol", "Cazanesti", "Drobeta Turnu Severin", "Godeanu", "Hinova", "Husnicioara", "Ilovat", "Izvoru Barzii",
             "Malovat", "Prunisor", "Simian", "Sisesti"
         ],
         "Unitatea Fiscala Oraseneasca Strehaia": [
-            "Bacles", "Breznita-Motru", "Brosteni", "Butoiesti", "Corcova", "Dumbrava", "Greci", "Grozesti", "Stangaceaua", "Strehaia", "Tamna", "Voloiac"
+            "Bacles", "Breznita Motru", "Brosteni", "Butoiesti", "Corcova", "Dumbrava", "Greci", "Grozesti", "Stangaceaua", "Strehaia", "Tamna", "Voloiac"
         ],
         "Unitatea Fiscala Oraseneasca Orsova": [
             "Ciresu", "Dubova", "Eselnita", "Ilovita", "Orsova", "Podeni", "Svinita"
@@ -64,19 +64,19 @@ craiova={
             "Vanatori", "Vanju Mare", "Vanjulet", "Vladaia", "Vrata"
         ],
         "Unitatea Fiscala Oraseneasca Baia de Arama": [
-            "Baia de Arama", "Bala", "Balta", "Floresti", "Isverna", "Obarsia-Closani", "Ponoarele", "Sovarna"
+            "Baia de Arama", "Bala", "Balta", "Floresti", "Isverna", "Obarsia Closani", "Ponoarele", "Sovarna"
         ],
     },
     "Administratia Judeteana a Finantelor Publice OLT": {
         "Administratia Judeteana a Finantelor Publice OLT": [
             "Balteni", "Barasti", "Brancoveni", "Brebeni", "Carlogani", "Colonesti", "Corbu", "Coteana", "Crampoia", "Cungrea", "Curtisoara", "Dobroteasa", "Fagetelu",
             "Ganeasa", "Ghimpeteni", "Gradinari", "Icoana", "Ipotesti", "Izvoarele", "Leleasca", "Maruntei", "Milcov", "Movileni", "Nicolae Titulescu", "Oporelu", 
-            "Optasi-Magura", "Perieti", "Piatra-Olt", "Plesoiu", "Poboru", "Potcoava", "Priseaca", "Samburesti", "Sarbii-Magura", "Schitu", "Scornicesti", "Slatina", 
+            "Optasi Magura", "Perieti", "Piatra Olt", "Plesoiu", "Poboru", "Potcoava", "Priseaca", "Samburesti", "Sarbii Magura", "Schitu", "Scornicesti", "Slatina", 
             "Slatioara", "Spineni", "Strejesti", "Serbanesti", "Tatulesti", "Teslui", "Topana", "Tufeni", "Valcele", "Valea Mare", "Valeni", "Verguleasa", 
             "Vitomiresti", "Vulturesti"
         ],
         "Unitatea Fiscala Oraseneasca Caracal": [
-            "Babiciu", "Bucinisu", "Caracal", "Cezieni", "Daneasa", "Deveselu", "Dobrosloveni", "Dobrun", "Draganesti-Olt", "Draghiceni", "Falcoiu", 
+            "Babiciu", "Bucinisu", "Caracal", "Cezieni", "Daneasa", "Deveselu", "Dobrosloveni", "Dobrun", "Draganesti Olt", "Draghiceni", "Falcoiu", 
             "Farcasele", "Gostavatu", "Gradinile", "Mihaesti", "Osica de Jos", "Osica de Sus", "Radomiresti", "Redea", "Rotunda", "Scarisoara", "Seaca", 
             "Sprancenata", "Stoenesti", "Stoicanesti", "Studina", "Traian", "Vladila"
         ],
@@ -92,7 +92,7 @@ craiova={
     "Administratia Judeteana a Finantelor Publice VALCEA" : {
         "Administratia Judeteana a Finantelor Publice VALCEA" : [
             "Baile Govora", "Baile Olanesti", "Berislavesti", "Budesti", "Bujoreni", "Bunesti", "Calimanesti", "Daesti", "Danicei", "Golesti", "Mihaesti", "Milcoiu", 
-            "Muereasca", "Nicolae Balcescu", "Ocnele Mari", "Pausesti - Maglasi", "Ramnicu Valcea", "Runcu", "Salatrucel", "Stoenesti", "Vladesti"
+            "Muereasca", "Nicolae Balcescu", "Ocnele Mari", "Pausesti Maglasi", "Ramnicu Valcea", "Runcu", "Salatrucel", "Stoenesti", "Vladesti"
         ],
         "Unitatea Fiscala Municipala Dragasani": [
             "Amarasti", "Creteni", "Dragasani", "Glavile", "Gusoieni", "Lungesti", "Madulari", "Mitrofani", "Orlesti", "Pesceana", 
@@ -106,7 +106,7 @@ craiova={
         ],
         "Unitatea Fiscala Oraseneasca Horezu": [
             "Alunu", "Barbatesti", "Berbesti", "Cernisoara", "Copaceni", "Costesti", "Gradistea", "Horezu", "Livezi", 
-            "Maldaresti", "Mateesti", "Otesani", "Pausesti - Otasau", "Pietrari", "Sinesti", "Slatioara", "Stroesti", "Tomsani", "Vaideeni", "Zatreni"
+            "Maldaresti", "Mateesti", "Otesani", "Pausesti Otasau", "Pietrari", "Sinesti", "Slatioara", "Stroesti", "Tomsani", "Vaideeni", "Zatreni"
         ],
         "Unitatea Fiscala Oraseneasca Babeni": [
             "Babeni", "Dragoiesti", "Francesti", "Galicea", "Ionesti", "Ladesti", "Lapusata", "Olanu", "Popesti", "Roesti", "Sirineasa", "Stoilesti"

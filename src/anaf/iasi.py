@@ -1,9 +1,9 @@
 iasi = {
     "Administratia Judeteana a Finantelor Publice BACAU": {
         "Administratia Judeteana a Finantelor Publice BACAU": [
-            "Bacau", "Beresti-Bistrita", "Buhoci", "Cleja", "Colonesti", "Corbasca", "Damienesti", "Faraoani", 
+            "Bacau", "Beresti Bistrita", "Buhoci", "Cleja", "Colonesti", "Corbasca", "Damienesti", "Faraoani", 
             "Filipeni", "Filipesti", "Gioseni", "Hemeius", "Horgesti", "Huruiesi", "Itesti", "Izvoru Berheciului", 
-            "Letea Veche", "Lipova", "Luizi-Calugara", "Magura", "Margineni", "Negri", "Nicolae Balcescu", "Odobesti", 
+            "Letea Veche", "Lipova", "Luizi Calugara", "Magura", "Margineni", "Negri", "Nicolae Balcescu", "Odobesti", 
             "Orbeni", "Pancesti", "Parava", "Parincea", "Plopana", "Prajesti", "Racaciuni", "Rosiori", "Sascut", 
             "Sarata", "Saucesti", "Secuieni", "Tamasi", "Tatarasti", "Traian", "Ungureni", "Valea Seaca"
         ],
@@ -16,8 +16,8 @@ iasi = {
             "Blagesti", "Buhusi", "Garleni", "Racova"
         ],
         "Unitatea Fiscala Oraseneasca Moinesti": [
-            "Agas", "Ardeoani", "Asau", "Balcani", "Beresti-Tazlau", "Brusturoasa", "Comanesti", "Darmanesti", 
-            "Ghimes-Faget", "Magiresti", "Moinesti", "Palanca", "Parjol", "Poduri", "Scorteni", "Solont", "Strugari", 
+            "Agas", "Ardeoani", "Asau", "Balcani", "Beresti Tazlau", "Brusturoasa", "Comanesti", "Darmanesti", 
+            "Ghimes Faget", "Magiresti", "Moinesti", "Palanca", "Parjol", "Poduri", "Scorteni", "Solont", "Strugari", 
             "Zemes"
         ],
         "Unitatea Fiscala Comunala Podu Turcului": [
@@ -35,11 +35,11 @@ iasi = {
         ],
         "Unitatea Fiscala Municipala Dorohoi": [
             "Braesti", "Broscauti", "Candesti", "Cordareni", "Corlateni", "Cristinesti", "Dersca", "Dimacheni", 
-            "Dorohoi", "GeorgeEnescu", "Hiliseu-Horia", "Ibanesti", "Lozna", "Mihaileni", "Pomarla", "Sendriceni", 
+            "Dorohoi", "GeorgeEnescu", "Hiliseu Horia", "Ibanesti", "Lozna", "Mihaileni", "Pomarla", "Sendriceni", 
             "Suharau", "Vaculesti", "Varfu Campului"
         ],
         "Unitatea Fiscala Oraseneasca Darabani": [
-            "Concesti", "Darabani", "Havarna", "Hudesti", "Mileanca", "Paltinis", "Radauti-Prut", "Viisoara"
+            "Concesti", "Darabani", "Havarna", "Hudesti", "Mileanca", "Paltinis", "Radauti Prut", "Viisoara"
         ],
         "Unitatea Fiscala Oraseneasca Saveni": [
             "Adaseni", "Avrameni", "Cotusca", "Draguseni", "Hanesti", "Manoleasa", "Mihalaseni", "Mitoc", "Ripiceni", 
@@ -84,10 +84,10 @@ iasi = {
         ],
         "Unitatea Fiscala Oraseneasca Targu Neamt": [
             "Agapia", "Baltatesti", "Brusturi", "Cracaoani", "Draganesti", "Ghindaoni", "Grumazesti", "Pastraveni", 
-            "Petricani", "Pipirig", "Raucesti", "Targu-Neamt", "Tibucani", "Timisesti", "Urecheni", "Vanatori-Neamt"
+            "Petricani", "Pipirig", "Raucesti", "Targu Neamt", "Tibucani", "Timisesti", "Urecheni", "Vanatori Neamt"
         ],
         "Unitatea Fiscala Oraseneasca Bicaz": [
-            "Bicaz", "Bicaz-Chei", "Bicazu Ardelean", "Borca", "Ceahlau", "Damuc", "Faracasa", "Grinties", "Hangu", 
+            "Bicaz", "Bicaz Chei", "Bicazu Ardelean", "Borca", "Ceahlau", "Damuc", "Faracasa", "Grinties", "Hangu", 
             "Poiana Teiului", "Tarcau", "Tasca"
         ]
     },
@@ -109,7 +109,7 @@ iasi = {
         ],
         "Unitatea Fiscala Municipala Radauti": [
             "Arbore", "Bilca", "Brodina", "Burla", "Dornesti", "Fratautii Noi", "Fratautii Vechi", "Galanesti", 
-            "Horodnic de Jos", "Horodnic de Sus", "Iaslovat", "Marginea", "Milisauti", "Poieni-Solca", "Putna", "Radauti", 
+            "Horodnic de Jos", "Horodnic de Sus", "Iaslovat", "Marginea", "Milisauti", "Poieni Solca", "Putna", "Radauti", 
             "Satu Mare", "Solca", "Straja", "Sucevita", "Ulma", "Vicovu de Jos", "Vicovu de Sus", "Voitinel", "Volovat"
         ],
         "Unitatea Fiscala Municipala Vatra Dornei": [
@@ -128,18 +128,18 @@ iasi = {
         "Administratia Judeteana a Finantelor Publice VASLUI": [
             "Albesti", "Balteni", "Bogdana", "Codaesti", "Costesti", "Cozmesti", "Danesti", "Deleni", "Delesti", 
             "Dragomiresti", "Feresti", "Garceni", "Ivanesti", "Laza", "Lipovat", "Miclesti", "Muntenii De Jos", 
-            "Muntenii De Sus", "Poienesti", "Pungesti", "Puscasi", "Rosiești", "Solesti", "Stefan Cel Mare", 
+            "Muntenii De Sus", "Poienesti", "Pungesti", "Puscasi", "Rosiesti", "Solesti", "Stefan Cel Mare", 
             "Tacuta", "Tanacu", "Valeni", "Vaslui", "Vutcani", "Zapodeni"
         ],
         "Unitatea Fiscala Municipala Barlad": [
             "Alexandru Vlahuta", "Bacani", "Banca", "Barlad", "Blagesti", "Bogdanesti", "Bogdanita", "Ciocani", 
-            "Coroiești", "Dodesti", "Epureni", "Falciu", "Fruntiseni", "Gagesti", "Gherghesti", "Grivita", "Iana", 
+            "Coroiesti", "Dodesti", "Epureni", "Falciu", "Fruntiseni", "Gagesti", "Gherghesti", "Grivita", "Iana", 
             "Ibanesti", "Ivesti", "Malusteni", "Murgeni", "Perieni", "Pochidia", "Pogana", "Pogonesti", "Puiesti", 
             "Suleta", "Tutova", "Viisoara", "Vinderei", "Voinesti", "Zorleni"
         ],
         "Unitatea Fiscala Municipala Husi": [
-            "Arsura", "Berezeni", "Botesti", "Bunesti-Averesti", "Cretesti", "Dimitrie Cantemir", "Dranceni", 
-            "Duda-Epureni", "Hoceni", "Husi", "Lunca-Banului", "Oltenesti", "Padureni", "Stanilesti", "Tatarani", 
+            "Arsura", "Berezeni", "Botesti", "Bunesti Averesti", "Cretesti", "Dimitrie Cantemir", "Dranceni", 
+            "Duda Epureni", "Hoceni", "Husi", "Lunca Banului", "Oltenesti", "Padureni", "Stanilesti", "Tatarani", 
             "Vetrisoaia"
         ],
         "Unitatea Fiscala Oraseneasca Negresti": [

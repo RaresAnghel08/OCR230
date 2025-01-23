@@ -4,7 +4,7 @@ alba = {
     ],
     "Administratia Judeteana a Finantelor Publice ALBA": {
         "Alba Iulia": [
-            "Berghin", "Blandiana", "Ceru - Bacainti", "Ciugud", "Cricau", "Galda de Jos", "Ighiu", "Intregalde", "Santimbru", 
+            "Berghin", "Blandiana", "Ceru Bacainti", "Ciugud", "Cricau", "Galda de Jos", "Ighiu", "Intregalde", "Santimbru", 
             "Salistea", "Stremt", "Teius", "Vintu de Jos"
         ],
         "Aiud": [
@@ -36,10 +36,10 @@ alba = {
             "Shinca", "Soars", "Voila"
         ],
         "Sacele": [
-            "Budila", "Sacele", "Tarlungeni", "Teliu", "Vama Buzăului"
+            "Budila", "Sacele", "Tarlungeni", "Teliu", "Vama Buzaului"
         ],
         "Codlea": [
-            "Codlea", "Crizbav", "Dumbravita", "Ghimbav", "Hălchiu", "Holbav", "Vulcan"
+            "Codlea", "Crizbav", "Dumbravita", "Ghimbav", "Halchiu", "Holbav", "Vulcan"
         ],
         "Rupea": [
             "Bunesti", "Cata", "Comana", "Hoghiz", "Homorod", "Jibert", "Racos", "Rupea", "Ticus", "Ungra"
@@ -66,16 +66,16 @@ alba = {
     "Administratia Judeteana a Finantelor Publice HARGHITA": {
         "Miercurea Ciuc": [
             "Baile Tusnad", "Balan", "Carta", "Ciceu", "Ciucsangeorgiu", "Cozmeni", "Danesti", "Frumoasa", "Leliceni", 
-            "Lunca de Jos", "Lunca de Sus", "Madaras", "Miercurea-Ciuc", "Mihaileni", "Pauleni-Ciuc", "Plaiesii de Jos", 
+            "Lunca de Jos", "Lunca de Sus", "Madaras", "Miercurea Ciuc", "Mihaileni", "Pauleni Ciuc", "Plaiesii de Jos", 
             "Racu", "Sancraieni", "Sandominic", "Sanmartin", "Sansimion", "Santimbru", "Siculeni", "Tomesti", "Tusnad"
         ],
         "Odorheiu Secuiesc": [
             "Atid", "Avramesti", "Bradesti", "Capalnita", "Corund", "Cristuru Secuiesc", "Dargiu", "Dealu", "Feliceni", 
             "Lueta", "Lupeni", "Martinis", "Meresti", "Mugeni", "Ocland", "Odorheiu Secuiesc", "Porumbeni", "Praid", 
-            "Satu Mare", "Sacel", "Secuieni", "Simonești", "Ulies", "Varsag", "Vlăhita", "Zetea"
+            "Satu Mare", "Sacel", "Secuieni", "Simonesti", "Ulies", "Varsag", "Vlahita", "Zetea"
         ],
         "Toplita": [
-            "Bilbor", "Borsec", "Corbu", "Galausa", "Sarmas", "Subcetate", "Toplita", "Tulgheș"
+            "Bilbor", "Borsec", "Corbu", "Galausa", "Sarmas", "Subcetate", "Toplita", "Tulghes"
         ],
         "Gheorgheni": [
             "Ciumani", "Ditrau", "Gheorgheni", "Joseni", "Lazarea", "Remetea", "Suseni", "Voslabeni"
@@ -89,7 +89,7 @@ alba = {
             "Sangeorgiu de Mures", "Sanpaul", "Santana de Mures", "Sincai", "Targu Mures", "Ungheni", "Vargata"
         ],
         "Sighisoara": [
-            "Albesti", "Apold", "Balaușeri", "Danes", "Nades", "Saschiz", "Sighisoara", "Vinatorii", "Viisoara"
+            "Albesti", "Apold", "Balauseri", "Danes", "Nades", "Saschiz", "Sighisoara", "Vinatorii", "Viisoara"
         ],
         "Reghin": [
         "Alunis", "Batos", "Beica de Jos", "Brancoventesti", "Breaza", "Chiheru de Jos", "Cozma", "Craiesti", "Deda", 
@@ -124,7 +124,7 @@ alba = {
             "Apoldu de Jos", "Gura Raului", "Jina", "Ludos", "Miercurea Sibiului", "Orlat", "Poiana Sibiului", "Saliste", "Tilisca"
         ],
         "Avrig": [
-            "Arpasu de Jos", "Avrig", "Cârta", "Cârțisoara", "Porumbacu de Jos", "Racovita", "Turnu Rosu"
+            "Arpasu de Jos", "Avrig", "Carta", "Cartisoara", "Porumbacu de Jos", "Racovita", "Turnu Rosu"
         ]
     }
 }
