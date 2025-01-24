@@ -88,7 +88,8 @@ def create_main_window(root):
     # Funcție pentru a închide aplicația corect
     def on_close():
         root.quit()  # Oprim fereastra Tkinter
-
+        root.destroy() # Distrugem fereastra Tkinter
+        exit()  # Ieșim din program
     root.protocol("WM_DELETE_WINDOW", on_close)  # Setează comportamentul la închiderea ferestrei
 
 # Creăm fereastra principală și o ascundem inițial
