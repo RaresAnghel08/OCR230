@@ -1,8 +1,8 @@
 timisoara ={
     "Directia Generala Regionala a Finantelor Publice TIMISOARA":
         {
-    "Administratia Judeteana a Finantelor Publice ARAD": {
-        "Administratia Judeteana a Finantelor Publice Arad": [
+    "Administratia Judeteana a Finantelor Publice ARAD mare": {
+        "Administratia Judeteana a Finantelor Publice Arad mic": [
             "Arad", "Curtici", "Dorobanti", "Fantanele", "Felnac", "Frumuseni", "Iratosu", "Livada", "Macea", "Nadlac", 
             "Olari", "Pecica", "Peregu Mare", "Santana", "Secusigiu", "Semlac", "Sagu", "Seitin", "Siria", "Sofronea", 
             "Vinga", "Vladimirescu", "Zadareni", "Zimandu Nou"
@@ -26,8 +26,8 @@ timisoara ={
             "Barzava", "Bata", "Birchis", "Petris", "Savarsin", "Varadia de Mures"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice CARAS SEVERIN": {
-        "Administratia Judeteana a Finantelor Publice Caras Severin": [
+    "Administratia Judeteana a Finantelor Publice CARAS SEVERIN mare": {
+        "Administratia Judeteana a Finantelor Publice Caras Severin mic": [
             "Anina", "Berzovia", "Bocsa", "Brebu", "Brebu Nou", "Carasova", "Doclin", "Dognecea", "Ezeris", "Farliug", 
             "Goruia", "Lupac", "Maureni", "Ocna de Fier", "Ramna", "Resita", "Tarnova", "Valiug", "Vermes", "Zorlentu Mare"
         ],
@@ -52,8 +52,8 @@ timisoara ={
             "Bania", "Bozovici", "Dalboset", "Eftimie Murgu", "Lapusnicel", "Lapusnicu Mare", "Prigor", "Sopotu Nou"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice HUNEDOARA": {
-        "Administratia Judeteana a Finantelor Publice Hunedoara": [
+    "Administratia Judeteana a Finantelor Publice HUNEDOARA mare": {
+        "Administratia Judeteana a Finantelor Publice Hunedoara mic": [
             "Baita", "Batrana", "Branisca", "Burjuc", "Certeju de Sus", "Cirjiti", "Deva", "Dobra", "Gurasada", "Harau", 
             "Ilia", "Lapugiu de Jos", "Soimus", "Vetel", "Vorta", "Zam", "Bacia", "Rapoltu Mare", "Simeria"
         ],
@@ -76,8 +76,8 @@ timisoara ={
             "Santamaria Orlea", "Sarmizegetusa", "Salasu de Sus", "Totesti"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice TIMIS": {
-        "Administratia Judeteana a Finantelor Publice Timis": [
+    "Administratia Judeteana a Finantelor Publice TIMIS mare": {
+        "Administratia Judeteana a Finantelor Publice Timis mic": [
             "Becicherecu Mic", "Biled", "Bogda", "Bucovat", "Dudestii Noi", "Dumbravita", "Fibis", "Foeni", "Ghiroda", 
             "Giarmata", "Giroc", "Giulvaz", "Masloc", "Mosnita Noua", "Ortisoara", "Parta", "Peciu Nou", "Pischia", 
             "Recas", "Remetea Mare", "Sanandrei", "Sanmihaiu Roman", "Satchinez", "Sacalaz", "Sag", "Sandra", "Timisoara"

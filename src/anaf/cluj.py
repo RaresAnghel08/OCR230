@@ -1,8 +1,8 @@
 cluj = {
     "Directia Generala Regionala a Finantelor Publice Cluj Napoca":
         {
-    "Bihor": {
-        "Administratia Judeteana a Finantelor Publice BIHOR": [
+    "Administratia Judeteana a Finantelor Publice BIHOR mare": {
+        "Administratia Judeteana a Finantelor Publice Bihor mic": [
             "Biharia", "Bors", "Ceica", "Cetariu", "Ciuhoi", "Copacel", "Diosig", 
             "Dragesti", "Gepiu", "Girisul de Cris", "Hidiselu de Sus", "Ineu", "Lazereni", 
             "Nojorid", "Oradea", "Osorhei", "Paleu", "Rosiori", "Sanmartin", "Santandrei", 
@@ -28,8 +28,8 @@ cluj = {
             "Olcea", "Salonta", "Sannicolau Roman", "Tinca", "Tulca"
         ]
     },
-    "Bistrita Nasaud": {
-        "Administratia Judeteana a Finantelor Publice BISTRITA NASAUD": [
+    "Administratia Judeteana a Finantelor Publice BISTRITA NASAUD mare": {
+        "Administratia Judeteana a Finantelor Publice Bistrita Nasaud mic": [
             "Bistrita", "Budacu de Jos", "Cetate", "Dumitrita", "Mariselu", "Monor", "Sieu", "Sieu Magherus", 
             "Sieut", "Bistrita Bargau", "Josenii Bargau", "Livezile", "Prundu Bargau", "Tiha Bargau", 
             "Budesti", "Galatii Bistritei", "Lechinta", "Matei", "Micestii de Campie", "Milas", 
@@ -49,8 +49,8 @@ cluj = {
             "Magura Ilvei", "Poiana Ilvei"
         ]
     },
-    "Cluj": {
-        "Administratia Judeteana a Finantelor Publice CLUJ": [
+    "Administratia Judeteana a Finantelor Publice CLUJ mare": {
+        "Administratia Judeteana a Finantelor Publice Cluj mic": [
             "Aghiresu", "Apahida", "Aschileu", "Baciu", "Caianu", "Camarasu", "Chinteni", "Ciurila", "Cluj Napoca", 
             "Cojocna", "Feleacu", "Floresti", "Garbo", "Gilaul", "Jucu", "Maguri Racatau", "Mociu", "Panticeu", 
             "Palatca", "Sanpaul", "Savadisla", "Suatu", "Vultureni"
@@ -73,8 +73,8 @@ cluj = {
             "Marisel", "Negreni", "Poieni", "Rasca", "Sancraiu", "Sacuieu"
         ]
     },
-    "Maramures": {
-        "Administratia Judeteana a Finantelor Publice MARAMURES": [
+    "Administratia Judeteana a Finantelor Publice MARAMURES mare": {
+        "Administratia Judeteana a Finantelor Publice Maramures mic": [
             "Ardusat", "Arinis", "Asuaju de Sus", "Baia Mare", "Baia Sprie", "Baita de sub Codru", "Basesti", 
             "Bicaz", "Cavnic", "Cicarlau", "Coas", "Coltau", "Copalnic Manastur", "Dumbravita", "Farcasa", "Garda", 
             "Grosi", "Oarta de Jos", "Recea", "Sacalaseni", "Salsig", "Seini", "sisesti", "Tautii Magheraus", 
@@ -95,8 +95,8 @@ cluj = {
             "Sacel", "Salistea de Sus", "Sieu", "Viseu de Jos", "Viseu de Sus"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice SATU MARE": {
-        "Administratia Judeteana a Finantelor Publice Satu Mare": [
+    "Administratia Judeteana a Finantelor Publice SATU MARE mare": {
+        "Administratia Judeteana a Finantelor Publice Satu Mare mic": [
             "Agris", "Apa", "Ardud", "Barsau", "Batarci", "Beltiug", "Botiz", "Crucisor", "Culciu", "Doba", 
             "Dorolț", "Halmeu", "Homoroade", "Lazuri", "Livada", "Mediesu Aurit", "Micula", "Odoreu", 
             "Paulesti", "Pomi", "Porumbesti", "Satmarel", "Satu Mare", "Socond", "Tarna Mare", "Terebesti", 
@@ -115,8 +115,8 @@ cluj = {
             "Santau", "Sarauad", "Sacaseni", "Sauca", "Supur", "Tasnad", "Valea Morii"
         ],
     },
-    "Administratia Judeteana a Finantelor Publice SALAJ": {
-        "Administratia Judeteana a Finantelor Publice Salaj": [
+    "Administratia Judeteana a Finantelor Publice SALAJ mare": {
+        "Administratia Judeteana a Finantelor Publice Salaj mic": [
             "Agrij", "Almasu", "Banisor", "Bocsa", "Buciumi", "Cizer", "Coseiu", "Crasna", "Criseni", 
             "Cuzapac", "Dobrin", "Dragu", "Fildu de Jos", "Hereclean", "Hida", "Horoatu Crasnei", 
             "Mesesenii de Jos", "Mirsid", "Romanasi", "Sanmihaiu Almasului", "Sarmasag", "Samsud", 

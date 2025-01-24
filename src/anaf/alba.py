@@ -1,10 +1,10 @@
 alba = {
     "Directia Generala Regionala a Finantelor Publice Brasov":{
-    "Directia Generala Regionala a Finantelor Publice Brasov": [
+    "Directia Generala Regionala a Finantelor Publice Brasov mic": [
         "Apata", "Augustin", "Bod", "Brasov", "Feldioara", "Harman", "Maierus", "Ormenis", "Predeal", "Prejmer", "Sanpetru"
     ],
-    "Administratia Judeteana a Finantelor Publice ALBA": {
-        "Administratia Judeteana a Finantelor Publice Alba": [
+    "Administratia Judeteana a Finantelor Publice ALBA mare": {
+        "Administratia Judeteana a Finantelor Publice Alba mic": [
             "Berghin", "Blandiana", "Ceru Bacainti", "Ciugud", "Cricau", "Galda de Jos", "Ighiu", "Intregalde", "Santimbru", 
             "Salistea", "Stremt", "Teius", "Vintu de Jos"
         ],
@@ -31,7 +31,7 @@ alba = {
             "Almasu Mare", "Metes", "Zlatna"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice BRASOV": {
+    "Administratia Judeteana a Finantelor Publice BRASOV mare": {
         "Unitatea Fiscala Municipala Fagaras": [
             "Beclean", "Cincu", "Fagaras", "Harseni", "Lisa", "Mandra", "Para", "Recea", "Sambata de Sus", "Sercea", 
             "Shinca", "Soars", "Voila"
@@ -55,8 +55,8 @@ alba = {
             "Bran", "Cristian", "Fundata", "Moieciu", "Poiana Marului", "Rasnov", "Shinca Noua"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice COVASNA": {
-        "Administratia Judeteana a Finantelor Publice Covasna": [
+    "Administratia Judeteana a Finantelor Publice COVASNA mare": {
+        "Administratia Judeteana a Finantelor Publice Covasna mic": [
             "Arcus", "Barcani", "Bixad", "Bodoc", "Borosneu Mare", "Chichis", "Dobaralau", "Ghidfalau", 
             "Haghig", "Ilieni", "Intorsura Buzaului", "Malnas", "Micfalau", "Ozun", "Reci", "Sfantu Gheorghe", 
             "Sita Buzaului", "Valcele", "Valea Crisului", "Valea Mare", "Zagon"
@@ -69,8 +69,8 @@ alba = {
             "Aita Mare", "Baraolt", "Batanii Mari", "Belin", "Bradut", "Varghis"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice HARGHITA": {
-        "Administratia Judeteana a Finantelor Publice Harghita": [
+    "Administratia Judeteana a Finantelor Publice HARGHITA mare": {
+        "Administratia Judeteana a Finantelor Publice Harghita mic": [
             "Baile Tusnad", "Balan", "Carta", "Ciceu", "Ciucsangeorgiu", "Cozmeni", "Danesti", "Frumoasa", 
             "Leliceni", "Lunca de Jos", "Lunca de Sus", "Madaras", "Miercurea Ciuc", "Mihaileni", "Pauleni Ciuc", 
             "Plaiesii de Jos", "Racu", "Sancraieni", "Sandominic", "Sanmartin", "Sansimion", "Santimbru", 
@@ -89,8 +89,8 @@ alba = {
             "Ciumani", "Ditrau", "Gheorgheni", "Joseni", "Lazarea", "Remetea", "Suseni", "Voslabeni"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice MURES": {
-        "Administratia Judeteana a Finantelor Publice Mures": [
+    "Administratia Judeteana a Finantelor Publice MURES mare": {
+        "Administratia Judeteana a Finantelor Publice Mures mic": [
             "Acatari", "Band", "Bala", "Bereni", "Ceuasu de Campie", "Corunca", "Craciunesti", "Cristesti", 
             "Ernei", "Galesti", "Gheorghe Doja", "Glodeni", "Gornesti", "Grebenisu de Campie", "Hodosa", 
             "Iclanzel", "Livezeni", "Madaras", "Magherani", "Miercurea Nirajului", "Neaua", "Ogra", "Panet", 
@@ -118,8 +118,8 @@ alba = {
             "Chibed", "Eremitu", "Fantanele", "Ghindari", "Sangeorgiu de Padure", "Saratenii", "Sovata", "Vetca"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice SIBIU": {
-        "Administratia Judeteana a Finantelor Publice Sibiu": [
+    "Administratia Judeteana a Finantelor Publice SIBIU mare": {
+        "Administratia Judeteana a Finantelor Publice Sibiu mic": [
             "Cisnadie", "Cristian", "Poplaca", "Rau Sadului", "Rasinari", "Rosia", "Sadu", "Sibiu", "Slimnic", 
             "Selimbar", "Sura Mare", "Vurpar", "Loamnes", "Ocna Sibiului", "Pauca", "Sura Mica", "Boita", "Talmaciu"
         ],
