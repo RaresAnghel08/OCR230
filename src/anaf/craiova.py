@@ -1,8 +1,8 @@
 craiova={
     "Directia Generala Regionala a Finantelor Publice Craiova":
         {
-    "Administratia Judeteana a Finantelor Publice DOLJ": {
-        "Administratia Judeteana a Finantelor Publice DOLJ": [
+    "Administratia Judeteana a Finantelor Publice DOLJ mare": {
+        "Administratia Judeteana a Finantelor Publice DOLJ mic": [
             "Almaj", "Amarastii de Jos", "Amarastii de Sus", "Apele Vii", "Argetoaia", "Botosesti Paia", "Brabova", 
             "Bratovoesti", "Breasta", "Bucovat", "Bulzesti", "Carcea", "Carpen", "Castranova", "Celaru", "Cernatesti", 
             "Cosoveni", "Craiova", "Daneti", "Diosti", "Dobrotesti", "Dragotesti", "Ghercesti", "Ghindeni", "Gogosu", 
@@ -30,8 +30,8 @@ craiova={
             "Izvoare", "Negoi", "Orodel", "Perisor", "Rast", "Silistea Crucii", "Urzicuta", "Vartop"
         ],
     },
-    "Administratia Judeteana a Finantelor Publice GORJ" : {
-        "Administratia Judeteana a Finantelor Publice GORJ": [
+    "Administratia Judeteana a Finantelor Publice GORJ mare" : {
+        "Administratia Judeteana a Finantelor Publice GORJ mic": [
             "Arcani", "Balanesti", "Balesti", "Bumbesti Jiu", "Ciuperceni", "Danesti", "Dragutesti", "Godinesti", "Lelesti", "Musetesti", 
             "Pestisani", "Runcu", "Schela", "Stanesti", "Targu Jiu", "Tismana", "Turcinesti"
         ],
@@ -49,8 +49,8 @@ craiova={
             "Balteni", "Branesti", "Calnic", "Farcasesti", "Ionesti", "Negomir", "Plopsoru", "Rovinari", "Telesti", "Turceni", "Urdari"
         ],
     },
-    "Administratia Judeteana a Finantelor Publice MEHEDINTI": {
-        "Administratia Judeteana a Finantelor Publice MEHEDINTI": [
+    "Administratia Judeteana a Finantelor Publice MEHEDINTI mare": {
+        "Administratia Judeteana a Finantelor Publice MEHEDINTI mic": [
             "Balvanesti", "Breznita Ocol", "Cazanesti", "Drobeta Turnu Severin", "Godeanu", "Hinova", "Husnicioara", "Ilovat", "Izvoru Barzii",
             "Malovat", "Prunisor", "Simian", "Sisesti"
         ],
@@ -69,8 +69,8 @@ craiova={
             "Baia de Arama", "Bala", "Balta", "Floresti", "Isverna", "Obarsia Closani", "Ponoarele", "Sovarna"
         ],
     },
-    "Administratia Judeteana a Finantelor Publice OLT": {
-        "Administratia Judeteana a Finantelor Publice OLT": [
+    "Administratia Judeteana a Finantelor Publice OLT mare": {
+        "Administratia Judeteana a Finantelor Publice OLT mic": [
             "Balteni", "Barasti", "Brancoveni", "Brebeni", "Carlogani", "Colonesti", "Corbu", "Coteana", "Crampoia", "Cungrea", "Curtisoara", "Dobroteasa", "Fagetelu",
             "Ganeasa", "Ghimpeteni", "Gradinari", "Icoana", "Ipotesti", "Izvoarele", "Leleasca", "Maruntei", "Milcov", "Movileni", "Nicolae Titulescu", "Oporelu", 
             "Optasi Magura", "Perieti", "Piatra Olt", "Plesoiu", "Poboru", "Potcoava", "Priseaca", "Samburesti", "Sarbii Magura", "Schitu", "Scornicesti", "Slatina", 
@@ -91,8 +91,8 @@ craiova={
             "Stefan cel Mare", "Tia Mare", "Urzica", "Vadastra", "Vadastrita", "Visina", "Visina Noua"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice VALCEA" : {
-        "Administratia Judeteana a Finantelor Publice VALCEA" : [
+    "Administratia Judeteana a Finantelor Publice VALCEA mare" : {
+        "Administratia Judeteana a Finantelor Publice VALCEA mic" : [
             "Baile Govora", "Baile Olanesti", "Berislavesti", "Budesti", "Bujoreni", "Bunesti", "Calimanesti", "Daesti", "Danicei", "Golesti", "Mihaesti", "Milcoiu", 
             "Muereasca", "Nicolae Balcescu", "Ocnele Mari", "Pausesti Maglasi", "Ramnicu Valcea", "Runcu", "Salatrucel", "Stoenesti", "Vladesti"
         ],
