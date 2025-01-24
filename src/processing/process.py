@@ -71,8 +71,6 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
             doiani = temp_doiani
         if temp_folder_localitate:
             folder_localitate_sec = temp_folder_localitate
-        else :
-            folder_localitate_sec = localitate
         #else:
             #folder_localitate_sec = localitate
         # Debug: Afișăm valorile actualizate după fiecare iterație

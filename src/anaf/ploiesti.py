@@ -20,7 +20,7 @@ ploiesti = {
             "Negrasi", "Popesti", "Rica", "Recea", "Rociu", "Slobozia", "Stolnici", "Stefan Cel Mare", "Ungheni"
         ],
         "Unitatea Fiscala Oraseneasca Topoloveni": [
-            "Beleti-Negresti", "Bogati", "Botesti", "Calinesti", "Cateasca", "Dobresti", "Leordeni", "Priboieni", 
+            "Beleti Negresti", "Bogati", "Botesti", "Calinesti", "Cateasca", "Dobresti", "Leordeni", "Priboieni", 
             "Ratesti", "Teiu", "Topoloveni"
         ],
         "Unitatea Fiscala Oraseneasca Mioveni": [
@@ -39,7 +39,7 @@ ploiesti = {
             "Ulmeni"
         ],
         "Unitatea Fiscala Oraseneasca Lehliu": [
-            "Belciugatele", "Dor Marunt", "Frasinet", "Fundulea", "Gurbanesti", "Ileana", "Lehliu", "Lehliu-Gara", 
+            "Belciugatele", "Dor Marunt", "Frasinet", "Fundulea", "Gurbanesti", "Ileana", "Lehliu", "Lehliu Gara", 
             "Lupsanu", "Nicolae Balcescu", "Sarulesti", "Tamadau Mare", "Valea Argovei"
         ],
         "Unitatea Fiscala Oraseneasca Budesti": [
@@ -53,7 +53,7 @@ ploiesti = {
             "Cornesti", "Crevedia", "Dobra", "Doicesti", "Dragomiresti", "Finta", "Gura Ocnitei", "Gura Sutii", "Lucieni", 
             "Ludesti", "Malu cu Flori", "Manesti", "Niculesti", "Nucet", "Ocnita", "Persinari", "Pietrari", "Pucheni", 
             "Raciu", "Rau Alb", "Razvad", "Sotanga", "Targoviste", "Tatarani", "Ulmi", "Vacaresti", "Valeni Dambovita", 
-            "Voinesti", "Vulcana-Bai"
+            "Voinesti", "Vulcana Bai"
         ],
         "Unitatea Fiscala Municipala Moreni": [
             "Darmanesti", "I.L. Caragiale", "Iedera", "Moreni", "Valea Lunga", "Varfuri", "Visinesti", "Vladeni"
@@ -120,15 +120,15 @@ ploiesti = {
         "Unitatea Fiscala Oraseneasca Busteni": [
             "Azuga", "Busteni", "Sinaia"
         ],
-        "Unitatea Fiscala Oraseneasca Boldesti-Scaeni": [
-            "Albesti-Paleologu", "Aricestii Rahtivani", "Balta Doamnei", "Barcanesti", "Berceni", "Blejoi", "Boldesti-Scaeni", 
+        "Unitatea Fiscala Oraseneasca Boldesti Scaeni": [
+            "Albesti Paleologu", "Aricestii Rahtivani", "Balta Doamnei", "Barcanesti", "Berceni", "Blejoi", "Boldesti Scaeni", 
             "Brazi", "Bucov", "Cocorastii Colt", "Draganesti", "Dumbrava", "Gherghita", "Gorgota", "Lipanesti", "Manesti", 
             "Olari", "Paulesti", "Plopu", "Poienarii Burchii", "Puchenii Mari", "Rifov", "Sirna", "Targsoru Vechi", "Tinosu", 
             "Valea Calugareasca"
         ],
         "Unitatea Fiscala Oraseneasca Mizil": [
-            "Baba Ana", "Boldesti-Gradistea", "Calugareni", "Ceptura", "Ciorani", "Colceag", "Fantanele", "Fulga", 
-            "Gornet-Cricov", "Gura Vadului", "Iordacheni", "Jugureni", "Mizil", "Salciile", "Tomsani", "Urlati", "Vadu Sapat", 
+            "Baba Ana", "Boldesti Gradistea", "Calugareni", "Ceptura", "Ciorani", "Colceag", "Fantanele", "Fulga", 
+            "Gornet Cricov", "Gura Vadului", "Iordacheni", "Jugureni", "Mizil", "Salciile", "Tomsani", "Urlati", "Vadu Sapat", 
             "Tataru"
         ],
         "Unitatea Fiscala Oraseneasca Slanic": [
@@ -137,18 +137,18 @@ ploiesti = {
         "Unitatea Fiscala Oraseneasca Valenii de Munte": [
             "Apostolache", "Aricestii Zeletin", "Baltesti", "Batrani", "Carbunesti", "Cerasu", "Chiojdeanca", "Drajna", 
             "Gornet", "Gura Vitioarei", "Izvoarele", "Lapos", "Magurele", "Maneciu", "Pacureti", "Podenii Noi", "Posesti", 
-            "Predeal-Sarari", "Salcia", "Sangeru", "Starchiojd", "Surani", "Soimari", "Teisani", "Valenii de Munte"
+            "Predeal Sarari", "Salcia", "Sangeru", "Starchiojd", "Surani", "Soimari", "Teisani", "Valenii de Munte"
         ]
     },
     "Administratia Judeteana a Finantelor Publice TELEORMAN": {
         "Administratia Judeteana a Finantelor Publice TELEORMAN": [
-            "Alexandria", "Babaita", "Bogdana", "Brinceni", "Bujoreni", "Buzescu", "Calinesti", "Draganesti-Vlasca", 
+            "Alexandria", "Babaita", "Bogdana", "Brinceni", "Bujoreni", "Buzescu", "Calinesti", "Draganesti Vlasca", 
             "Frasinet", "Furculesti", "Mavrodin", "Magura", "Mirzanesti", "Nanov", "Nenciulesti", "Orbeasca", "Plosca", 
             "Poroschia", "Rasmiresti", "Storobaneasa", "Tiganesti", "Vitanesti"
         ],
         "Unitatea Fiscala Municipala Turnu Magurele": [
-            "Beciu", "Ciuperceni", "Crangu", "Dracea", "Islaz", "Lita", "Lunca", "Plopii-Slavitesti", "Putineiu", "Saelele", 
-            "Salcia", "Seaca", "Segarcea-Vale", "Slobozia Mandra", "Traian", "Turnu Magurele", "Uda-Clocociov"
+            "Beciu", "Ciuperceni", "Crangu", "Dracea", "Islaz", "Lita", "Lunca", "Plopii Slavitesti", "Putineiu", "Saelele", 
+            "Salcia", "Seaca", "Segarcea Vale", "Slobozia Mandra", "Traian", "Turnu Magurele", "Uda Clocociov"
         ],
         "Unitatea Fiscala Municipala Rosiorii de Vede": [
             "Balaci", "Beuca", "Calmatuiu", "Calmatuiu de Sus", "Ciolanesti", "Crangeni", "Didesti", "Dobrotesti", 
@@ -158,7 +158,7 @@ ploiesti = {
         "Unitatea Fiscala Oraseneasca Videle": [
             "Blejesti", "Botoroaga", "Cosmesti", "Crevenicu", "Galateni", "Gratia", "Mereni", "Mosteni", "Olteni", "Poeni", 
             "Purani", "Sarbeni", "Scurtu Mare", "Silistea", "Talpa", "Tatarastii de Jos", "Tatarastii de Sus", 
-            "Trivale-Mosteni", "Videle"
+            "Trivale Mosteni", "Videle"
         ],
         "Unitatea Fiscala Oraseneasca Zimnicea": [
             "Bragadiru", "Bujoru", "Cervenia", "Contesti", "Fantanele", "Frumoasa", "Izvoarele", "Lisa", "Nasturelu", 
