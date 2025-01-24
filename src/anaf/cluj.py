@@ -79,6 +79,59 @@ cluj = {
             "Bicaz", "Cavnic", "Cicarlau", "Coas", "Coltau", "Copalnic Manastur", "Dumbravita", "Farcasa", "Garda", 
             "Grosi", "Oarta de Jos", "Recea", "Sacalaseni", "Salsig", "Seini", "sisesti", "Tautii Magheraus", 
             "Ulmeni", "Boiu Mare", "Miresu Mare", "Remetea Chioarului", "Satulung", "somcuta Mare", "Valea Chioarului"
+        ],
+        "Unitatea Fiscala Municipala Sighetu Marmatiei": [
+            "Barsana", "Bocicoiu Mare", "Budesti", "Calinesti", "Campulung la Tisa", "Desesti", "Giulesti", 
+            "Ocna Sugatag", "Oncesti", "Remeti", "Rona de Jos", "Rona de Sus", "Sarasau", "Sapanta", 
+            "Sighetu Marmatiei", "Stramtura", "Vadu Izei"
+        ],
+        "Unitatea Fiscala Oraseneasca Targu Lapus": [
+            "Baiut", "Cernesti", "Coroieni", "Cupsenii", "Grosii Tiblesului", "Lapus", "Suciu de Sus", 
+            "Targu Lapus", "Vima Mica"
+        ],
+        "Unitatea Fiscala Oraseneasca Viseu de Sus": [
+            "Bistra", "Bogdan Voda", "Borsa", "Botiza", "Dragomiresti", "Ieud", "Leordina", "Moisei", 
+            "Petrova", "Poienile de sub Munte", "Poienile Izei", "Repedea", "Rozavlea", "Ruscova", 
+            "Sacel", "Salistea de Sus", "Sieu", "Viseu de Jos", "Viseu de Sus"
+        ]
+    },
+    "Administratia Judeteana a Finantelor Publice SATU MARE": {
+        "Administratia Judeteana a Finantelor Publice Satu Mare": [
+            "Agris", "Apa", "Ardud", "Barsau", "Batarci", "Beltiug", "Botiz", "Crucisor", "Culciu", "Doba", 
+            "Dorolț", "Halmeu", "Homoroade", "Lazuri", "Livada", "Mediesu Aurit", "Micula", "Odoreu", 
+            "Paulesti", "Pomi", "Porumbesti", "Satmarel", "Satu Mare", "Socond", "Tarna Mare", "Terebesti", 
+            "Turulung", "Valea Vinului", "Vetis", "Viile Satu Mare"
+        ],
+        "Unitatea Fiscala Municipala Carei": [
+            "Berveni", "Carei", "Camin", "Capleni", "Ciumesti", "Craidorolt", "Foieni", "Ianculesti", 
+            "Moftin", "Petresti", "Pistol", "Sanislau", "Tiream", "Urziceni"
+        ],
+        "Unitatea Fiscala Oraseneasca Negresti Oas": [
+            "Bixad", "Calinesti - Oas", "Camarzana", "Certeze", "Gherta Mica", "Luna", "Negresti-Oas", 
+            "Orasu Nou", "Racsa", "Tarsolt", "Tur", "Turt", "Vama"
+        ],
+        "Unitatea Fiscala Oraseneasca Tasnad": [
+            "Acas", "Andrid", "Blaja", "Bogdand", "Cauas", "Cehal", "Cig", "Hodod", "Pir", "Ratiu", 
+            "Santau", "Sarauad", "Sacaseni", "Sauca", "Supur", "Tasnad", "Valea Morii"
+        ],
+    },
+    "Administratia Judeteana a Finantelor Publice SALAJ": {
+        "Administratia Judeteana a Finantelor Publice Salaj": [
+            "Agrij", "Almasu", "Banisor", "Bocsa", "Buciumi", "Cizer", "Coseiu", "Crasna", "Criseni", 
+            "Cuzapac", "Dobrin", "Dragu", "Fildu de Jos", "Hereclean", "Hida", "Horoatu Crasnei", 
+            "Mesesenii de Jos", "Mirsid", "Romanasi", "Sanmihaiu Almasului", "Sarmasag", "Samsud", 
+            "Treznea", "Zalau", "Zimbor"
+        ],
+        "Unitatea Fiscala Oraseneasca Simleu Silvaniei": [
+            "Bobota", "Carastelec", "Chiesd", "Maeriste", "Pericei", "Simleu Silvaniei", "Varsolt", 
+            "Boghish", "Camar", "Halmasd", "Ip", "Marca", "Nusfalau", "Plopis", "Sag", "Valcau de Jos"
+        ],
+        "Unitatea Fiscala Oraseneasca Jibou": [
+            "Babeni", "Balan", "Creaca", "Cristolt", "Galgau", "Garbau", "Ileanda", "Jibou", "Letca", 
+            "Lozna", "Napradea", "Poiana Blenchii", "Rus", "Simisna", "Somes Odorhei", "Surduc", "Zalha"
+        ],
+        "Unitatea Fiscala Oraseneasca Cehu Silvaniei": [
+            "Benesat", "Cehu Silvaniei", "Salatig"
         ]
     }
 }

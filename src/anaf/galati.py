@@ -2,7 +2,7 @@ galati = {
     "Directia Generala Regionala a Finantelor Publice GALATI":
         {
     "Administratia Judeteana a Finantelor Publice BRAILA": {
-        "Administratia Judeteana a Finantelor Publice BRAILA": [
+        "Administratia Judeteana a Finantelor Publice Braila": [
             "Braila", "Cazasu", "Chiscani", "Frecatei", "Gemenele", "Gradistea", "Gropeni", "Marasu", "Maxineni", "Movila Miresii", "Racovita", 
             "Ramnicelu", "Romanu", "Salcia Tudor", "Scortaru Nou", "Silistea", "Tichilesti", "Traian", "Tudor Vladimirescu", "Tufesti", "Unirea", "Vadeni"
         ],
@@ -17,7 +17,7 @@ galati = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice BUZAU": {
-        "Administratia Judeteana a Finantelor Publice BUZAU": [
+        "Administratia Judeteana a Finantelor Publice Buzau": [
             "Amaru", "Beceni", "Berca", "Bisoca", "Blajani", "Breaza", "Buzau", "Canesti", "Cernatesti", "Chiliile", "Costesti", "Florica", "Galbinasi", "Gheraseni", 
             "Lopatari", "Manzalesti", "Maracineni", "Merei", "Mihailesti", "Movila Banului", "Naeni", "Pietroasele", "Posta Calnau", "Sageata", "Sahateni", "Sapoca", 
             "Sarulesti", "Scortoasa", "Stalpu", "Tisau", "Tintesti", "Ulmeni", "Vadu Pasii", "Vernesti", "Vintila Voda", "Zarnesti"
@@ -35,7 +35,7 @@ galati = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice CONSTANTA": {
-        "Administratia Judeteana a Finantelor Publice CONSTANTA": [
+        "Administratia Judeteana a Finantelor Publice Constanta": [
             "Agigea", "Cogealac", "Constanta", "Corbu", "Fantanele", "Gradina", "Istria", "Lumina", "Mihai Viteazu", "Mihail Kogalniceanu", 
             "Murfatlar", "Navodari", "Nicolae Balcescu", "Ovidiu", "Poarta Alba", "Sacele", "Targusor", "Valul lui Traian"
         ],
@@ -56,7 +56,7 @@ galati = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice GALATI": {
-        "Administratia Judeteana a Finantelor Publice GALATI": [
+        "Administratia Judeteana a Finantelor Publice Galati": [
             "Baleni", "Branistea", "Costache Negri", "Cuca", "Cuza Voda", "Foltesti", "Frumusita", "Galati", "Grivita", "Independenta", 
             "Oancea", "Pechea", "Piscu", "Rediu", "Scanteiesti", "Schela", "Slobozia Conachi", "Smardan", "Suhurlui", "Sendreni", 
             "Tulucesti", "Vanatori", "Vladesti", "Fundeni", "Ivesti", "Liesti", "Namoloasa", "Tudor Vladimirescu"
@@ -71,7 +71,7 @@ galati = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice TULCEA": {
-        "Administratia Judeteana a Finantelor Publice TULCEA": [
+        "Administratia Judeteana a Finantelor Publice Tulcea": [
             "Bestepe", "Ceatalchioi", "Chilia Veche", "Frecatei", "Hamcearca", "Horia", "Isaccea", "Izvoarele", "Luncavita", "Mahmudia", "Maliuc", "Mihail Kogalniceanu",
             "Murighiol", "Nalbant", "Niculitel", "Nufaru", "Pardina", "Sfantu Gheorghe", "Somova", "Tulcea", "Valea Nucarilor", "Valea Teilor"
         ],
@@ -89,7 +89,7 @@ galati = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice VRANCEA": {
-        "Administratia Judeteana a Finantelor Publice VRANCEA": [
+        "Administratia Judeteana a Finantelor Publice Vrancea": [
             "Andreiasu", "Balesti", "Biliesti", "Barsesti", "Bolotesti", "Bordesti", "Brossteni", "Campineanca", "Carligele", "Chiojdeni", "Ciorasti", "Cotesti", 
             "Dumbraveni", "Dumitresti", "Focsani", "Garoafa", "Golesti", "Gologanu", "Gugesti", "Gura Calitei", "Jaristea", "Jitia", "Maicanesti", "Mera", "Milcovul", 
             "Nanesti", "Naruja", "Negrilesti", "Nereju", "Nistoresti", "Obrejita", "Odobesti", "Paltin", "Paulesti", "Poiana Cristei", "Popesti", "Rastoaca", "Reghiu", 

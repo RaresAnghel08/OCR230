@@ -2,7 +2,7 @@ iasi = {
     "Directia Generala Regionala a Finantelor Publice Iasi":
         {
     "Administratia Judeteana a Finantelor Publice BACAU": {
-        "Administratia Judeteana a Finantelor Publice BACAU": [
+        "Administratia Judeteana a Finantelor Publice Bacau": [
             "Bacau", "Beresti Bistrita", "Buhoci", "Cleja", "Colonesti", "Corbasca", "Damienesti", "Faraoani", 
             "Filipeni", "Filipesti", "Gioseni", "Hemeius", "Horgesti", "Huruiesi", "Itesti", "Izvoru Berheciului", 
             "Letea Veche", "Lipova", "Luizi Calugara", "Magura", "Margineni", "Negri", "Nicolae Balcescu", "Odobesti", 
@@ -28,7 +28,7 @@ iasi = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice BOTOSANI": {
-        "Administratia Judeteana a Finantelor Publice BOTOSANI": [
+        "Administratia Judeteana a Finantelor Publice Botosani": [
             "Albesti", "Baluseni", "Blandesti", "Botosani", "Bucecea", "Calarasi", "Copalau", "Corni", "Cosula", 
             "Cristesti", "Curtesti", "Dangeni", "Dobarceni", "Durnesti", "Flamanzi", "Frumusica", "Gorbanesti", 
             "Hlipiceni", "Leorda", "Lunca", "Mihai Eminescu", "Nicseni", "Prajeni", "Rachiti", "Rauseni", "Roma", 
@@ -49,7 +49,7 @@ iasi = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice IASI": {
-        "Administratia Judeteana a Finantelor Publice IASI": [
+        "Administratia Judeteana a Finantelor Publice Iasi": [
             "Andrieseni", "Aroneanu", "Barnova", "Bivolari", "Bosia", "Ciurea", "Comarna", "Dagata", "Dobrovat", 
             "Draguseni", "Dumesti", "Fantanele", "Focuri", "Golaesti", "Grajduri", "Gropnita", "Holboca", "Horlesti", 
             "Iasi", "Ipatele", "Letcani", "Mironeasa", "Miroslava", "Mogosesti", "Movileni", "PoduIloaiei", "Popricani", 
@@ -73,7 +73,7 @@ iasi = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice NEAMT": {
-        "Administratia Judeteana a Finantelor Publice NEAMT": [
+        "Administratia Judeteana a Finantelor Publice Neamt": [
             "Alexandru cel Bun", "Bargaoani", "Bodesti", "Borlesti", "Candesti", "Costisa", "Dobreni", "Dochia", 
             "Dragomiresti", "Dumbrava Rosie", "Garcina", "Girov", "Margineni", "Negresti", "Pangarati", "Piatra Neamt", 
             "Piatra Simului", "Podoleni", "Razboieni", "Rediu", "Romani", "Roznov", "Savinesti", "Stefan cel Mare", 
@@ -94,7 +94,7 @@ iasi = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice SUCEAVA": {
-        "Administratia Judeteana a Finantelor Publice SUCEAVA": [
+        "Administratia Judeteana a Finantelor Publice Suceava": [
             "Adancata", "Balaceana", "Berchisesti", "Bosanci", "Botosana", "Cajvana", "Ciprian Porumbescu", "Comanesti", 
             "Darmanesti", "Dragoiesti", "Dumbraveni", "Fantanele", "Hantesti", "Ilisesti", "Ipotesti", "Liteni", 
             "Mitocul Dragomirnei", "Moara", "Patrauti", "Salcea", "Siminicea", "Stroiesti", "Suceava", "Scheia", 
@@ -127,7 +127,7 @@ iasi = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice VASLUI": {
-        "Administratia Judeteana a Finantelor Publice VASLUI": [
+        "Administratia Judeteana a Finantelor Publice Vaslui": [
             "Albesti", "Balteni", "Bogdana", "Codaesti", "Costesti", "Cozmesti", "Danesti", "Deleni", "Delesti", 
             "Dragomiresti", "Feresti", "Garceni", "Ivanesti", "Laza", "Lipovat", "Miclesti", "Muntenii De Jos", 
             "Muntenii De Sus", "Poienesti", "Pungesti", "Puscasi", "Rosiesti", "Solesti", "Stefan Cel Mare", 

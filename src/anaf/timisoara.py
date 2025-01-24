@@ -2,7 +2,7 @@ timisoara ={
     "Directia Generala Regionala a Finantelor Publice TIMISOARA":
         {
     "Administratia Judeteana a Finantelor Publice ARAD": {
-        "Administratia Judeteana a Finantelor Publice ARAD": [
+        "Administratia Judeteana a Finantelor Publice Arad": [
             "Arad", "Curtici", "Dorobanti", "Fantanele", "Felnac", "Frumuseni", "Iratosu", "Livada", "Macea", "Nadlac", 
             "Olari", "Pecica", "Peregu Mare", "Santana", "Secusigiu", "Semlac", "Sagu", "Seitin", "Siria", "Sofronea", 
             "Vinga", "Vladimirescu", "Zadareni", "Zimandu Nou"
@@ -27,7 +27,7 @@ timisoara ={
         ]
     },
     "Administratia Judeteana a Finantelor Publice CARAS SEVERIN": {
-        "Administratia Judeteana a Finantelor Publice CARAS SEVERIN": [
+        "Administratia Judeteana a Finantelor Publice Caras Severin": [
             "Anina", "Berzovia", "Bocsa", "Brebu", "Brebu Nou", "Carasova", "Doclin", "Dognecea", "Ezeris", "Farliug", 
             "Goruia", "Lupac", "Maureni", "Ocna de Fier", "Ramna", "Resita", "Tarnova", "Valiug", "Vermes", "Zorlentu Mare"
         ],
@@ -53,7 +53,7 @@ timisoara ={
         ]
     },
     "Administratia Judeteana a Finantelor Publice HUNEDOARA": {
-        "Administratia Judeteana a Finantelor Publice HUNEDOARA": [
+        "Administratia Judeteana a Finantelor Publice Hunedoara": [
             "Baita", "Batrana", "Branisca", "Burjuc", "Certeju de Sus", "Cirjiti", "Deva", "Dobra", "Gurasada", "Harau", 
             "Ilia", "Lapugiu de Jos", "Soimus", "Vetel", "Vorta", "Zam", "Bacia", "Rapoltu Mare", "Simeria"
         ],
@@ -77,7 +77,7 @@ timisoara ={
         ]
     },
     "Administratia Judeteana a Finantelor Publice TIMIS": {
-        "Administratia Judeteana a Finantelor Publice TIMIS": [
+        "Administratia Judeteana a Finantelor Publice Timis": [
             "Becicherecu Mic", "Biled", "Bogda", "Bucovat", "Dudestii Noi", "Dumbravita", "Fibis", "Foeni", "Ghiroda", 
             "Giarmata", "Giroc", "Giulvaz", "Masloc", "Mosnita Noua", "Ortisoara", "Parta", "Peciu Nou", "Pischia", 
             "Recas", "Remetea Mare", "Sanandrei", "Sanmihaiu Roman", "Satchinez", "Sacalaz", "Sag", "Sandra", "Timisoara"

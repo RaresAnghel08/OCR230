@@ -2,7 +2,7 @@ ploiesti = {
     "Directia Generala Regionala a Finantelor Publice PLOIESTI":
         {
     "Administratia Judeteana a Finantelor Publice ARGES": {
-        "Administratia Judeteana a Finantelor Publice ARGES": [
+        "Administratia Judeteana a Finantelor Publice Arges": [
             "Albota", "Bascov", "Babana", "Bradu", "Budeasa", "Ciomagesti", "Cocu", "Cotmeana", "Cuca", "Draganu", 
             "Maracineni", "Merisani", "Moraresti", "Mosoaia", "Oarja", "Pitesti", "Poiana Lacului", "Sapata", "Suseni", 
             "Stefanesti", "Uda", "Vedea"
@@ -31,7 +31,7 @@ ploiesti = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice CALARASI": {
-        "Administratia Judeteana a Finantelor Publice CALARASI": [
+        "Administratia Judeteana a Finantelor Publice Calarasi": [
             "Alexandru Odobescu", "Borcea", "Calarasi", "Ciocanesti", "Cuza Voda", "Dichiseni", "Dorobantu", "Dragalina", 
             "Dragos Voda", "Gradistea", "Independenta", "Jegalia", "Modelu", "Perisoru", "Roseti", "Stefan cel Mare", 
             "Stefan Voda", "Ulmu", "Unirea", "Valcelele", "Vlad Tepes"
@@ -50,7 +50,7 @@ ploiesti = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice DAMBOVITA": {
-        "Administratia Judeteana a Finantelor Publice DAMBOVITA": [
+        "Administratia Judeteana a Finantelor Publice Dambovita": [
             "Aninoasa", "Baleni", "Barbuletu", "Bilciuresti", "Bucsani", "Butimanu", "Candesti", "Cojasca", "Comisani", 
             "Cornesti", "Crevedia", "Dobra", "Doicesti", "Dragomiresti", "Finta", "Gura Ocnitei", "Gura Sutii", "Lucieni", 
             "Ludesti", "Malu cu Flori", "Manesti", "Niculesti", "Nucet", "Ocnita", "Persinari", "Pietrari", "Pucheni", 
@@ -75,7 +75,7 @@ ploiesti = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice GIURGIU": {
-        "Administratia Judeteana a Finantelor Publice GIURGIU": [
+        "Administratia Judeteana a Finantelor Publice Giurigiu": [
             "Baneasa", "Calugareni", "Comana", "Daia", "Fratesti", "Gaujani", "Giurgiu", "Gogosari", "Gostinu", "Izvoarele", 
             "Malu", "Mihai Bravu", "Oinacu", "Putineiu", "Rasuceni", "Singureni", "Slobozia", "Stanesti", "Stoenesti", 
             "Toporu", "Vedea", "Colibasi", "Gostinari", "Greaca", "Herasti", "Hotarele", "Isvoarele", "Prundu", 
@@ -91,7 +91,7 @@ ploiesti = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice IALOMITA": {
-        "Administratia Judeteana a Finantelor Publice IALOMITA": [
+        "Administratia Judeteana a Finantelor Publice Ialomita": [
             "Albesti", "Amara", "Andrasesti", "Balaciu", "Bucu", "Buiesti", "Cazanesti", "Ciochina", "Ciulnita", "Cocora", 
             "Colelia", "Cosambesti", "Gheorghe Doja", "Gheorghe Lazar", "Grivita", "Marculesti", "Milosesti", "Munteni Buzau", 
             "Ograda", "Perieti", "Platonesti", "Reviga", "Salcioara", "Sarataeni", "Saveni", "Scanteia", "Slobozia", "Suditi", 
@@ -107,8 +107,8 @@ ploiesti = {
             "Sinesti", "Urziceni", "Alexeni", "Garboi", "Grindu", "Ion Roata", "Sfantu Gheorghe", "Valea Macrisului"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice PRAHOVA MARE": {
-        "Administratia Judeteana a Finantelor Publice Prahova mic": [
+    "Administratia Judeteana a Finantelor Publice PRAHOVA": {
+        "Administratia Judeteana a Finantelor Publice Prahova": [
             "Ploiesti"
         ],
         "Unitatea Fiscala Municipala Campina": [
@@ -143,7 +143,7 @@ ploiesti = {
         ]
     },
     "Administratia Judeteana a Finantelor Publice TELEORMAN": {
-        "Administratia Judeteana a Finantelor Publice TELEORMAN": [
+        "Administratia Judeteana a Finantelor Publice Teleorman": [
             "Alexandria", "Babaita", "Bogdana", "Brinceni", "Bujoreni", "Buzescu", "Calinesti", "Draganesti Vlasca", 
             "Frasinet", "Furculesti", "Mavrodin", "Magura", "Mirzanesti", "Nanov", "Nenciulesti", "Orbeasca", "Plosca", 
             "Poroschia", "Rasmiresti", "Storobaneasa", "Tiganesti", "Vitanesti"
