@@ -1,8 +1,8 @@
 ploiesti = {
     "Directia Generala Regionala a Finantelor Publice PLOIESTI":
         {
-    "Administratia Judeteana a Finantelor Publice ARGES": {
-        "Administratia Judeteana a Finantelor Publice ARGES": [
+    "Administratia Judeteana a Finantelor Publice ARGES mare": {
+        "Administratia Judeteana a Finantelor Publice Arges mic": [
             "Albota", "Bascov", "Babana", "Bradu", "Budeasa", "Ciomagesti", "Cocu", "Cotmeana", "Cuca", "Draganu", 
             "Maracineni", "Merisani", "Moraresti", "Mosoaia", "Oarja", "Pitesti", "Poiana Lacului", "Sapata", "Suseni", 
             "Stefanesti", "Uda", "Vedea"
@@ -30,8 +30,8 @@ ploiesti = {
             "Stalpeni", "Titesti", "Vulturesti"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice CALARASI": {
-        "Administratia Judeteana a Finantelor Publice CALARASI": [
+    "Administratia Judeteana a Finantelor Publice CALARASI mare": {
+        "Administratia Judeteana a Finantelor Publice Calarasi mic": [
             "Alexandru Odobescu", "Borcea", "Calarasi", "Ciocanesti", "Cuza Voda", "Dichiseni", "Dorobantu", "Dragalina", 
             "Dragos Voda", "Gradistea", "Independenta", "Jegalia", "Modelu", "Perisoru", "Roseti", "Stefan cel Mare", 
             "Stefan Voda", "Ulmu", "Unirea", "Valcelele", "Vlad Tepes"
@@ -49,8 +49,8 @@ ploiesti = {
             "Vasilati"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice DAMBOVITA": {
-        "Administratia Judeteana a Finantelor Publice DAMBOVITA": [
+    "Administratia Judeteana a Finantelor Publice DAMBOVITA mare": {
+        "Administratia Judeteana a Finantelor Publice Dambovita mic": [
             "Aninoasa", "Baleni", "Barbuletu", "Bilciuresti", "Bucsani", "Butimanu", "Candesti", "Cojasca", "Comisani", 
             "Cornesti", "Crevedia", "Dobra", "Doicesti", "Dragomiresti", "Finta", "Gura Ocnitei", "Gura Sutii", "Lucieni", 
             "Ludesti", "Malu cu Flori", "Manesti", "Niculesti", "Nucet", "Ocnita", "Persinari", "Pietrari", "Pucheni", 
@@ -74,8 +74,8 @@ ploiesti = {
             "Tartasesti", "Titu"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice GIURGIU": {
-        "Administratia Judeteana a Finantelor Publice GIURGIU": [
+    "Administratia Judeteana a Finantelor Publice GIURGIU mare": {
+        "Administratia Judeteana a Finantelor Publice Giurigiu mic": [
             "Baneasa", "Calugareni", "Comana", "Daia", "Fratesti", "Gaujani", "Giurgiu", "Gogosari", "Gostinu", "Izvoarele", 
             "Malu", "Mihai Bravu", "Oinacu", "Putineiu", "Rasuceni", "Singureni", "Slobozia", "Stanesti", "Stoenesti", 
             "Toporu", "Vedea", "Colibasi", "Gostinari", "Greaca", "Herasti", "Hotarele", "Isvoarele", "Prundu", 
@@ -90,8 +90,8 @@ ploiesti = {
             "Schitu"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice IALOMITA": {
-        "Administratia Judeteana a Finantelor Publice IALOMITA": [
+    "Administratia Judeteana a Finantelor Publice IALOMITA mare": {
+        "Administratia Judeteana a Finantelor Publice Ialomita mic": [
             "Albesti", "Amara", "Andrasesti", "Balaciu", "Bucu", "Buiesti", "Cazanesti", "Ciochina", "Ciulnita", "Cocora", 
             "Colelia", "Cosambesti", "Gheorghe Doja", "Gheorghe Lazar", "Grivita", "Marculesti", "Milosesti", "Munteni Buzau", 
             "Ograda", "Perieti", "Platonesti", "Reviga", "Salcioara", "Sarataeni", "Saveni", "Scanteia", "Slobozia", "Suditi", 
@@ -107,7 +107,7 @@ ploiesti = {
             "Sinesti", "Urziceni", "Alexeni", "Garboi", "Grindu", "Ion Roata", "Sfantu Gheorghe", "Valea Macrisului"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice PRAHOVA MARE": {
+    "Administratia Judeteana a Finantelor Publice PRAHOVA mare": {
         "Administratia Judeteana a Finantelor Publice Prahova mic": [
             "Ploiesti"
         ],
@@ -142,8 +142,8 @@ ploiesti = {
             "Predeal Sarari", "Salcia", "Sangeru", "Starchiojd", "Surani", "Soimari", "Teisani", "Valenii de Munte"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice TELEORMAN": {
-        "Administratia Judeteana a Finantelor Publice TELEORMAN": [
+    "Administratia Judeteana a Finantelor Publice TELEORMAN mare": {
+        "Administratia Judeteana a Finantelor Publice Teleorman mic": [
             "Alexandria", "Babaita", "Bogdana", "Brinceni", "Bujoreni", "Buzescu", "Calinesti", "Draganesti Vlasca", 
             "Frasinet", "Furculesti", "Mavrodin", "Magura", "Mirzanesti", "Nanov", "Nenciulesti", "Orbeasca", "Plosca", 
             "Poroschia", "Rasmiresti", "Storobaneasa", "Tiganesti", "Vitanesti"
