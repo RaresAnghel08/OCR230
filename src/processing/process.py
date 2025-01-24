@@ -103,7 +103,7 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     nume_fisier_nou = f"{nume} {prenume}.jpg"
 
     # Creează folderul pentru localitate
-    folder_localitate = os.path.join(output_folder, capitalize_words(folder_localitate_mic))
+    folder_localitate = os.path.join(output_folder, folder_localitate_mic)
     print(f"Creăm folderul: {folder_localitate}")  # Debug
     if not os.path.exists(folder_localitate):
         os.makedirs(folder_localitate)
@@ -126,8 +126,8 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     print(f"Fișierul text {fisier_txt} a fost creat.")
 
     # Mută folder_localitate_mic în folder_localitate_med
-    folder_localitate_mic_path = os.path.join(output_folder, capitalize_words(folder_localitate_mic))
-    folder_localitate_med_path = os.path.join(output_folder, capitalize_words(folder_localitate_med))
+    folder_localitate_mic_path = os.path.join(output_folder, folder_localitate_mic)
+    folder_localitate_med_path = os.path.join(output_folder, folder_localitate_med)
     print(f"Mutăm {folder_localitate_mic_path} în {folder_localitate_med_path}")  # Debug
     if not os.path.exists(folder_localitate_med_path):
         os.makedirs(folder_localitate_med_path, exist_ok=True)
@@ -136,7 +136,7 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
         print(f"Folderul {folder_localitate_mic_path} a fost mutat în {folder_localitate_med_path}")
 
     # Mută folder_localitate_med în folder_localitate_mare
-    folder_localitate_mare_path = os.path.join(output_folder, capitalize_words(folder_localitate_mare))
+    folder_localitate_mare_path = os.path.join(output_folder, folder_localitate_mare)
     print(f"Mutăm {folder_localitate_med_path} în {folder_localitate_mare_path}")  # Debug
     if not os.path.exists(folder_localitate_mare_path):
         os.makedirs(folder_localitate_mare_path, exist_ok=True)
