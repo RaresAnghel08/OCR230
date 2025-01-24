@@ -164,8 +164,8 @@ def move_contents(src, dest):
                 d = new_d
             shutil.move(s, d)
     # Șterge folderul sursă dacă este gol
-    if not os.listdir(src):
-        os.rmdir(src)
+    #if not os.listdir(src):
+        #os.rmdir(src)
 
 def move_folder(src, dest):
     if os.path.exists(dest):
