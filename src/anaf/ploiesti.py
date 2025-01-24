@@ -1,5 +1,5 @@
 ploiesti = {
-    "Directia Generala Regionala a Finantelor Publice Ploiesti":
+    "Directia Generala Regionala a Finantelor Publice PLOIESTI":
         {
     "Administratia Judeteana a Finantelor Publice ARGES": {
         "Administratia Judeteana a Finantelor Publice ARGES": [
@@ -107,8 +107,8 @@ ploiesti = {
             "Sinesti", "Urziceni", "Alexeni", "Garboi", "Grindu", "Ion Roata", "Sfantu Gheorghe", "Valea Macrisului"
         ]
     },
-    "Administratia Judeteana a Finantelor Publice PRAHOVA": {
-        "Administratia Judeteana a Finantelor Publice PRAHOVA": [
+    "Administratia Judeteana a Finantelor Publice PRAHOVA MARE": {
+        "Administratia Judeteana a Finantelor Publice Prahova mic": [
             "Ploiesti"
         ],
         "Unitatea Fiscala Municipala Campina": [

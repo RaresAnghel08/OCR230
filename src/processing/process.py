@@ -156,11 +156,7 @@ def move_contents(src, dest):
             if os.path.exists(d):
                 # Redenumește fișierul dacă există deja
                 base, extension = os.path.splitext(d)
-                counter = 1
-                new_d = f"{base}_{counter}{extension}"
-                while os.path.exists(new_d):
-                    counter += 1
-                    new_d = f"{base}_{counter}{extension}"
+                new_d = f"{base}{extension}"
                 d = new_d
             shutil.move(s, d)
     # Șterge folderul sursă dacă este gol
@@ -169,7 +165,24 @@ def move_contents(src, dest):
 
 def move_folder(src, dest):
     if os.path.exists(dest):
+        print("e pe if")
         # Mută conținutul folderului sursă în destinație
-        move_contents(src, dest)
+        #move_contents(src, dest)
+        # complete_dest trebuie sa fie in output, folder mare, folder med
+        complete_dest = os.path.join(dest, os.path.basename(src))
+        print("asta1")
+        print(src)
+        print(complete_dest)
+        #daca exista folderul src in complete_dest, mutam doar continutul din src in complete_dest
+        if os.path.exists(complete_dest):
+            move_contents(src, complete_dest)
+            #delete src
+            shutil.rmtree(src)
+        else:
+            shutil.move(src, complete_dest)  # Mută folderul sursă în destinație
+        print("asta2")
+        #move_contents(src, complete_dest)
+        print("asta3")
     else:
+        print("e pe else")
         shutil.move(src, dest)
