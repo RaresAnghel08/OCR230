@@ -15,4 +15,4 @@ python -m venv .venv
 pyinstaller --noconfirm --onefile --windowed --icon "D:\GITHUB\f230\images\favicon.ico" --name "F230-OCR" --clean --add-data "D:\GITHUB\f230\images;images/"  "D:\GITHUB\f230\main.py"
 
 
-Remove-Item -Path "C:\Users\Rares\Downloads\output\Moara Domneasca" -Recurse -Force
+Remove-Item -Path "C:\Users\Rares\Downloads\output\" -Recurse -Force
