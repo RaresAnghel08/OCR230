@@ -175,14 +175,18 @@ def move_folder(src, dest):
         print(complete_dest)
         #daca exista folderul src in complete_dest, mutam doar continutul din src in complete_dest
         if os.path.exists(complete_dest):
+            print("if1")
             move_contents(src, complete_dest)
             #delete src
+            print("if1.1")
             shutil.rmtree(src)
+            print("if1.2")
         else:
+            print("if2")
             shutil.move(src, complete_dest)  # Mută folderul sursă în destinație
         print("asta2")
         #move_contents(src, complete_dest)
-        print("asta3")
+        #print("asta3")
     else:
         print("e pe else")
         shutil.move(src, dest)
