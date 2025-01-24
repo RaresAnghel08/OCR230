@@ -98,36 +98,32 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     # Debug: Afișăm adresa generată
     print(f"Rezultate procesare: {nume} {prenume}, {email}, {phone}, {adresa}")  # Debug: Afișăm rezultatele procesării
 
-    # Nume fișier nou
-    nume_fisier = os.path.basename(image_path)
+    # Redenumim fișierul
     nume_fisier_nou = f"{nume} {prenume}.jpg"
-
+    print(f"Redenumim imaginea la: {nume_fisier_nou}")  # Debug
+    
     # Creează folderul pentru localitate
-    folder_localitate = os.path.join(output_folder, folder_localitate_mic)
+    folder_localitate = os.path.join(output_folder, folder_localitate_mic.strip())
     print(f"Creăm folderul: {folder_localitate}")  # Debug
+    
     if not os.path.exists(folder_localitate):
-        os.makedirs(folder_localitate)
-
-    # Mutăm și redenumim imaginea
+        os.makedirs(folder_localitate, exist_ok=True)
+        
     noua_cale_imagine = os.path.join(folder_localitate, nume_fisier_nou)
     print(f"Mutăm imaginea la: {noua_cale_imagine}")  # Debug
-    shutil.move(image_path, noua_cale_imagine)
-
-    # Debug: Afișăm calea imaginii mutate
-    print(f"Imaginea {nume_fisier_nou} a fost mutată și redenumită în folderul {folder_localitate}")
-
-    # Creează fișierul text
+    shutil.move(image_path.strip(), noua_cale_imagine)  # Mută imaginea în folderul corespunzător
+    
+    
     fisier_txt = os.path.join(folder_localitate, f"{nume} {prenume}.txt")
     print(f"Creăm fișierul text la: {fisier_txt}")  # Debug
     with open(fisier_txt, 'w', encoding='utf-8') as f:
         f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{email}\n{phone}\n{doiani}")
-
     # Debug: Afișăm calea fișierului text creat
     print(f"Fișierul text {fisier_txt} a fost creat.")
-
+    
     # Mută folder_localitate_mic în folder_localitate_med
-    folder_localitate_mic_path = os.path.join(output_folder, folder_localitate_mic)
-    folder_localitate_med_path = os.path.join(output_folder, folder_localitate_med)
+    folder_localitate_mic_path = os.path.join(output_folder, capitalize_words(folder_localitate_mic))
+    folder_localitate_med_path = os.path.join(output_folder, capitalize_words(folder_localitate_med))
     print(f"Mutăm {folder_localitate_mic_path} în {folder_localitate_med_path}")  # Debug
     if not os.path.exists(folder_localitate_med_path):
         os.makedirs(folder_localitate_med_path, exist_ok=True)
@@ -136,7 +132,7 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
         print(f"Folderul {folder_localitate_mic_path} a fost mutat în {folder_localitate_med_path}")
 
     # Mută folder_localitate_med în folder_localitate_mare
-    folder_localitate_mare_path = os.path.join(output_folder, folder_localitate_mare)
+    folder_localitate_mare_path = os.path.join(output_folder, capitalize_words(folder_localitate_mare))
     print(f"Mutăm {folder_localitate_med_path} în {folder_localitate_mare_path}")  # Debug
     if not os.path.exists(folder_localitate_mare_path):
         os.makedirs(folder_localitate_mare_path, exist_ok=True)
@@ -175,18 +171,14 @@ def move_folder(src, dest):
         print(complete_dest)
         #daca exista folderul src in complete_dest, mutam doar continutul din src in complete_dest
         if os.path.exists(complete_dest):
-            print("if1")
             move_contents(src, complete_dest)
             #delete src
-            print("if1.1")
             shutil.rmtree(src)
-            print("if1.2")
         else:
-            print("if2")
             shutil.move(src, complete_dest)  # Mută folderul sursă în destinație
         print("asta2")
         #move_contents(src, complete_dest)
-        #print("asta3")
+        print("asta3")
     else:
         print("e pe else")
         shutil.move(src, dest)
