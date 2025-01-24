@@ -24,10 +24,11 @@ def cautare_anaf(localitate):
                                 for loc in localitati:
                                     if loc.lower() == lower_localitate:
                                         return unitate, judet, directie
-    return "Unknown", "Unknown", "Unknown"
+    return "Unknown", "UnKnown", "UNKNOWN"
 
 # Example usage:
 # print(cautare_anaf("Bacău"))
+judet = ""
 def process_fields(text_initial, idx, debug_switch=False):
     # Inițializăm toate variabilele
     prenume = ""
@@ -37,7 +38,7 @@ def process_fields(text_initial, idx, debug_switch=False):
     numar = ""
     cnp_total = ""
     email = ""
-    judet = ""
+    global judet
     localitate = ""
     cp = ""
     bloc = ""
@@ -46,7 +47,7 @@ def process_fields(text_initial, idx, debug_switch=False):
     apartament = ""
     phone = ""
     doiani = ""
-    folder_localitate = ""
+    #folder_localitate = ""
     folder_localitate_mic = ""
     folder_localitate_med = ""
     folder_localitate_mare = ""
@@ -55,7 +56,6 @@ def process_fields(text_initial, idx, debug_switch=False):
         print(f"Text inițial: {text_initial}")
         print(f"Text filtrat: {text_filtrat}")
         print("*" * 50)
-    
     try:
         if idx == 0:  # Prenume (zona 1)
             text_filtrat = capitalize_words(filtru_nume(text_initial))
@@ -100,6 +100,8 @@ def process_fields(text_initial, idx, debug_switch=False):
             text_filtrat = capitalize_words(text_initial)
             text_filtrat = replace_diacritics(text_filtrat)
             judet = text_filtrat
+            #memoreaza variabila judet ca sa pot sa o accesez si cand idx e 8
+            
             if debug_switch:
                 debug_afisare(idx, "Județ", text_initial, text_filtrat)
         elif idx == 8:  # Localitate (zona 9)
@@ -110,19 +112,34 @@ def process_fields(text_initial, idx, debug_switch=False):
             #strip text
             text_filtrat = text_filtrat.strip()
             localitate = text_filtrat
-            folder_localitate_mic,folder_localitate_med, folder_localitate_mare = cautare_anaf(localitate) # Caută localitatea în baza de date ANAF
-            if folder_localitate_mic == "Unknown":
-                folder_localitate_mic = localitate
-                folder_localitate = localitate
+            if localitate.lower() != "bucuresti":
+                print("am intrat in if")
+                folder_localitate_mic,folder_localitate_med, folder_localitate_mare = cautare_anaf(localitate) # Caută localitatea în baza de date ANAF
+                if folder_localitate_mic == "Unknown":
+                    folder_localitate_mic = localitate
+                    folder_localitate = localitate
+                    #debug_afisare(idx, "Localitate", text_initial, text_filtrat)
+                    print(cautare_anaf(localitate))
+                    print(f"Localitatea din if {localitate} nu a fost găsită în baza de date ANAF")
+                if folder_localitate_med == "UnKnown":
+                    folder_localitate_med = localitate
+                if folder_localitate_mare == "UNKNOWN":
+                    folder_localitate_mare = localitate
+            elif localitate.lower() == "bucuresti":
+                print("am intrat in else, cautam judetul {judet}")
+                temp_judet= judet.lower()
+                print (temp_judet)
+                print (judet)
+                folder_localitate_mic,folder_localitate_med, folder_localitate_mare = cautare_anaf(temp_judet)
                 #debug_afisare(idx, "Localitate", text_initial, text_filtrat)
-                print(cautare_anaf(localitate))
-                print(f"Localitatea {localitate} nu a fost găsită în baza de date ANAF")
-            elif folder_localitate_mic != "Unknown":
-                folder_localitate = folder_localitate_mic
-            if folder_localitate_med == "Unknown":
-                folder_localitate_med = localitate
-            if folder_localitate_mare == "Unknown":
-                folder_localitate_mare = localitate
+                print(cautare_anaf(temp_judet))
+                print(f"Judetul {judet} nu a fost găsită în baza de date ANAF")
+                if folder_localitate_mic == "Unknown":
+                    folder_localitate = localitate
+                if folder_localitate_med == "UnKnown":
+                    folder_localitate_med = judet
+                if folder_localitate_mare == "UNKNOWN":
+                    folder_localitate_mare = judet
             if debug_switch:
                 debug_afisare(idx, "Localitate", text_initial, text_filtrat)
         elif idx == 9:  # Cod postal (zona 10)
@@ -165,4 +182,4 @@ def process_fields(text_initial, idx, debug_switch=False):
     except Exception as e:
         print(f"Eroare la procesarea zonei {idx + 1}: {e}")
     
-    return prenume, nume, initiala_tatalui, strada, numar, cnp_total, email, judet, localitate, cp, bloc, scara, etaj, apartament, phone, doiani, folder_localitate, folder_localitate_mic, folder_localitate_med, folder_localitate_mare
+    return prenume, nume, initiala_tatalui, strada, numar, cnp_total, email, judet, localitate, cp, bloc, scara, etaj, apartament, phone, doiani, folder_localitate_mic, folder_localitate_med, folder_localitate_mare

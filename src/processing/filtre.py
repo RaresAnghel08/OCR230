@@ -24,7 +24,7 @@ def filtru_litere(text):
     text = text.replace(',', ' ')
     #replace diacritics
     text = replace_diacritics(text)
-    #return ''.join(re.findall(r'[a-zA-Z ]', text))  # Păstrează doar literele
+    return ''.join(re.findall(r'[a-zA-Z ]', text))  # Păstrează doar literele
     return text  # Add return statement
 
 def filtru_nume(text):
@@ -34,7 +34,7 @@ def filtru_nume(text):
     #replace diacritics
     text = replace_diacritics(text)
     # Păstrează doar literele și spațiile
-    #return ''.join(re.findall(r'[a-zA-Z ]', text))
+    return ''.join(re.findall(r'[a-zA-Z ]', text))
     return text  # Add return statement
 
 # Funcție pentru a capitaliza prima literă din fiecare cuvânt
