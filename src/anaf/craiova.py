@@ -1,4 +1,6 @@
 craiova={
+    "Directia Generala Regionala a Finantelor Publice Craiova":
+        {
     "Administratia Judeteana a Finantelor Publice DOLJ": {
         "Administratia Judeteana a Finantelor Publice DOLJ": [
             "Almaj", "Amarastii de Jos", "Amarastii de Sus", "Apele Vii", "Argetoaia", "Botosesti Paia", "Brabova", 
@@ -112,4 +114,5 @@ craiova={
             "Babeni", "Dragoiesti", "Francesti", "Galicea", "Ionesti", "Ladesti", "Lapusata", "Olanu", "Popesti", "Roesti", "Sirineasa", "Stoilesti"
         ]
     },
+}
 }

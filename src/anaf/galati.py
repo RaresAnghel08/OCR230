@@ -1,4 +1,6 @@
 galati = {
+    "Directia Generala Regionala a Finantelor Publice GALATI":
+        {
     "Administratia Judeteana a Finantelor Publice BRAILA": {
         "Administratia Judeteana a Finantelor Publice BRAILA": [
             "Braila", "Cazasu", "Chiscani", "Frecatei", "Gemenele", "Gradistea", "Gropeni", "Marasu", "Maxineni", "Movila Miresii", "Racovita", 
@@ -101,4 +103,5 @@ galati = {
             "Campuri", "Fitionesti", "Movilita", "Panciu", "Racoasa", "Soveja", "Straoane", "Tifesti", "Vizantea Livezi"
         ]
     }
+}
 }

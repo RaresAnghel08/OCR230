@@ -30,12 +30,16 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     strada, numar, localitate, judet, bloc, scara, etaj, apartament, cp, prenume, nume, cnp_total, email, phone, doiani = [""] * 15
     initiala_tatalui = ""
     folder_localitate_sec = ""
+    temp_folder_localitate_mare = ""
+    temp_folder_localitate_med = ""
+    temp_folder_localitate_mic = ""
+    folder_localitate = ""
 
     # Parcurgem coordonatele și procesăm fiecare zonă
     for idx, coord in enumerate(coordonate):
         text_initial = proceseaza_zona(coord, idx, image)
         print(f"Text inițial pentru zona {idx}: {text_initial}")  # Debug: Afișăm textul inițial
-        temp_prenume, temp_nume, temp_initiala_tatalui, temp_strada, temp_numar, temp_cnp_total, temp_email, temp_judet, temp_localitate, temp_cp, temp_bloc, temp_scara, temp_etaj, temp_apartament, temp_phone, temp_doiani,temp_folder_localitate = process_fields(text_initial, idx, False)  # debug_switch este True pentru debug
+        temp_prenume, temp_nume, temp_initiala_tatalui, temp_strada, temp_numar, temp_cnp_total, temp_email, temp_judet, temp_localitate, temp_cp, temp_bloc, temp_scara, temp_etaj, temp_apartament, temp_phone, temp_doiani,temp_folder_localitate,temp_folder_localitate_mic, temp_folder_localitate_med, temp_folder_localitate_mare = process_fields(text_initial, idx, False)  # debug_switch este True pentru debug
         # Atribuire valorilor returnate la variabilele finale
         if temp_prenume:
             prenume = temp_prenume
@@ -69,8 +73,14 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
             phone = temp_phone
         if temp_doiani:
             doiani = temp_doiani
-        if temp_folder_localitate:
-            folder_localitate_sec = temp_folder_localitate
+        if temp_folder_localitate_mic:
+            folder_localitate_mic = temp_folder_localitate_mic
+        if temp_folder_localitate_med:
+            folder_localitate_med = temp_folder_localitate_med
+        if temp_folder_localitate_mare:
+            folder_localitate_mare = temp_folder_localitate_mare
+        #if temp_folder_localitate:
+            #folder_localitate_sec = temp_folder_localitate
         #else:
             #folder_localitate_sec = localitate
         # Debug: Afișăm valorile actualizate după fiecare iterație
@@ -97,7 +107,7 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     nume_fisier_nou = f"{nume} {prenume}.jpg"
 
     # Creează folderul pentru localitate
-    folder_localitate = os.path.join(output_folder, capitalize_words(folder_localitate_sec))
+    folder_localitate = os.path.join(output_folder, capitalize_words(folder_localitate_mic))
     if not os.path.exists(folder_localitate):
         os.makedirs(folder_localitate)
 
@@ -115,3 +125,21 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
 
     # Debug: Afișăm calea fișierului text creat
     print(f"Fișierul text {fisier_txt} a fost creat.")
+    
+    #move folder_localitate_mic to folder_localitate_med
+    folder_localitate_mic = os.path.join(output_folder, capitalize_words(folder_localitate_mic))
+    folder_localitate_med = os.path.join(output_folder, capitalize_words(folder_localitate_med))
+    if not os.path.exists(folder_localitate_med):
+        os.makedirs(folder_localitate_med)
+    if os.path.exists(folder_localitate_mic):
+        shutil.move(folder_localitate_mic, folder_localitate_med)
+        print(f"Folderul {folder_localitate_mic} a fost mutat în {folder_localitate_med}")
+    
+    #move folder_localitate_med to folder_localitate_mare
+    folder_localitate_med = os.path.join(output_folder, capitalize_words(folder_localitate_med))
+    folder_localitate_mare = os.path.join(output_folder, capitalize_words(folder_localitate_mare))
+    if not os.path.exists(temp_folder_localitate_mare):
+        os.makedirs(folder_localitate_mare)
+    if os.path.exists(folder_localitate_med):
+        shutil.move(folder_localitate_med, folder_localitate_mare)
+        print(f"Folderul {folder_localitate_med} a fost mutat în {folder_localitate_mare}")

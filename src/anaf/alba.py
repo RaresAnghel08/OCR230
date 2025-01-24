@@ -1,4 +1,5 @@
 alba = {
+    "Directia Generala Regionala a Finantelor Publice Brasov":{
     "Directia Generala Regionala a Finantelor Publice Brasov": [
         "Apata", "Augustin", "Bod", "Brasov", "Feldioara", "Harman", "Maierus", "Ormenis", "Predeal", "Prejmer", "Sanpetru"
     ],
@@ -127,4 +128,5 @@ alba = {
             "Arpasu de Jos", "Avrig", "Carta", "Cartisoara", "Porumbacu de Jos", "Racovita", "Turnu Rosu"
         ]
     }
+}
 }

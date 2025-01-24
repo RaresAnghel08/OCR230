@@ -1,5 +1,7 @@
 bucuresti = {
-    "Directia Generala Regionala a Finantelor Publice BUCURESTI": {
+    "Directia Generala Regionala a Finantelor Publice BUCURESTI":
+        {
+    "Directia Generala Regionala a Finantelor Publice Bucuresti": {
         "sector 1":["sector 1","1"],
         "sector 2":["sector 2","2"],
         "sector 3":["sector 3","3"],
@@ -21,4 +23,5 @@ bucuresti = {
             "Darasti", "Domnesti", "Dragomiresti", "Jilava", "Magurele", "Vidra"
         ]
     }
+}
 }

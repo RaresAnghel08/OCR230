@@ -1,4 +1,6 @@
 timisoara ={
+    "Directia Generala Regionala a Finantelor Publice TIMISOARA":
+        {
     "Administratia Judeteana a Finantelor Publice ARAD": {
         "Administratia Judeteana a Finantelor Publice ARAD": [
             "Arad", "Curtici", "Dorobanti", "Fantanele", "Felnac", "Frumuseni", "Iratosu", "Livada", "Macea", "Nadlac", 
@@ -102,4 +104,5 @@ timisoara ={
             "Sanpetru Mare", "Saravale", "Teremia Mare", "Tomnatic", "Valcani", "Varias"
         ]
     }
+}
 }

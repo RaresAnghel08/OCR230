@@ -1,4 +1,6 @@
 cluj = {
+    "Directia Generala Regionala a Finantelor Publice Cluj Napoca":
+        {
     "Bihor": {
         "Administratia Judeteana a Finantelor Publice BIHOR": [
             "Biharia", "Bors", "Ceica", "Cetariu", "Ciuhoi", "Copacel", "Diosig", 
@@ -79,4 +81,5 @@ cluj = {
             "Ulmeni", "Boiu Mare", "Miresu Mare", "Remetea Chioarului", "Satulung", "somcuta Mare", "Valea Chioarului"
         ]
     }
+}
 }

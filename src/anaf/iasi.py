@@ -1,4 +1,6 @@
 iasi = {
+    "Directia Generala Regionala a Finantelor Publice Iasi":
+        {
     "Administratia Judeteana a Finantelor Publice BACAU": {
         "Administratia Judeteana a Finantelor Publice BACAU": [
             "Bacau", "Beresti Bistrita", "Buhoci", "Cleja", "Colonesti", "Corbasca", "Damienesti", "Faraoani", 
@@ -146,4 +148,5 @@ iasi = {
             "Bacesti", "Dumesti", "Negresti", "Osesti", "Rafaila", "Rebricea", "Todiresti", "Vulturesti"
         ]
     }
+}
 }
