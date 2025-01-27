@@ -1,5 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import os
 
 class SplashScreen:
     def __init__(self, parent, callback):
@@ -24,9 +25,18 @@ class SplashScreen:
         self.splash.geometry(f"{splash_width}x{splash_height}+{splash_position_right}+{splash_position_down}")
         self.splash.overrideredirect(True)
 
-        # Setăm imaginea splash
-        splash_image = Image.open("Assets/cover.png").convert("RGBA")
-        self.splash_photo = ImageTk.PhotoImage(splash_image)  # Păstrăm referința la imagine
+        # Obținem directorul principal al proiectului
+        project_dir = os.path.dirname(os.path.abspath(__file__))  # Obține directorul în care se află scriptul curent (src/ui)
+
+        # Construim calea completă către fișierul cover.png
+        assets_dir = os.path.join(project_dir, '..', '..', 'Assets')  # Mergem două nivele înapoi pentru a ajunge în directorul principal
+        splash_image_path = os.path.join(assets_dir, 'cover.png')
+
+        # Încarcă imaginea și o convertește într-un obiect PhotoImage
+        splash_image = Image.open(splash_image_path)
+        self.splash_photo = ImageTk.PhotoImage(splash_image)
+
+        # Afișăm imaginea în splash screen
         splash_label = tk.Label(self.splash, image=self.splash_photo)
         splash_label.pack()
 
