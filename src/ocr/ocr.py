@@ -68,5 +68,6 @@ def run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonat
         print(f"Eroare în timpul procesării: {e}")
         messagebox.showerror("Eroare", f"Eroare în timpul procesării: {e}")
 
+
 def run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, coordonate):
     threading.Thread(target=lambda: run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonate)).start()
