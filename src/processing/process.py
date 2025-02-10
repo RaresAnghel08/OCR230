@@ -103,7 +103,7 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     nume_fisier_nou = f"{nume} {prenume}.jpg"
 
     # Creează folderul pentru localitate
-    folder_localitate = os.path.join(output_folder, folder_localitate_mic)
+    folder_localitate = os.path.join(output_folder, folder_localitate_mic.strip())
     print(f"Creăm folderul: {folder_localitate}")  # Debug
     if not os.path.exists(folder_localitate):
         os.makedirs(folder_localitate)
@@ -126,8 +126,8 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     print(f"Fișierul text {fisier_txt} a fost creat.")
 
     # Mută folder_localitate_mic în folder_localitate_med
-    folder_localitate_mic_path = os.path.join(output_folder, folder_localitate_mic)
-    folder_localitate_med_path = os.path.join(output_folder, folder_localitate_med)
+    folder_localitate_mic_path = os.path.join(output_folder, folder_localitate_mic.strip())
+    folder_localitate_med_path = os.path.join(output_folder, folder_localitate_med.strip())
     print(f"Mutăm {folder_localitate_mic_path} în {folder_localitate_med_path}")  # Debug
     if not os.path.exists(folder_localitate_med_path):
         os.makedirs(folder_localitate_med_path, exist_ok=True)
@@ -136,46 +136,22 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
         print(f"Folderul {folder_localitate_mic_path} a fost mutat în {folder_localitate_med_path}")
 
     # Mută folder_localitate_med în folder_localitate_mare
-    folder_localitate_mare_path = os.path.join(output_folder, folder_localitate_mare)
+    folder_localitate_mare_path = os.path.join(output_folder, folder_localitate_mare.strip())
     print(f"Mutăm {folder_localitate_med_path} în {folder_localitate_mare_path}")  # Debug
     if not os.path.exists(folder_localitate_mare_path):
         os.makedirs(folder_localitate_mare_path, exist_ok=True)
     if os.path.exists(folder_localitate_med_path) and folder_localitate_med_path != folder_localitate_mare_path:
         move_folder(folder_localitate_med_path, folder_localitate_mare_path)
         print(f"Folderul {folder_localitate_med_path} a fost mutat în {folder_localitate_mare_path}")
-        
-def move_contents(src, dest):
+
+def move_folder(src, dest):
+    if not os.path.exists(dest):
+        os.makedirs(dest)
     for item in os.listdir(src):
         s = os.path.join(src, item)
         d = os.path.join(dest, item)
         if os.path.isdir(s):
-            if not os.path.exists(d):
-                os.makedirs(d)
-            move_contents(s, d)
+            move_folder(s, d)
         else:
-            if os.path.exists(d):
-                base, extension = os.path.splitext(d)
-                new_d = f"{base}{extension}"
-                d = new_d
             shutil.move(s, d)
-
-def move_folder(src, dest):
-    if os.path.exists(dest):
-        print("e pe if")
-        complete_dest = os.path.join(dest, os.path.basename(src))
-        print("asta1")
-        print(src)
-        print(complete_dest)
-        if os.path.exists(complete_dest):
-            print("if1")
-            move_contents(src, complete_dest)
-            print("if1.1")
-        else:
-            print("if2")
-            os.makedirs(complete_dest)
-            shutil.move(src, complete_dest)  # Mută folderul sursă în destinație
-        print("asta2")
-    else:
-        print("e pe else")
-        os.makedirs(dest)
-        shutil.move(src, dest)
+    shutil.rmtree(src)

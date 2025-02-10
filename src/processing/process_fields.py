@@ -126,7 +126,7 @@ def process_fields(text_initial, idx, debug_switch=False):
                 if folder_localitate_mare == "UNKNOWN":
                     folder_localitate_mare = localitate
             elif localitate.lower() == "bucuresti":
-                print("am intrat in else, cautam judetul {judet}")
+                print(f"am intrat in else, cautam judetul {judet}")
                 temp_judet= judet.lower()
                 print (temp_judet)
                 print (judet)

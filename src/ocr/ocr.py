@@ -5,6 +5,8 @@ import threading
 import easyocr
 from src.processing.process import set_reader, proceseaza_fisier
 from src.utils.utils import update_progress
+import pdf2image
+import PIL.Image as Image
 
 # Inițializăm reader-ul cu o valoare implicită pentru GPU
 reader = None
@@ -28,6 +30,19 @@ def run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonat
     if not os.path.exists(folder_output):
         os.makedirs(folder_output)
 
+    #luam fiecare pdf si il convertim in imagini
+    pdf_files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith('.pdf')]
+
+    for pdf_file in pdf_files:
+        images = pdf2image.convert_from_path(pdf_file)
+        for i, image in enumerate(images):
+            # Redimensionăm imaginea la dimensiunea A4
+            image = image.resize((1241, 1754), Image.LANCZOS)
+            image_path = os.path.join(folder_input, f"{os.path.splitext(os.path.basename(pdf_file))[0]}_page_{i + 1}.png")
+            image.save(image_path)
+        #remove pdf file
+        os.remove(pdf_file)
+    
     # Obținem lista de fișiere din folderul de intrare
     files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith(('jpg', 'jpeg', 'png'))]
 
