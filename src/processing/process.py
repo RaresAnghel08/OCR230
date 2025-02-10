@@ -4,6 +4,18 @@ from PIL import Image
 import numpy as np
 from src.processing.process_fields import process_fields
 from src.processing.filtre import capitalize_words
+from google import genai
+from google.genai import types
+from src.processing.filtre import replace_diacritics
+
+'''
+from dotenv import load_dotenv
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
+
+client = genai.Client(api_key=API_KEY)
+'''
 
 reader = None  # Inițializăm variabila reader
 
@@ -94,7 +106,25 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
         adresa += f" Ap. {apartament}"
     if cp:
         adresa += f" CP. {cp}"
-
+    
+    adresa = replace_diacritics(adresa)
+    print(f"Adresa generată: {adresa}")  # Debug: Afișăm adresa generată
+    
+    '''
+    #Str. NUMELE_STRAZII Nr. NUMAR Loc. LOCALITATE Jud. JUDET Bl. BLOC Sc. SCARA Et. ETAJ Ap. APARTAMENT CP. COD_POSTAL
+    
+    #ai corecteaza adresa
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=f"Corecteaza adresa sa fie dupa standardul Str. NUMELE_STRAZII Nr. NUMAR Loc. LOCALITATE Jud. JUDET Bl. BLOC Sc. SCARA Et. ETAJ Ap. APARTAMENT CP. COD_POSTAL si sa nu aiba duplicari, iar daca nu ai nimic de corectat poti sa o scri asa cum e: {adresa}",
+        config=types.GenerateContentConfig(
+            max_output_tokens=100,
+            temperature=0.1
+        )
+    )
+    adresa = response.text
+    print(f"Adresa corectata: {adresa}")
+    '''
     # Debug: Afișăm adresa generată
     print(f"Rezultate procesare: {nume} {prenume}, {email}, {phone}, {adresa}")  # Debug: Afișăm rezultatele procesării
 

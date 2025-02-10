@@ -26,5 +26,9 @@ src/ui/__pycache__/
 src/processing/__pycache__/
 src/utils/__pycache__/
 
+.env
+ai.py
+
+
 
 
