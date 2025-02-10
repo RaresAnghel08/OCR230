@@ -7,6 +7,7 @@ from src.ocr.ocr import initialize_reader, run_processing_threaded
 from src.ui.splash import show_splash
 from src.processing.coordonate import coordonate  # Importăm coordonate
 import easyocr
+import pdf2image
 
 # Variabile globale pentru folderele de input și output
 folder_input = None
