@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 import os
 
 class SplashScreen:
-    def __init__(self, parent, callback):
+    def __init__(self, parent, callback, splash_image_path):
         self.parent = parent
         self.callback = callback
         self.splash = tk.Toplevel(parent)
@@ -25,13 +25,6 @@ class SplashScreen:
         self.splash.geometry(f"{splash_width}x{splash_height}+{splash_position_right}+{splash_position_down}")
         self.splash.overrideredirect(True)
 
-        # Obținem directorul principal al proiectului
-        project_dir = os.path.dirname(os.path.abspath(__file__))  # Obține directorul în care se află scriptul curent (src/ui)
-
-        # Construim calea completă către fișierul cover.png
-        assets_dir = os.path.join(project_dir, '..', '..', 'Assets')  # Mergem două nivele înapoi pentru a ajunge în directorul principal
-        splash_image_path = os.path.join(assets_dir, 'cover.png')
-
         # Încarcă imaginea și o convertește într-un obiect PhotoImage
         splash_image = Image.open(splash_image_path)
         self.splash_photo = ImageTk.PhotoImage(splash_image)
@@ -48,4 +41,19 @@ class SplashScreen:
         self.callback(self.parent)
 
 def show_splash(root, callback):
-    SplashScreen(root, callback)
+    try:
+        # Obținem directorul principal al proiectului
+        project_dir = os.path.dirname(os.path.abspath(__file__))  # Obține directorul în care se află scriptul curent (src/ui)
+
+        # Construim calea completă către fișierul cover.png
+        assets_dir = os.path.join(project_dir, '..', '..', 'Assets')  # Mergem două nivele înapoi pentru a ajunge în directorul principal
+        splash_image_path = os.path.join(assets_dir, 'cover.png')
+
+        # Verificăm dacă fișierul există
+        if os.path.exists(splash_image_path):
+            SplashScreen(root, callback, splash_image_path)
+        else:
+            callback(root)
+    except Exception as e:
+        print(f"Error loading splash screen: {e}")
+        callback(root)
