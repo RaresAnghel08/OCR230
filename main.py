@@ -78,8 +78,11 @@ def create_main_window(root):
     gpu_var = tk.BooleanVar(value=True)  # Valoarea implicită este True (folosește GPU)
     checkbox_gpu = tk.Checkbutton(root, text="Folosește GPU", variable=gpu_var, bg='white')
     checkbox_gpu.pack(pady=10)
-
-    button_run = tk.Button(root, text="Rulează Procesarea", command=lambda: run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, coordonate))
+    
+    def reset_progress():
+            progress_bar['value'] = 0
+    
+    button_run = tk.Button(root, text="Rulează Procesarea", command=lambda: run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress))
     button_run.pack(pady=20)
 
     # Adăugăm Progressbar
@@ -98,3 +101,4 @@ root = tk.Tk()
 root.withdraw()  # Ascundem fereastra principală inițial
 show_splash(root, create_main_window)
 root.mainloop()  # Pornim bucla principală
+
