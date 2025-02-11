@@ -60,6 +60,8 @@ def process_fields(text_initial, idx, debug_switch=False):
         if idx == 0:  # Prenume (zona 1)
             text_filtrat = capitalize_words(filtru_nume(text_initial))
             prenume = text_filtrat
+            if prenume[0] == 'L' and prenume[-1] == 'a':
+                    prenume = 'I'+ prenume[1:] #daca prenumele incepe cu L si se termina cu a, inlocuieste L cu I
             if debug_switch:
                 debug_afisare(idx, "Prenume", text_initial, text_filtrat)
         elif idx == 1:  # Nume (zona 2)
