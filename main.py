@@ -6,8 +6,6 @@ from src.utils.utils import select_folder_input, select_folder_output, update_pr
 from src.ocr.ocr import initialize_reader, run_processing_threaded
 from src.ui.splash import show_splash
 from src.processing.coordonate import coordonate  # Importăm coordonate
-import easyocr
-import pdf2image
 
 # Variabile globale pentru folderele de input și output
 folder_input = None
@@ -32,10 +30,10 @@ def create_main_window(root):
     # Setăm dimensiunea și poziția ferestrei Tkinter
     root.geometry(f"{window_width}x{window_height}+{position_right}+{position_down}")
 
-    root.iconbitmap('assets/favicon.ico')
+    root.iconbitmap('Assets/favicon.ico')
 
     # Setăm background-ul pentru fereastra principală
-    bg_image = Image.open("assets/favicon40transparenta.png").convert("RGBA")
+    bg_image = Image.open("Assets/favicon40transparenta.png").convert("RGBA")
     bg_photo = ImageTk.PhotoImage(bg_image)
     background_label = tk.Label(root, image=bg_photo)
     background_label.image = bg_photo  # Păstrăm referința la imagine
