@@ -1,102 +1,101 @@
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import filedialog, messagebox
 from tkinter.ttk import Progressbar
 from PIL import Image, ImageTk
 from src.utils.utils import select_folder_input, select_folder_output, update_progress
 from src.ocr.ocr import initialize_reader, run_processing_threaded
 from src.ui.splash import show_splash
-from src.processing.coordonate import coordonate  # Importăm coordonate
+from src.processing.coordonate import coordonate
 
-# Variabile globale pentru folderele de input și output
+# Setăm stilul CustomTkinter
+ctk.set_appearance_mode("light")  # Poți schimba în "dark" dacă vrei
+ctk.set_default_color_theme("blue")
+
+# Variabile globale
 folder_input = None
 folder_output = None
 
 def create_main_window(root):
-    root.deiconify()  # Afișăm fereastra principală
-    root.title("Procesare Formulare")
-
-    # Dimensiunile ferestrei Tkinter
-    window_width = 800
-    window_height = 600
-
-    # Dimensiunile ecranului (în acest caz 1920x1080)
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-
-    # Calculăm poziția centrului pentru fereastra Tkinter
-    position_right = int(screen_width / 2 - window_width / 2)
-    position_down = int(screen_height / 2 - window_height / 2)
-
-    # Setăm dimensiunea și poziția ferestrei Tkinter
-    root.geometry(f"{window_width}x{window_height}+{position_right}+{position_down}")
-
+    root.deiconify()
+    root.title("F230-OCR")
+    root.geometry("800x600")
+    
+    # Fundal și icon
     root.iconbitmap('Assets/favicon.ico')
 
-    # Setăm background-ul pentru fereastra principală
-    bg_image = Image.open("Assets/favicon40transparenta.png").convert("RGBA")
+    bg_image = Image.open("Assets/favicon40transparenta.png").resize((800, 600), Image.Resampling.LANCZOS)
     bg_photo = ImageTk.PhotoImage(bg_image)
-    background_label = tk.Label(root, image=bg_photo)
-    background_label.image = bg_photo  # Păstrăm referința la imagine
-    background_label.place(x=0, y=0, relwidth=1, relheight=1)
+    background_label = ctk.CTkLabel(root, image=bg_photo, text="")
+    background_label.image = bg_photo
+    background_label.place(relwidth=1, relheight=1)
 
-    # Adăugăm widgeturi
-    label_input = tk.Label(root, text="Selectează folderul de input:", bg='white')
+    # Selectare folder input
+    label_input = ctk.CTkLabel(root, text="Folder de intrare", font=("Arial", 14, "bold"))
     label_input.pack(pady=5)
 
-    entry_input = tk.Entry(root, width=40)
+    entry_input = ctk.CTkEntry(root, width=400, font=("Arial", 12))
     entry_input.pack(pady=5)
 
     def on_select_folder_input():
         global folder_input
-        folder_input = filedialog.askdirectory(title="Selectează folderul de input")
+        folder_input = filedialog.askdirectory(title="Selectează folderul de intrare")
         if folder_input:
-            entry_input.delete(0, tk.END)
+            entry_input.delete(0, "end")
             entry_input.insert(0, folder_input)
 
-    button_input = tk.Button(root, text="Selectează Input", command=on_select_folder_input)
+    button_input = ctk.CTkButton(root, text="📂 Selectează", command=on_select_folder_input)
     button_input.pack(pady=5)
 
-    label_output = tk.Label(root, text="Selectează folderul de output:", bg='white')
+    # Selectare folder output
+    label_output = ctk.CTkLabel(root, text="Folder de ieșire", font=("Arial", 14, "bold"))
     label_output.pack(pady=5)
 
-    entry_output = tk.Entry(root, width=40)
+    entry_output = ctk.CTkEntry(root, width=400, font=("Arial", 12))
     entry_output.pack(pady=5)
 
     def on_select_folder_output():
         global folder_output
-        folder_output = filedialog.askdirectory(title="Selectează folderul de output")
+        folder_output = filedialog.askdirectory(title="Selectează folderul de ieșire")
         if folder_output:
-            entry_output.delete(0, tk.END)
+            entry_output.delete(0, "end")
             entry_output.insert(0, folder_output)
 
-    button_output = tk.Button(root, text="Selectează Output", command=on_select_folder_output)
+    button_output = ctk.CTkButton(root, text="📁 Selectează", command=on_select_folder_output)
     button_output.pack(pady=5)
 
-    # Adăugăm un checkbox pentru utilizarea GPU-ului
-    gpu_var = tk.BooleanVar(value=True)  # Valoarea implicită este True (folosește GPU)
-    checkbox_gpu = tk.Checkbutton(root, text="Folosește GPU", variable=gpu_var, bg='white')
-    checkbox_gpu.pack(pady=10)
+    # SWITCH pentru accelerare grafică
+    gpu_var = ctk.BooleanVar(value=False)
     
-    def reset_progress():
-            progress_bar['value'] = 0
-    
-    button_run = tk.Button(root, text="Rulează Procesarea", command=lambda: run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress))
-    button_run.pack(pady=20)
+    switch_gpu = ctk.CTkSwitch(root, text="Folosește accelerare grafică", variable=gpu_var, onvalue=True, offvalue=False)
+    switch_gpu.pack(pady=10)
 
-    # Adăugăm Progressbar
+    # Progress bar
     progress_bar = Progressbar(root, orient="horizontal", length=300, mode="determinate")
     progress_bar.pack(pady=10)
 
-    # Funcție pentru a închide aplicația corect
+    # Buton Start
+    def reset_progress():
+        progress_bar["value"] = 0
+
+    button_run = ctk.CTkButton(root, text="Start", font=("Arial", 16, "bold"), width=200, height=40, 
+                               fg_color="#4CAF50", hover_color="#45a049", text_color="white",
+                               command=lambda: run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress))
+    button_run.pack(pady=20)
+
+    # Buton Ajutor
+    button_help = ctk.CTkButton(root, text="Ajutor", fg_color="#CCCCCC", command=lambda: messagebox.showinfo("Ajutor", "Instrucțiuni de utilizare..."))
+    button_help.pack(pady=5)
+
+    # Închidere corectă a aplicației
     def on_close():
-        root.quit()  # Oprim fereastra Tkinter
-        root.destroy() # Distrugem fereastra Tkinter
-        exit()  # Ieșim din program
-    root.protocol("WM_DELETE_WINDOW", on_close)  # Setează comportamentul la închiderea ferestrei
+        root.quit()
+        root.destroy()
+        exit()
 
-# Creăm fereastra principală și o ascundem inițial
-root = tk.Tk()
-root.withdraw()  # Ascundem fereastra principală inițial
+    root.protocol("WM_DELETE_WINDOW", on_close)
+
+# Creare fereastră și afișare splash
+root = ctk.CTk()
+root.withdraw()
 show_splash(root, create_main_window)
-root.mainloop()  # Pornim bucla principală
-
+root.mainloop()
