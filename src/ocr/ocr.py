@@ -7,19 +7,20 @@ from src.processing.process import set_reader, proceseaza_fisier
 from src.utils.utils import update_progress
 import pdf2image
 import PIL.Image as Image
+# from main import update_progress
 
 # Inițializăm reader-ul cu o valoare implicită pentru GPU
 reader = None
 
-def initialize_reader(gpu_var):
+def initialize_reader(button_5_state):
     global reader
-    use_gpu = gpu_var.get()  # Obține valoarea de la checkbox
+    use_gpu = button_5_state
     reader = easyocr.Reader(['en', 'ro'], gpu=use_gpu)
     set_reader(reader)  # Setează reader-ul în process.py
 
-def run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback):
+def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root):
     # Inițializează reader-ul OCR
-    initialize_reader(gpu_var)
+    initialize_reader(button_5_state)
 
     # Verificăm dacă folderul de intrare există
     if not os.path.exists(folder_input):
@@ -60,7 +61,7 @@ def run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonat
             print(f"Procesăm fișierul: {file}")
 
             # Actualizăm progress bar-ul
-            update_progress(progress_bar, i + 1, total_files)
+            update_progress(progress_bar, i + 1, total_files,root)
 
         # Afișăm un mesaj de succes
         messagebox.showinfo("Succes", "Procesarea fișierelor a fost finalizată.")
@@ -71,5 +72,10 @@ def run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonat
         # Call the reset progress callback after processing is complete
         reset_progress_callback()
 
+'''
 def run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback):
     threading.Thread(target=lambda: run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback)).start()
+'''
+
+def run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root):
+    threading.Thread(target=lambda: run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root)).start()
