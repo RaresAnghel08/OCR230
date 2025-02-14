@@ -20,6 +20,10 @@ def update_progress(progress_bar, current, total):
     progress_bar["maximum"] = total
     progress_bar.update_idletasks()
 '''
+
 def update_progress(progress_bar, current, total, root):
-    progress = (current / total) * 100
-    root.after(0, lambda: progress_bar.config(value=progress))
+    # Calculăm procentajul de progres
+    percentage = (current / total) * 100
+    # Setăm progresul pe bara
+    progress_bar['value'] = percentage
+    root.update_idletasks()  # Asigurăm că actualizăm interfața

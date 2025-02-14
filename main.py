@@ -3,12 +3,16 @@ import webbrowser
 from tkinter import Tk, Canvas, Button, PhotoImage
 from tkinter import filedialog
 import os
-from src.utils.utils import select_folder_input, select_folder_output, update_progress
-from src.ocr.ocr import initialize_reader, run_processing_threaded
+#from src.utils.utils import select_folder_input, select_folder_output
+from src.ocr.ocr import run_processing_threaded
 from src.ui.splash import show_splash
 from src.processing.coordonate import coordonate
 from tkinter.ttk import Progressbar
 from tkinter import messagebox
+from tkinter import ttk
+from time import sleep
+import time
+from src.utils.utils import update_progress
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "src/ui/assets"
@@ -21,9 +25,7 @@ folder_input = ""
 folder_output = ""
 
 root = Tk()
-def reset_progress():
-    """Reset the progress bar to 0%."""
-    progress_bar['value'] = 0
+root.title("F230-OCR")
 
 root.geometry("800x600")
 root.configure(bg="#FFFFFF")
@@ -296,9 +298,64 @@ Button_start.place(
     width=746.0,
     height=46.0
 )
+progress_bar = None
 # Definirea Progress Bar-ului
-progress_bar = Progressbar(root, orient="horizontal", length=744, mode="determinate")
-progress_bar.place(x=28, y=535)  # Poziționăm progresul sub butonul de Start
+def create_custom_progress_bar(root):
+    # Creăm un container pentru progresul nostru pentru un efect vizual mai plăcut
+    progress_container = Canvas(root, bg="#D9D9D9", width=744, height=20, bd=0, highlightthickness=0, relief="flat")
+    progress_container.place(x=28, y=535)  # Poziționăm progresul sub butonul de Start
+
+    # Bara de progres personalizată
+    progress_bar = Progressbar(progress_container, orient="horizontal", length=744, mode="determinate", 
+                                style="TProgressbar")
+    progress_bar.place(x=0, y=0)
+
+    # Schimbăm stilul pentru Progressbar (culori și borduri)
+    style = ttk.Style()
+    style.configure("TProgressbar",
+                    thickness=15,  # Grosimea progresului
+                    troughcolor="#E6E6E6",  # Culoarea fundalului barei
+                    background="#3DA5D9",  # Culoarea barei de progres
+                    )
+
+    return progress_bar
+progress_bar = create_custom_progress_bar(root)
+
+def smooth_progress(progress_bar, current, total, step_delay=50):
+    current_value = progress_bar['value']  # Păstrăm valoarea curentă a progresului
+    step_size = 1  # Cât de mult să crească progresul la fiecare pas
+
+    def update_progress_smoothly():
+        nonlocal current_value
+        if current_value < total:
+            current_value += step_size  # Creștem progresul cu pasul definit
+            if current_value > total:  # Evităm să depășim valoarea totală
+                current_value = total
+            progress_bar['value'] = (current_value / total) * 100  # Actualizăm progresul în procente
+            root.update_idletasks()  # Forțăm actualizarea interfeței
+            root.after(step_delay, update_progress_smoothly)  # Întârziere înainte de actualizare următoare
+
+    # Începem actualizarea progresului lin
+    update_progress_smoothly()
+    
+# Funcție pentru resetarea progresului
+def reset_progress():
+    """Reset the progress bar to 0% in a smooth and gradual manner."""
+    current_value = progress_bar['value']  # Păstrăm valoarea curentă
+    step_delay = 20  # Întârzierea în milisecunde între fiecare pas
+    step_size = 1  # Cât de mult să scadă progresul la fiecare pas
+
+    # Actualizăm progresul pas cu pas
+    while current_value > 0:
+        current_value -= step_size  # Reducem progresul cu pasul definit
+        if current_value < 0:  # Evităm să scadă sub 0
+            current_value = 0
+        progress_bar['value'] = current_value  # Actualizăm progresul
+        root.update_idletasks()  # Actualizăm interfața
+        time.sleep(step_delay / 1000)  # Pauză pentru efect de tranziție lină
+
+    # Asigurăm că progresul este exact 0 după tranziție
+    progress_bar['value'] = 0
 '''
 28.0,
     535.0,

@@ -7,6 +7,7 @@ from src.processing.process import set_reader, proceseaza_fisier
 from src.utils.utils import update_progress
 import pdf2image
 import PIL.Image as Image
+# from main import update_progress
 
 # Inițializăm reader-ul cu o valoare implicită pentru GPU
 reader = None
