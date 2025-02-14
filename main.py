@@ -8,6 +8,7 @@ from src.ocr.ocr import initialize_reader, run_processing_threaded
 from src.ui.splash import show_splash
 from src.processing.coordonate import coordonate
 from tkinter.ttk import Progressbar
+from tkinter import messagebox
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "src/ui/assets"
@@ -265,13 +266,26 @@ button_5.place(
     width=42.0,
     height=28.0
 )
+
+def start_processing():
+    # Verifică dacă folderul de intrare este selectat
+    if not folder_input:
+        messagebox.showwarning("Atenție", "Te rugăm să selectezi un folder de intrare.")
+
+    # Verifică dacă folderul de ieșire este selectat
+    elif not folder_output:
+        messagebox.showwarning("Atenție", "Te rugăm să selectezi un folder de ieșire.")
+        
+    # Dacă ambele foldere sunt selectate, rulează procesarea
+    else:
+        run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress, root)
 # Imagine pentru butonul Start (Button_start)
 button_image_start = PhotoImage(file=relative_to_assets("button_start.png"))
 Button_start = Button(
     image=button_image_start,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress, root),
+    command=start_processing,
     relief="flat",
     activebackground="#D9D9D9",
     background="#D9D9D9"
@@ -283,9 +297,14 @@ Button_start.place(
     height=46.0
 )
 # Definirea Progress Bar-ului
-progress_bar = Progressbar(root, orient="horizontal", length=700, mode="determinate")
-progress_bar.place(x=50, y=450)  # Poziționăm progresul sub butonul de Start
-
+progress_bar = Progressbar(root, orient="horizontal", length=744, mode="determinate")
+progress_bar.place(x=28, y=535)  # Poziționăm progresul sub butonul de Start
+'''
+28.0,
+    535.0,
+    772.0,
+    547.0,
+'''
 canvas.create_text(
     277.0,
     460.0,
