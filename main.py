@@ -28,7 +28,7 @@ root = Tk()
 root.title("F230-OCR")
 
 root.geometry("800x600")
-root.configure(bg="#FFFFFF")
+root.configure(bg="#D9D9D9")
 
 canvas = Canvas(
     root,
