@@ -14,8 +14,12 @@ def select_folder_output(entry_output):
     if folder_output:
         entry_output.delete(0, tk.END)  # Șterge textul existent
         entry_output.insert(0, folder_output)  # Introduce calea selectată în entry
-
+'''
 def update_progress(progress_bar, current, total):
     progress_bar["value"] = current
     progress_bar["maximum"] = total
     progress_bar.update_idletasks()
+'''
+def update_progress(progress_bar, current, total, root):
+    progress = (current / total) * 100
+    root.after(0, lambda: progress_bar.config(value=progress))
