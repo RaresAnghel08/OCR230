@@ -44,7 +44,8 @@ def create_main_window(root):
     root.geometry("800x600")
     root.configure(bg="#D9D9D9")
     # Fundal și icon
-    root.iconbitmap('Assets/favicon.ico')
+    icon_path = Path(__file__).parent / "Assets/favicon.ico"
+    root.iconbitmap(str(icon_path))
     # Funcție pentru închidere corectă a aplicației
     def on_close():
         root.quit()   # Oprește event loop-ul Tkinter
@@ -55,7 +56,7 @@ def create_main_window(root):
     root.protocol("WM_DELETE_WINDOW", on_close)
 
 # root.title("F230-OCR")
-root.iconbitmap('Assets/favicon.ico')
+# root.iconbitmap('Assets/favicon.ico')
 # root.geometry("800x600")
 # root.configure(bg="#D9D9D9")
 
