@@ -26,7 +26,7 @@ folder_output = ""
 
 root = Tk()
 root.title("F230-OCR")
-
+root.iconbitmap('Assets/favicon.ico')
 root.geometry("800x600")
 root.configure(bg="#D9D9D9")
 
