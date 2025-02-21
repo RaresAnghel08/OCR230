@@ -23,12 +23,41 @@ def relative_to_assets(path: str) -> Path:
 
 folder_input = ""
 folder_output = ""
-
 root = Tk()
-root.title("F230-OCR")
-root.iconbitmap('Assets/favicon.ico')
-root.geometry("800x600")
-root.configure(bg="#D9D9D9")
+def create_main_window(root):
+    # Obținem dimensiunile ecranului corect
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    # Dimensiunile ferestrei (modifică după nevoie)
+    window_width = 800
+    window_height = 600
+
+    # Calculăm poziția pentru centrare
+    win_pos_right = (screen_width // 2) - (window_width // 2)
+    win_pos_down = (screen_height // 2) - (window_height // 2)
+
+    # Setăm dimensiunea și poziția ferestrei
+    root.geometry(f"{window_width}x{window_height}+{win_pos_right}+{win_pos_down}")
+    root.deiconify()
+    root.title("F230-OCR")
+    root.geometry("800x600")
+    root.configure(bg="#D9D9D9")
+    # Fundal și icon
+    root.iconbitmap('Assets/favicon.ico')
+    # Funcție pentru închidere corectă a aplicației
+    def on_close():
+        root.quit()   # Oprește event loop-ul Tkinter
+        root.destroy()  # Distruge fereastra principală
+        exit()  # Închide complet aplicația
+    
+    # Leagă funcția de închidere de evenimentul de închidere al ferestrei
+    root.protocol("WM_DELETE_WINDOW", on_close)
+
+# root.title("F230-OCR")
+# root.iconbitmap('Assets/favicon.ico')
+# root.geometry("800x600")
+# root.configure(bg="#D9D9D9")
 
 canvas = Canvas(
     root,
@@ -246,11 +275,11 @@ def toggle_button_5():
     if button_5_state:
         button_5.config(image=button_image_5_off)
         button_5_state = False
-        print("Buton accelerație grafică dezactivat")
+        # print("Buton accelerație grafică dezactivat")
     else:
         button_5.config(image=button_image_5)
         button_5_state = True
-        print("Buton accelerație grafică activat")
+        # print("Buton accelerație grafică activat")
 
 # Imagine pentru butonul de accelerație grafică (Button5)
 button_5 = Button(
@@ -370,21 +399,6 @@ canvas.create_text(
     fill="#1E1E1E",
     font=("Inter", 16 * -1)
 )
-def create_main_window(root):
-    root.deiconify()
-    root.title("F230-OCR")
-    root.geometry("800x600")
-    
-    # Fundal și icon
-    root.iconbitmap('Assets/favicon.ico')
-    # Funcție pentru închidere corectă a aplicației
-    def on_close():
-        root.quit()   # Oprește event loop-ul Tkinter
-        root.destroy()  # Distruge fereastra principală
-        exit()  # Închide complet aplicația
-    
-    # Leagă funcția de închidere de evenimentul de închidere al ferestrei
-    root.protocol("WM_DELETE_WINDOW", on_close)
 
 root.withdraw()
 show_splash(root, create_main_window)
