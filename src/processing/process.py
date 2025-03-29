@@ -34,6 +34,9 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     temp_folder_localitate_med = ""
     temp_folder_localitate_mic = ""
     folder_localitate = ""
+    folder_localitate_mare = ""
+    folder_localitate_med = ""
+    folder_localitate_mic = ""
 
     # Parcurgem coordonatele și procesăm fiecare zonă
     for idx, coord in enumerate(coordonate):
