@@ -35,7 +35,8 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
     pdf_files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith('.pdf')]
 
     for pdf_file in pdf_files:
-        images = pdf2image.convert_from_path(pdf_file,poppler_path=None)
+        images = pdf2image.convert_from_path(pdf_file,poppler_path=None) # teoretic nu deschide cmd
+        # images = pdf2image.convert_from_path(pdf_file) # deschide cmd
         for i, image in enumerate(images):
             # Redimensionăm imaginea la dimensiunea A4
             image = image.resize((1241, 1754), Image.LANCZOS)
