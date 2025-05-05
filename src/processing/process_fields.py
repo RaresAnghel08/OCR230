@@ -113,6 +113,9 @@ def process_fields(text_initial, idx, debug_switch=False):
             text_filtrat = replace_diacritics(text_filtrat)
             #strip text
             text_filtrat = text_filtrat.strip()
+            #if text_filtrat contains "Mures" and "Targu" then replace it with"Targu Mures"
+            if text_filtrat == "Mures Targu":
+                text_filtrat = "Targu Mures"
             localitate = text_filtrat
             if localitate.lower() != "bucuresti":
                 print("am intrat in if")
