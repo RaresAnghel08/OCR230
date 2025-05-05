@@ -60,8 +60,8 @@ def process_fields(text_initial, idx, debug_switch=False):
         if idx == 0:  # Prenume (zona 1)
             text_filtrat = capitalize_words(filtru_nume(text_initial))
             prenume = text_filtrat
-            if prenume[0] == 'L' and prenume[-1] == 'a':
-                    prenume = 'I'+ prenume[1:] #daca prenumele incepe cu L si se termina cu a, inlocuieste L cu I
+            # if prenume[0] == 'L' and prenume[-1] == 'a':
+            #         prenume = 'I'+ prenume[1:] #daca prenumele incepe cu L si se termina cu a, inlocuieste L cu I
             if debug_switch:
                 debug_afisare(idx, "Prenume", text_initial, text_filtrat)
         elif idx == 1:  # Nume (zona 2)
@@ -142,6 +142,8 @@ def process_fields(text_initial, idx, debug_switch=False):
                     folder_localitate_med = judet
                 if folder_localitate_mare == "UNKNOWN":
                     folder_localitate_mare = judet
+            print(text_initial)
+            print(text_filtrat)
             if debug_switch:
                 debug_afisare(idx, "Localitate", text_initial, text_filtrat)
         elif idx == 9:  # Cod postal (zona 10)
@@ -175,6 +177,8 @@ def process_fields(text_initial, idx, debug_switch=False):
             if debug_switch:
                 debug_afisare(idx, "Telefon", text_initial, text_filtrat)
         elif idx == 15:  # 2 ani (zona 16)
+            #save cropped image in folder_localitate_mic
+            
             if text_initial != "":
                 doiani = "Da"
             else:
