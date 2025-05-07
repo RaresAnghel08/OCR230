@@ -124,7 +124,7 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     # Creează fișierul text
     fisier_txt = os.path.join(folder_localitate, f"{nume} {prenume}.txt")
     with open(fisier_txt, 'w', encoding='utf-8') as f:
-        f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{email}\n{phone}\n{doiani}")
+        f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{phone}\n{email}\n{doiani}")
     
     print(f"Fișierul text {fisier_txt} a fost creat.")
 
