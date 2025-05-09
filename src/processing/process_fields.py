@@ -85,6 +85,7 @@ def process_fields(text_initial, idx, debug_switch=False):
                 debug_afisare(idx, "Nume", text_initial, text_filtrat)
         elif idx == 2:  # Inițiala tatălui (zona 3)
             text_filtrat = filtru_litere(text_initial)
+            text_filtrat = text_filtrat.upper()
             initiala_tatalui = text_filtrat
             if debug_switch:
                 debug_afisare(idx, "Inițiala tatălui", text_initial, text_filtrat)
@@ -116,8 +117,6 @@ def process_fields(text_initial, idx, debug_switch=False):
             text_filtrat = capitalize_words(text_initial)
             text_filtrat = replace_diacritics(text_filtrat)
             judet = text_filtrat
-            #memoreaza variabila judet ca sa pot sa o accesez si cand idx e 8
-            
             if debug_switch:
                 debug_afisare(idx, "Județ", text_initial, text_filtrat)
         elif idx == 8:  # Localitate (zona 9)
@@ -125,9 +124,7 @@ def process_fields(text_initial, idx, debug_switch=False):
             text_initial = text_initial.replace(',', ' ')  # Înlocuiește virgulele cu spațiu
             text_filtrat = capitalize_words(text_initial)
             text_filtrat = replace_diacritics(text_filtrat)
-            #strip text
             text_filtrat = text_filtrat.strip()
-            #if text_filtrat contains "Mures" and "Targu" then replace it with"Targu Mures"
             if text_filtrat == "Mures Targu":
                 text_filtrat = "Targu Mures"
             localitate = text_filtrat
