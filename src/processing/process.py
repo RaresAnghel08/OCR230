@@ -21,7 +21,7 @@ def proceseaza_zona(coord, idx, image):
         os.makedirs(debug_media_folder, exist_ok=True)  # Creează folderul debug_media dacă nu există
         zona_decupata.save(os.path.join(debug_media_folder, f"debug_cropped_{idx}.jpg"))  # Salvează imaginea decupată pentru debug
         # Mărim imaginea decupată pentru a îmbunătăți OCR-ul
-        zona_decupata = zona_decupata.resize((zona_decupata.width * 2, zona_decupata.height * 2))  # Mărire imagine
+        zona_decupata = zona_decupata.resize((zona_decupata.width * 3, zona_decupata.height * 3))  # Mărire imagine
         #save resized image for debug in debug_media folder
         zona_decupata.save(os.path.join(debug_media_folder, f"debug_resized_{idx}.jpg"))  # Salvează imaginea mărită pentru debug
     zona_np = np.array(zona_decupata)  # Convertește în array NumPy
