@@ -14,6 +14,7 @@ def set_reader(ocr_reader):
 # Funcția pentru procesarea unei zone
 def proceseaza_zona(coord, idx, image):
     zona_decupata = image.crop(coord)  # Decupează zona
+    zona_decupata = zona_decupata.resize((zona_decupata.width * 3, zona_decupata.height * 3))  # Mărire imagine
     #save cropped image for debug in debug_media 
     debug_on = False  # Setează True pentru a activa debug-ul
     if debug_on==True:
