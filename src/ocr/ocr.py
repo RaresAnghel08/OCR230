@@ -2,7 +2,8 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 import threading
-import easyocr
+# import easyocr
+from efficient_ocr import EffOCR
 from src.processing.process import set_reader, proceseaza_fisier
 from src.utils.utils import update_progress
 import pdf2image
@@ -14,9 +15,21 @@ reader = None
 
 def initialize_reader(button_5_state):
     global reader
-    use_gpu = button_5_state
-    reader = easyocr.Reader(['en', 'ro'], gpu=use_gpu)
-    set_reader(reader)  # Setează reader-ul în process.py
+    
+    # with easyocr
+    # use_gpu = button_5_state
+    # reader = easyocr.Reader(['en', 'ro'], gpu=use_gpu)
+    # set_reader(reader)  # set reader-ul in process.py
+
+    if button_5_state == 1:
+        print("Inițializăm reader-ul OCR pentru GPU.")
+        # using GPU
+        reader = EffOCR(gpu=True)
+    else:
+        print("Inițializăm reader-ul OCR pentru CPU.")
+        # using CPU
+    reader = EffOCR()
+    set_reader(reader)
 
 def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root):
     # Inițializează reader-ul OCR

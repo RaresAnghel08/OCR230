@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np
 from src.processing.process_fields import process_fields
 from src.processing.filtre import capitalize_words
+from efficient_ocr import EffOCR
 
 reader = None  # Inițializăm variabila reader
 
@@ -28,9 +29,16 @@ def proceseaza_zona(coord, idx, image):
         zona_decupata = zona_decupata.resize((zona_decupata.width * 3, zona_decupata.height * 3))  # Mărire imagine
         #save resized image for debug in debug_media folder
         zona_decupata.save(os.path.join(debug_media_folder, f"debug_resized_{idx}.jpg"))  # Salvează imaginea mărită pentru debug
-    zona_np = np.array(zona_decupata)  # Convertește în array NumPy
-    rezultate = reader.readtext(zona_np)  # OCR
-    text = " ".join([rezultat[1] for rezultat in rezultate])  # Extrage textul
+    
+    zona_np = np.array(zona_decupata)  # convert in numpy array
+    
+    #implementing efficient ocr
+    rezultate = reader.infer(zona_np, visualize = 'sample_viz.jpg')
+    text = rezultate
+    
+    # with easy ocr
+    # rezultate = reader.readtext(zona_np)
+    # text = " ".join([rezultat[1] for rezultat in rezultate])  # extract text from results
     print(f"OCR text pentru zona {idx}: {text}")  # Afișează textul OCR pentru debug
     return text
 
