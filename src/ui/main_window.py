@@ -4,7 +4,7 @@ from tkinter import Tk, Canvas, Button, PhotoImage
 from tkinter import filedialog
 import os
 from src.ocr.ocr import run_processing_threaded
-from splash import show_splash
+from src.ui.splash import show_splash
 from ..processing.coordonate import coordonate
 from tkinter.ttk import Progressbar
 from tkinter import messagebox
@@ -12,8 +12,8 @@ from tkinter import ttk
 import time
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / "src/ui/assets"
-PDF_PATH = OUTPUT_PATH / "src/ui/assets"
+ASSETS_PATH = OUTPUT_PATH / "assets"
+PDF_PATH = OUTPUT_PATH / "assets"
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -42,7 +42,7 @@ def run_main_window():
         root.geometry("800x600")
         root.configure(bg="#D9D9D9")
         # Fundal și icon
-        icon_path = Path(__file__).parent / "Assets/favicon.ico"
+        icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
         root.iconbitmap(str(icon_path))
         # Funcție pentru închidere corectă a aplicației
         def on_close():
