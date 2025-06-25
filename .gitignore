@@ -29,4 +29,4 @@ src/utils/__pycache__/
 .env
 ai.py
 debug_media/*
-
+*.pt
