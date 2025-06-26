@@ -4,20 +4,24 @@ from PIL import Image
 import numpy as np
 from src.processing.process_fields import process_fields
 from src.processing.filtre import capitalize_words
-try:
-    from efficient_ocr import EffOCR
-except ImportError:
-    print("EfficientOCR nu este disponibil în process.py")
-    EffOCR = None
 
+global eff_ocr
+eff_ocr = False  # Setează True dacă EfficientOCR este disponibil, altfel False
+if eff_ocr == True:
+    try:
+        from efficient_ocr import EffOCR
+    except ImportError:
+        print("EfficientOCR nu este disponibil în process.py")
+        EffOCR = None
+else:
+    import easyocr
+    
 reader = None  # Inițializăm variabila reader
 
 def set_reader(ocr_reader):
     global reader
     reader = ocr_reader
 
-global eff_ocr
-eff_ocr = False  # Setează True dacă EfficientOCR este disponibil, altfel False
 
 # Funcția pentru procesarea unei zone
 def proceseaza_zona(coord, idx, image):
