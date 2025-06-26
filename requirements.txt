@@ -9,5 +9,5 @@ efficient-ocr
 easyocr
 auto-py-to-exe
 pyinstaller
-scipy
+scipy==1.15.0
 os-sys

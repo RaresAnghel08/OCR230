@@ -2,17 +2,34 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 import threading
-import easyocr
+import scipy # Importăm scipy pentru a rezolva problema cu _cyutility
+
+# Importăm easyocr doar când avem nevoie de el
+easyocr = None
+EffOCR = None
+
 global eff_ocr
 eff_ocr = False
-try:
-    if eff_ocr == True:
-        print("EfficientOCR este activat.")
-        from efficient_ocr import EffOCR
-except ImportError:
-    print("EfficientOCR nu este instalat. Folosim EasyOCR ca fallback.")
-    import easyocr
-    EffOCR = None
+
+def import_ocr_libraries():
+    global easyocr, EffOCR
+    
+    try:
+        if eff_ocr == True:
+            print("EfficientOCR este activat.")
+            from efficient_ocr import EffOCR
+        else:
+            print("Importăm EasyOCR...")
+            import easyocr
+    except ImportError as e:
+        print(f"Eroare la importul EfficientOCR: {e}")
+        print("EfficientOCR nu este instalat. Folosim EasyOCR ca fallback.")
+        try:
+            import easyocr
+        except ImportError as e2:
+            print(f"Eroare la importul EasyOCR: {e2}")
+            raise ImportError("Nu s-a putut importa nici EasyOCR, nici EfficientOCR")
+        EffOCR = None
 from src.processing.process import set_reader, proceseaza_fisier
 from src.utils.utils import update_progress
 try:
@@ -28,6 +45,9 @@ reader = None
 
 def initialize_reader(button_5_state):
     global reader
+    
+    # Importăm bibliotecile OCR doar când avem nevoie
+    import_ocr_libraries()
 
     if EffOCR is not None and eff_ocr == True:
         # Folosim EfficientOCR dacă este disponibil

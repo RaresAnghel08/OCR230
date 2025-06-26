@@ -10,6 +10,7 @@ from tkinter.ttk import Progressbar
 from tkinter import messagebox
 from tkinter import ttk
 import time
+import scipy
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets"
