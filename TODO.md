@@ -146,6 +146,12 @@
   - JSON pentru APIs
   - PDF pentru rapoarte
 
+- [ ] **Numerotare automată fișiere duplicate** - *Deadline: 26 iunie 2025* - **INDEPLINIT**
+  - Verificare existență fișiere cu același nume
+  - Adăugare număr secvențial (ex: "Popescu Marcel 2", "Popescu Marcel 3")
+  - Aplicare pentru ambele fișiere (.jpg și .txt)
+  - Prevenire suprascriere accidentală
+
 ---
 
 ## 🚀 DEPLOYMENT ȘI DISTRIBUȚIE
@@ -225,7 +231,7 @@
 
 ## 📊 SUMMARY
 **Total tasks: 31**
-- ✅ Indeplinite: 25
+- ✅ Indeplinite: 26
 - ⏳ Neindeplinite: 6
 - 🔄 În progres: 0
 

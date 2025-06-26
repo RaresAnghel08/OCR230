@@ -157,14 +157,26 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     # Creează folderele pentru localitate (mare, mediu, mic)
     create_folder_hierarchy(output_folder, folder_localitate_mare, folder_localitate_med, folder_localitate_mic)
 
-    # Mutăm și redenumim imaginea
+    # Creează calea completă a folderului de destinație
     folder_localitate = os.path.join(output_folder, folder_localitate_mare.strip(), folder_localitate_med.strip(), folder_localitate_mic.strip())
-    noua_cale_imagine = os.path.join(folder_localitate, nume_fisier_nou)
+    
+    # Verifică dacă fișierul există și adaugă număr secvențial dacă e necesar
+    nume_fisier_final = nume_fisier_nou
+    fisier_txt_final = f"{nume} {prenume}.txt"
+    counter = 1
+    
+    while os.path.exists(os.path.join(folder_localitate, nume_fisier_final)) or os.path.exists(os.path.join(folder_localitate, fisier_txt_final)):
+        counter += 1
+        nume_fisier_final = f"{nume} {prenume} {counter}.jpg"
+        fisier_txt_final = f"{nume} {prenume} {counter}.txt"
+    
+    # Mutăm și redenumim imaginea cu numele final
+    noua_cale_imagine = os.path.join(folder_localitate, nume_fisier_final)
     print(f"Mutăm imaginea la: {noua_cale_imagine}")  # Debug
     shutil.move(image_path, noua_cale_imagine)
 
-    # Creează fișierul text
-    fisier_txt = os.path.join(folder_localitate, f"{nume} {prenume}.txt")
+    # Creează fișierul text cu numele final
+    fisier_txt = os.path.join(folder_localitate, fisier_txt_final)
     with open(fisier_txt, 'w', encoding='utf-8') as f:
         f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{phone}\n{email}\n{doiani}")
     
