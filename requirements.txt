@@ -10,6 +10,4 @@ easyocr
 auto-py-to-exe
 pyinstaller
 scipy
-re
 os-sys
-shutil
