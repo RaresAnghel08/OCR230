@@ -73,7 +73,7 @@ A high-performance model developed at Harvard University, which offers superior 
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/RaresAnghel08/f230.git
+   git clone https://github.com/F230-OCR/OCR230_infoeducatie.git
 
 2. Run the command 
    ```bash
