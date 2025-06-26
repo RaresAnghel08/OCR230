@@ -2,11 +2,42 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 import threading
-import easyocr
+import scipy # Importăm scipy pentru a rezolva problema cu _cyutility
+
+# Importăm easyocr doar când avem nevoie de el
+easyocr = None
+EffOCR = None
+
+global eff_ocr
+eff_ocr = False
+
+def import_ocr_libraries():
+    global easyocr, EffOCR
+    
+    try:
+        if eff_ocr == True:
+            print("EfficientOCR este activat.")
+            from efficient_ocr import EffOCR
+        else:
+            print("Importăm EasyOCR...")
+            import easyocr
+    except ImportError as e:
+        print(f"Eroare la importul EfficientOCR: {e}")
+        print("EfficientOCR nu este instalat. Folosim EasyOCR ca fallback.")
+        try:
+            import easyocr
+        except ImportError as e2:
+            print(f"Eroare la importul EasyOCR: {e2}")
+            raise ImportError("Nu s-a putut importa nici EasyOCR, nici EfficientOCR")
+        EffOCR = None
 from src.processing.process import set_reader, proceseaza_fisier
 from src.utils.utils import update_progress
-import pdf2image
-import PIL.Image as Image
+try:
+    import pdf2image
+except ImportError:
+    print("pdf2image nu este instalat. Funcționalitatea PDF nu va fi disponibilă.")
+    pdf2image = None
+from PIL import Image
 # from main import update_progress
 
 # Inițializăm reader-ul cu o valoare implicită pentru GPU
@@ -14,9 +45,66 @@ reader = None
 
 def initialize_reader(button_5_state):
     global reader
-    use_gpu = button_5_state
-    reader = easyocr.Reader(['en', 'ro'], gpu=use_gpu)
-    set_reader(reader)  # Setează reader-ul în process.py
+    
+    # Importăm bibliotecile OCR doar când avem nevoie
+    import_ocr_libraries()
+
+    if EffOCR is not None and eff_ocr == True:
+        # Folosim EfficientOCR dacă este disponibil
+        try:
+            if button_5_state == 1:
+                print("Inițializăm EfficientOCR pentru GPU cu modele engleze...")
+            else:
+                print("Inițializăm EfficientOCR pentru CPU cu modele engleze...")
+            
+            reader = EffOCR(
+                config={
+                    'Recognizer': {
+                        'char': {
+                            'model_backend': 'onnx',
+                            'model_dir': './models',
+                            'hf_repo_id': 'dell-research-harvard/effocr_en/char_recognizer',
+                        },
+                        'word': {
+                            'model_backend': 'onnx',
+                            'model_dir': './models',
+                            'hf_repo_id': 'dell-research-harvard/effocr_en/word_recognizer',
+                        },
+                    },
+                    'Localizer': {
+                        'model_dir': './models',
+                        'hf_repo_id': 'dell-research-harvard/effocr_en',
+                        'model_backend': 'onnx'
+                    },
+                    'Line': {
+                        'model_dir': './models',
+                        'hf_repo_id': 'dell-research-harvard/effocr_en',
+                        'model_backend': 'onnx',
+                    },
+                },
+                gpu=(button_5_state == 1)
+            )
+            print("EfficientOCR inițializat cu succes!")
+        except Exception as e:
+            print(f"Eroare la inițializarea EfficientOCR: {e}")
+            print("Revenind la EasyOCR...")
+            reader = None
+    
+    if EffOCR is None or reader is None and eff_ocr == False:
+        # Fallback la EasyOCR
+        try:
+            if button_5_state == 1:
+                print("Inițializăm EasyOCR pentru GPU.")
+                reader = easyocr.Reader(['en', 'ro'], gpu=True)
+            else:
+                print("Inițializăm EasyOCR pentru CPU.")
+                reader = easyocr.Reader(['en', 'ro'], gpu=False)
+        except Exception as e:
+            print(f"Eroare la inițializarea OCR: {e}")
+            # Fallback final fără GPU
+            reader = easyocr.Reader(['en', 'ro'], gpu=False)
+    
+    set_reader(reader)  # set reader-ul in process.py
 
 def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root):
     # Inițializează reader-ul OCR
@@ -31,18 +119,26 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
     if not os.path.exists(folder_output):
         os.makedirs(folder_output)
 
-    #luam fiecare pdf si il convertim in imagini
-    pdf_files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith('.pdf')]
+    # Procesăm PDF-urile dacă pdf2image este disponibil
+    if pdf2image is not None:
+        # Luăm fiecare PDF și îl convertim în imagini
+        pdf_files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith('.pdf')]
 
-    for pdf_file in pdf_files:
-        images = pdf2image.convert_from_path(pdf_file)
-        for i, image in enumerate(images):
-            # Redimensionăm imaginea la dimensiunea A4
-            image = image.resize((1241, 1754), Image.LANCZOS)
-            image_path = os.path.join(folder_input, f"{os.path.splitext(os.path.basename(pdf_file))[0]}_page_{i + 1}.png")
-            image.save(image_path)
-        #remove pdf file
-        os.remove(pdf_file)
+        for pdf_file in pdf_files:
+            try:
+                images = pdf2image.convert_from_path(pdf_file, poppler_path=None) # teoretic nu deschide cmd
+                # images = pdf2image.convert_from_path(pdf_file) # deschide cmd
+                for i, image in enumerate(images):
+                    # Redimensionăm imaginea la dimensiunea A4
+                    image = image.resize((1241, 1754), Image.LANCZOS)
+                    image_path = os.path.join(folder_input, f"{os.path.splitext(os.path.basename(pdf_file))[0]}_page_{i + 1}.png")
+                    image.save(image_path)
+                # Ștergem fișierul PDF
+                os.remove(pdf_file)
+            except Exception as e:
+                print(f"Eroare la procesarea PDF {pdf_file}: {e}")
+    else:
+        print("PDF processing nu este disponibil. pdf2image nu este instalat.")
     
     # Obținem lista de fișiere din folderul de intrare
     files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith(('jpg', 'jpeg', 'png'))]

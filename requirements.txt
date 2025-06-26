@@ -2,7 +2,12 @@ Flask
 easyocr
 pillow
 numpy
-re
-os-sys
-shutil
 pystray==0.3.3
+pdf2image
+poppler-utils
+efficient-ocr
+easyocr
+auto-py-to-exe
+pyinstaller
+scipy==1.15.0
+os-sys

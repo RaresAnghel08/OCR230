@@ -1,7 +1,8 @@
 import tkinter as tk
+from tkinter import ttk
 from PIL import Image, ImageTk
 import os
-
+import scipy
 class SplashScreen:
     def __init__(self, parent, callback, splash_image_path):
         self.parent = parent
@@ -25,16 +26,35 @@ class SplashScreen:
         self.splash.geometry(f"{splash_width}x{splash_height}+{splash_position_right}+{splash_position_down}")
         self.splash.overrideredirect(True)
 
-        # Încarcă imaginea și o convertește într-un obiect PhotoImage
-        splash_image = Image.open(splash_image_path)
-        self.splash_photo = ImageTk.PhotoImage(splash_image)
+        # Creează canvas-ul și bara de progres imediat, imaginea după idle
+        self.canvas = tk.Canvas(self.splash, width=400, height=300, highlightthickness=0)
+        self.canvas.pack(fill="both", expand=True)
 
-        # Afișăm imaginea în splash screen
-        splash_label = tk.Label(self.splash, image=self.splash_photo)
-        splash_label.pack()
+        self.progress = ttk.Progressbar(self.splash, mode='determinate', length=300, maximum=100)
+        self.progress.place(in_=self.canvas, relx=0.5, rely=0.88, anchor="center")
+        self.progress['value'] = 0
+        self.progress_step = 100 / 30
+        self.update_progress(0)
+
+        # Încarcă imaginea după ce UI-ul a apărut (asigură afișare rapidă splash)
+        self.splash.after_idle(self.load_image, splash_image_path)
 
         # Închidem splash screen-ul și apelăm funcția callback după 3 secunde
         self.splash.after(3000, self.close_splash)
+
+    def load_image(self, splash_image_path):
+        try:
+            # Încarcă imaginea și o convertește într-un obiect PhotoImage
+            splash_image = Image.open(splash_image_path)
+            self.splash_photo = ImageTk.PhotoImage(splash_image)
+            self.canvas.create_image(0, 0, anchor="nw", image=self.splash_photo)
+        except Exception as e:
+            pass  # Dacă nu se poate încărca imaginea, continuă fără ea
+
+    def update_progress(self, count):
+        if count <= 30:
+            self.progress['value'] = count * self.progress_step
+            self.splash.after(100, self.update_progress, count + 1)
 
     def close_splash(self):
         self.splash.destroy()

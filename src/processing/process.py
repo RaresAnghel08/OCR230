@@ -5,24 +5,73 @@ import numpy as np
 from src.processing.process_fields import process_fields
 from src.processing.filtre import capitalize_words
 
+global eff_ocr
+eff_ocr = False  # Setează True dacă EfficientOCR este disponibil, altfel False
+if eff_ocr == True:
+    try:
+        from efficient_ocr import EffOCR
+    except ImportError:
+        print("EfficientOCR nu este disponibil în process.py")
+        EffOCR = None
+else:
+    import easyocr
+    
 reader = None  # Inițializăm variabila reader
 
 def set_reader(ocr_reader):
     global reader
     reader = ocr_reader
 
+
 # Funcția pentru procesarea unei zone
 def proceseaza_zona(coord, idx, image):
     zona_decupata = image.crop(coord)  # Decupează zona
-    zona_decupata = zona_decupata.resize((zona_decupata.width * 4, zona_decupata.height * 4))  # Mărire imagine
-    zona_np = np.array(zona_decupata)  # Convertește în array NumPy
-    rezultate = reader.readtext(zona_np)  # OCR
-    text = " ".join([rezultat[1] for rezultat in rezultate])  # Extrage textul
+    if idx==15:
+        zona_decupata = zona_decupata.resize((zona_decupata.width * 2, zona_decupata.height * 2))  # Mărire imagine
+    else:
+        zona_decupata = zona_decupata.resize((zona_decupata.width * 3, zona_decupata.height * 3))
+    #save cropped image for debug in debug_media 
+    debug_on = True  # Setează True pentru a activa debug-ul
+    if debug_on==True:
+        debug_media_folder = "debug_media"
+        os.makedirs(debug_media_folder, exist_ok=True)  # Creează folderul debug_media dacă nu există
+        zona_decupata.save(os.path.join(debug_media_folder, f"debug_cropped_{idx}.jpg"))  # Salvează imaginea decupată pentru debug
+        # Mărim imaginea decupată pentru a îmbunătăți OCR-ul
+        zona_decupata = zona_decupata.resize((zona_decupata.width * 3, zona_decupata.height * 3))  # Mărire imagine
+        #save resized image for debug in debug_media folder
+        zona_decupata.save(os.path.join(debug_media_folder, f"debug_resized_{idx}.jpg"))  # Salvează imaginea mărită pentru debug
+    
+    zona_np = np.array(zona_decupata)  # convert in numpy array
+    
+    # Verificăm tipul de reader și folosim metoda corespunzătoare
+    try:
+        if isinstance(reader, EffOCR) and eff_ocr == True :
+            # Folosim EfficientOCR
+            print(f"Folosim EfficientOCR pentru zona {idx}")
+            rezultate = reader.infer(zona_np)
+            text = rezultate if isinstance(rezultate, str) else str(rezultate)
+        else:
+            # Folosim EasyOCR (fallback)
+            print(f"Folosim EasyOCR pentru zona {idx}")
+            rezultate = reader.readtext(zona_np)
+            text = " ".join([rezultat[1] for rezultat in rezultate])  # extract text from results
+    except Exception as e:
+        print(f"Eroare la OCR pentru zona {idx}: {e}")
+        # Fallback la EasyOCR dacă EfficientOCR eșuează
+        try:
+            print(f"Fallback la EasyOCR pentru zona {idx}")
+            rezultate = reader.readtext(zona_np)
+            text = " ".join([rezultat[1] for rezultat in rezultate])
+        except Exception as e2:
+            print(f"Eroare și la EasyOCR pentru zona {idx}: {e2}")
+            text = ""  # Return empty string if both fail
+    
     print(f"OCR text pentru zona {idx}: {text}")  # Afișează textul OCR pentru debug
     return text
 
 # Funcția pentru procesarea fișierelor
 def proceseaza_fisier(image_path, output_folder, coordonate):
+    
     image = Image.open(image_path)  # Încarcă imaginea
     print(f"Procesăm fișierul: {image_path}")  # Debug: Afișăm numele fișierului procesat
 
@@ -34,6 +83,9 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     temp_folder_localitate_med = ""
     temp_folder_localitate_mic = ""
     folder_localitate = ""
+    folder_localitate_mare = ""
+    folder_localitate_med = ""
+    folder_localitate_mic = ""
 
     # Parcurgem coordonatele și procesăm fiecare zonă
     for idx, coord in enumerate(coordonate):
@@ -105,16 +157,28 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     # Creează folderele pentru localitate (mare, mediu, mic)
     create_folder_hierarchy(output_folder, folder_localitate_mare, folder_localitate_med, folder_localitate_mic)
 
-    # Mutăm și redenumim imaginea
+    # Creează calea completă a folderului de destinație
     folder_localitate = os.path.join(output_folder, folder_localitate_mare.strip(), folder_localitate_med.strip(), folder_localitate_mic.strip())
-    noua_cale_imagine = os.path.join(folder_localitate, nume_fisier_nou)
+    
+    # Verifică dacă fișierul există și adaugă număr secvențial dacă e necesar
+    nume_fisier_final = nume_fisier_nou
+    fisier_txt_final = f"{nume} {prenume}.txt"
+    counter = 1
+    
+    while os.path.exists(os.path.join(folder_localitate, nume_fisier_final)) or os.path.exists(os.path.join(folder_localitate, fisier_txt_final)):
+        counter += 1
+        nume_fisier_final = f"{nume} {prenume} {counter}.jpg"
+        fisier_txt_final = f"{nume} {prenume} {counter}.txt"
+    
+    # Mutăm și redenumim imaginea cu numele final
+    noua_cale_imagine = os.path.join(folder_localitate, nume_fisier_final)
     print(f"Mutăm imaginea la: {noua_cale_imagine}")  # Debug
     shutil.move(image_path, noua_cale_imagine)
 
-    # Creează fișierul text
-    fisier_txt = os.path.join(folder_localitate, f"{nume} {prenume}.txt")
+    # Creează fișierul text cu numele final
+    fisier_txt = os.path.join(folder_localitate, fisier_txt_final)
     with open(fisier_txt, 'w', encoding='utf-8') as f:
-        f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{email}\n{phone}\n{doiani}")
+        f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{phone}\n{email}\n{doiani}")
     
     print(f"Fișierul text {fisier_txt} a fost creat.")
 

@@ -58,19 +58,34 @@ def process_fields(text_initial, idx, debug_switch=False):
         print("*" * 50)
     try:
         if idx == 0:  # Prenume (zona 1)
-            text_filtrat = capitalize_words(filtru_nume(text_initial))
+            text_filtrat = filtru_nume(text_initial)
+            cuvinte_corectate = []
+            for word in text_filtrat.split():
+                if word[0] == 'l':
+                    word = 'I' + word[1:]  # înlocuiește 'l' cu 'I' la început
+                cuvinte_corectate.append(word)
+            text_filtrat = ' '.join(cuvinte_corectate)
+            text_filtrat = capitalize_words(text_filtrat)
+            text_filtrat = replace_diacritics(text_filtrat)
             prenume = text_filtrat
-            if prenume[0] == 'L' and prenume[-1] == 'a':
-                    prenume = 'I'+ prenume[1:] #daca prenumele incepe cu L si se termina cu a, inlocuieste L cu I
             if debug_switch:
                 debug_afisare(idx, "Prenume", text_initial, text_filtrat)
         elif idx == 1:  # Nume (zona 2)
-            text_filtrat = capitalize_words(filtru_nume(text_initial))
+            text_filtrat = filtru_nume(text_initial)
+            cuvinte_corectate = []
+            for word in text_filtrat.split():
+                if word[0] == 'l':
+                    word = 'I' + word[1:]
+                cuvinte_corectate.append(word)
+            text_filtrat = ' '.join(cuvinte_corectate)
+            text_filtrat = capitalize_words(text_filtrat)
+            text_filtrat = replace_diacritics(text_filtrat)
             nume = text_filtrat
             if debug_switch:
                 debug_afisare(idx, "Nume", text_initial, text_filtrat)
         elif idx == 2:  # Inițiala tatălui (zona 3)
             text_filtrat = filtru_litere(text_initial)
+            text_filtrat = text_filtrat.upper()
             initiala_tatalui = text_filtrat
             if debug_switch:
                 debug_afisare(idx, "Inițiala tatălui", text_initial, text_filtrat)
@@ -102,8 +117,6 @@ def process_fields(text_initial, idx, debug_switch=False):
             text_filtrat = capitalize_words(text_initial)
             text_filtrat = replace_diacritics(text_filtrat)
             judet = text_filtrat
-            #memoreaza variabila judet ca sa pot sa o accesez si cand idx e 8
-            
             if debug_switch:
                 debug_afisare(idx, "Județ", text_initial, text_filtrat)
         elif idx == 8:  # Localitate (zona 9)
@@ -111,8 +124,9 @@ def process_fields(text_initial, idx, debug_switch=False):
             text_initial = text_initial.replace(',', ' ')  # Înlocuiește virgulele cu spațiu
             text_filtrat = capitalize_words(text_initial)
             text_filtrat = replace_diacritics(text_filtrat)
-            #strip text
             text_filtrat = text_filtrat.strip()
+            if text_filtrat == "Mures Targu":
+                text_filtrat = "Targu Mures"
             localitate = text_filtrat
             if localitate.lower() != "bucuresti":
                 print("am intrat in if")
@@ -142,6 +156,8 @@ def process_fields(text_initial, idx, debug_switch=False):
                     folder_localitate_med = judet
                 if folder_localitate_mare == "UNKNOWN":
                     folder_localitate_mare = judet
+            print(text_initial)
+            print(text_filtrat)
             if debug_switch:
                 debug_afisare(idx, "Localitate", text_initial, text_filtrat)
         elif idx == 9:  # Cod postal (zona 10)
@@ -175,6 +191,8 @@ def process_fields(text_initial, idx, debug_switch=False):
             if debug_switch:
                 debug_afisare(idx, "Telefon", text_initial, text_filtrat)
         elif idx == 15:  # 2 ani (zona 16)
+            #save cropped image in folder_localitate_mic
+            
             if text_initial != "":
                 doiani = "Da"
             else:

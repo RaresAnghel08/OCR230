@@ -1,5 +1,6 @@
 # Coordonatele și zonele corespunzătoare
 coordonate = [
+    # (x1, y1, x2, y2)
     (129, 384, 658, 407),  # Prenume (zona 1)
     (129, 338, 529, 362),  # Nume (zona 2)
     (612, 340, 658, 361),  # Inițiala tatălui (zona 3)
