@@ -16,6 +16,9 @@ def set_reader(ocr_reader):
     global reader
     reader = ocr_reader
 
+global eff_ocr
+eff_ocr = False  # Setează True dacă EfficientOCR este disponibil, altfel False
+
 # Funcția pentru procesarea unei zone
 def proceseaza_zona(coord, idx, image):
     zona_decupata = image.crop(coord)  # Decupează zona
@@ -24,7 +27,7 @@ def proceseaza_zona(coord, idx, image):
     else:
         zona_decupata = zona_decupata.resize((zona_decupata.width * 3, zona_decupata.height * 3))
     #save cropped image for debug in debug_media 
-    debug_on = False  # Setează True pentru a activa debug-ul
+    debug_on = True  # Setează True pentru a activa debug-ul
     if debug_on==True:
         debug_media_folder = "debug_media"
         os.makedirs(debug_media_folder, exist_ok=True)  # Creează folderul debug_media dacă nu există
@@ -38,7 +41,7 @@ def proceseaza_zona(coord, idx, image):
     
     # Verificăm tipul de reader și folosim metoda corespunzătoare
     try:
-        if isinstance(reader, EffOCR):
+        if isinstance(reader, EffOCR) and eff_ocr == True :
             # Folosim EfficientOCR
             print(f"Folosim EfficientOCR pentru zona {idx}")
             rezultate = reader.infer(zona_np)
@@ -64,6 +67,7 @@ def proceseaza_zona(coord, idx, image):
 
 # Funcția pentru procesarea fișierelor
 def proceseaza_fisier(image_path, output_folder, coordonate):
+    
     image = Image.open(image_path)  # Încarcă imaginea
     print(f"Procesăm fișierul: {image_path}")  # Debug: Afișăm numele fișierului procesat
 

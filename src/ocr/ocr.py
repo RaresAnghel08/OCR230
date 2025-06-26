@@ -2,7 +2,7 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 import threading
-# import easyocr
+import easyocr
 try:
     from efficient_ocr import EffOCR
 except ImportError:
@@ -24,8 +24,9 @@ reader = None
 
 def initialize_reader(button_5_state):
     global reader
-    
-    if EffOCR is not None:
+    global eff_ocr
+    eff_ocr = False  # Setează True dacă EfficientOCR este disponibil, altfel False
+    if EffOCR is not None and eff_ocr == True:
         # Folosim EfficientOCR dacă este disponibil
         try:
             if button_5_state == 1:
@@ -66,7 +67,7 @@ def initialize_reader(button_5_state):
             print("Revenind la EasyOCR...")
             reader = None
     
-    if EffOCR is None or reader is None:
+    if EffOCR is None or reader is None and eff_ocr == False:
         # Fallback la EasyOCR
         try:
             if button_5_state == 1:
