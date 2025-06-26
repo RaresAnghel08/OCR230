@@ -162,6 +162,7 @@
   - PyInstaller optimization
   - Reducere dimensiune executable
   - Teste pe diferite versiuni Windows
+  - Rezolvare probleme import dependencies (scipy, pdf2image, efficient-ocr)
 
 - [ ] **Microsoft Store package** - *Deadline: 18 martie 2025* - **INDEPLINIT**
   - MSIX packaging
@@ -231,14 +232,14 @@
 
 ## 📊 SUMMARY
 **Total tasks: 32**
-- ✅ Indeplinite: 25
-- ⏳ Neindeplinite: 6
+- ✅ Indeplinite: 26
+- ⏳ Neindeplinite: 5
 - 🔄 În progres: 0
 
-**Progres general: 80%**
+**Progres general: 81.25%**
 
 ---
 
-*Ultima actualizare: 26 iunie 2025*
+*Ultima actualizare: 27 iunie 2025*
 
 *Următoarea review: 3 iulie 2025*

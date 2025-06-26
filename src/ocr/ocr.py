@@ -12,32 +12,60 @@ global eff_ocr
 eff_ocr = False
 
 def import_ocr_libraries():
+    """Import condițional pentru bibliotecile OCR"""
     global easyocr, EffOCR
     
     try:
         if eff_ocr == True:
-            print("EfficientOCR este activat.")
-            from efficient_ocr import EffOCR
+            print("Încercăm să importăm EfficientOCR...")
+            try:
+                from efficient_ocr import EffOCR
+                print("EfficientOCR importat cu succes.")
+            except ImportError as e:
+                print(f"EfficientOCR nu poate fi importat: {e}")
+                EffOCR = None
         else:
             print("Importăm EasyOCR...")
-            import easyocr
-    except ImportError as e:
-        print(f"Eroare la importul EfficientOCR: {e}")
-        print("EfficientOCR nu este instalat. Folosim EasyOCR ca fallback.")
+            try:
+                import easyocr
+                print("EasyOCR importat cu succes.")
+            except ImportError as e:
+                print(f"EasyOCR nu poate fi importat: {e}")
+                raise ImportError("EasyOCR este necesar pentru funcționarea aplicației")
+    except Exception as e:
+        print(f"Eroare generală la importul bibliotecilor OCR: {e}")
+        print("Încercăm fallback la EasyOCR...")
         try:
             import easyocr
         except ImportError as e2:
-            print(f"Eroare la importul EasyOCR: {e2}")
+            print(f"Eroare critică - nu s-a putut importa nici o bibliotecă OCR: {e2}")
             raise ImportError("Nu s-a putut importa nici EasyOCR, nici EfficientOCR")
         EffOCR = None
+
 from src.processing.process import set_reader, proceseaza_fisier
 from src.utils.utils import update_progress
-try:
-    import pdf2image
-except ImportError:
-    print("pdf2image nu este instalat. Funcționalitatea PDF nu va fi disponibilă.")
-    pdf2image = None
 from PIL import Image
+
+# Variabilă globală pentru pdf2image
+pdf2image = None
+
+def import_pdf2image():
+    """Import condițional pentru pdf2image"""
+    global pdf2image
+    try:
+        import pdf2image as pdf2img
+        pdf2image = pdf2img
+        print("pdf2image importat cu succes.")
+        return True
+    except ImportError as e:
+        print(f"pdf2image nu este disponibil: {e}")
+        print("Funcționalitatea PDF nu va fi disponibilă.")
+        pdf2image = None
+        return False
+    except Exception as e:
+        print(f"Eroare neașteptată la importul pdf2image: {e}")
+        pdf2image = None
+        return False
 # from main import update_progress
 
 # Inițializăm reader-ul cu o valoare implicită pentru GPU
@@ -109,6 +137,9 @@ def initialize_reader(button_5_state):
 def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root):
     # Inițializează reader-ul OCR
     initialize_reader(button_5_state)
+    
+    # Inițializează pdf2image dacă este disponibil
+    import_pdf2image()
 
     # Verificăm dacă folderul de intrare există
     if not os.path.exists(folder_input):
