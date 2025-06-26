@@ -24,7 +24,7 @@ Acest proiect ajută ONG-urile să automatizeze procesul de extragere a datelor 
    ```bash
    git clone https://github.com/RaresAnghel08/f230.git
 
-2. Ruleaaz comanda 
+2. Rulează comanda 
    pip install -r requirements.txt
 
 3. Copiaza toate pozele cu formularele in folderul fisiere
