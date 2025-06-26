@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 import os
-
+import scipy
 class SplashScreen:
     def __init__(self, parent, callback, splash_image_path):
         self.parent = parent
