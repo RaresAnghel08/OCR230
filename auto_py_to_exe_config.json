@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "D:/GITHUB/f230/main.py"
+   "value": "C:/Users/Rares/Documents/GitHub/infoeducatie/OCR230_infoeducatie/main.py"
   },
   {
    "optionDest": "onefile",
@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "D:/GITHUB/f230/Assets/favicon.ico"
+   "value": "C:/Users/Rares/Documents/GitHub/infoeducatie/OCR230_infoeducatie/Assets/favicon.ico"
   },
   {
    "optionDest": "name",
@@ -59,11 +59,15 @@
   },
   {
    "optionDest": "datas",
-   "value": "D:/GITHUB/f230/Assets;Assets/"
+   "value": "C:/Users/Rares/Documents/GitHub/infoeducatie/OCR230_infoeducatie/models;models/"
   },
   {
    "optionDest": "datas",
-   "value": "D:/GITHUB/f230/src;src/"
+   "value": "C:/Users/Rares/Documents/GitHub/infoeducatie/OCR230_infoeducatie/Assets;Assets/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/Rares/Documents/GitHub/infoeducatie/OCR230_infoeducatie/src;src/"
   }
  ],
  "nonPyinstallerOptions": {
