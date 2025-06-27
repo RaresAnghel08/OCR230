@@ -64,10 +64,6 @@
   {
    "optionDest": "datas",
    "value": "D:/GITHUB/infoeducatie/OCR230_infoeducatie/src;src/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "D:/GITHUB/infoeducatie/OCR230_infoeducatie/hooks;hooks/"
   }
  ],
  "nonPyinstallerOptions": {
