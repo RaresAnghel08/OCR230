@@ -52,9 +52,16 @@ class ExcelManager:
             data['2_Ani'] = lines[7].strip() if len(lines) > 7 else ''  # doiani este pe poziția 7 (index)
             
             # Informații suplimentare (incluse în Excel)
-            # Telefon - ne asigurăm că este tratat ca string
+            # Telefon - păstrăm întotdeauna ca string pentru a conserva zero-urile de la început
             telefon_raw = lines[5].strip() if len(lines) > 5 else ''
-            data['Telefon'] = str(telefon_raw).strip() if telefon_raw else ''
+            if telefon_raw:
+                # Eliminăm doar .0 de la sfârșit dacă există, dar păstrăm zero-urile de la început
+                telefon_clean = str(telefon_raw).strip()
+                if telefon_clean.endswith('.0'):
+                    telefon_clean = telefon_clean[:-2]  # Eliminăm doar .0 de la sfârșit
+                data['Telefon'] = telefon_clean
+            else:
+                data['Telefon'] = ''
             
             data['Email'] = lines[6].strip() if len(lines) > 6 else ''
             
@@ -212,6 +219,8 @@ class ExcelManager:
                 for idx, col_name in enumerate(df.columns, 1):
                     if col_name in columns_to_format:
                         columns_to_format[col_name] = idx
+                        
+                print(f"Debug: Coloane de formatat găsite: {columns_to_format}")
                 
                 # Formatăm coloanele găsite
                 for col_name, col_index in columns_to_format.items():
@@ -234,8 +243,12 @@ class ExcelManager:
                                         cell.value = str(int(float(original_value)))
                                     except:
                                         cell.value = original_value
+                                # Pentru telefon, eliminăm .0 dacă există, dar păstrăm zero-urile de la început  
+                                elif col_name == 'Telefon' and original_value.endswith('.0'):
+                                    # Eliminăm doar .0 de la sfârșit, păstrând zero-urile de la început
+                                    cell.value = original_value[:-2]
                                 else:
-                                    # Pentru toate celelalte, inclusos telefon, îl păstrăm ca string
+                                    # Pentru toate celelalte, îl păstrăm ca string
                                     cell.value = original_value
                 
                 # Ajustăm lățimea coloanelor
@@ -408,6 +421,8 @@ class ExcelManager:
                     if col_name in columns_to_format:
                         columns_to_format[col_name] = idx
                 
+                print(f"Debug: Coloane de formatat găsite în add_single_record: {columns_to_format}")
+                
                 # Formatăm coloanele găsite
                 for col_name, col_index in columns_to_format.items():
                     if col_index:
@@ -429,8 +444,12 @@ class ExcelManager:
                                         cell.value = str(int(float(original_value)))
                                     except:
                                         cell.value = original_value
+                                # Pentru telefon, eliminăm .0 dacă există, dar păstrăm zero-urile de la început
+                                elif col_name == 'Telefon' and original_value.endswith('.0'):
+                                    # Eliminăm doar .0 de la sfârșit, păstrând zero-urile de la început
+                                    cell.value = original_value[:-2]
                                 else:
-                                    # Pentru toate celelalte, inclusos telefon, îl păstrăm ca string
+                                    # Pentru toate celelalte, îl păstrăm ca string
                                     cell.value = original_value
                 
                 # Ajustăm lățimea coloanelor
