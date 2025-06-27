@@ -52,7 +52,10 @@ class ExcelManager:
             data['2_Ani'] = lines[7].strip() if len(lines) > 7 else ''  # doiani este pe poziția 7 (index)
             
             # Informații suplimentare (incluse în Excel)
-            data['Telefon'] = lines[5].strip() if len(lines) > 5 else ''
+            # Telefon - ne asigurăm că este tratat ca string
+            telefon_raw = lines[5].strip() if len(lines) > 5 else ''
+            data['Telefon'] = str(telefon_raw).strip() if telefon_raw else ''
+            
             data['Email'] = lines[6].strip() if len(lines) > 6 else ''
             
             # ANAF de care aparțin - folosim folder_localitate_mic (ultimul folder din ierarhie)
@@ -214,17 +217,26 @@ class ExcelManager:
                 for col_name, col_index in columns_to_format.items():
                     if col_index:
                         col_letter = get_column_letter(col_index)
-                        # Formatăm toată coloana ca text
-                        for row in range(2, len(df) + 2):  # Începem de la rândul 2 (după header)
+                        # Formatăm întreaga coloană ca text (inclusiv header-ul)
+                        for row in range(1, len(df) + 2):  # De la header (1) până la ultimul rând
                             cell = worksheet[f'{col_letter}{row}']
                             cell.number_format = '@'  # Format text
-                            # Forțăm valoarea să fie string
-                            if cell.value and str(cell.value).replace('.', '').replace('+', '').replace('-', '').replace(' ', '').isdigit():
-                                # Pentru CNP convertim din notație științifică dacă e necesar
-                                if col_name == 'CNP' and '.' in str(cell.value):
-                                    cell.value = str(int(float(cell.value)))
+                            
+                            # Pentru datele din rândurile de conținut (nu header)
+                            if row > 1 and cell.value is not None:
+                                # Convertim totul la string, indiferent de conținut
+                                original_value = str(cell.value).strip()
+                                
+                                # Pentru CNP, dacă este în notație științifică, îl convertim
+                                if col_name == 'CNP' and ('E+' in original_value or 'e+' in original_value or '.' in original_value):
+                                    try:
+                                        # Încercăm să convertim din notație științifică
+                                        cell.value = str(int(float(original_value)))
+                                    except:
+                                        cell.value = original_value
                                 else:
-                                    cell.value = str(cell.value)
+                                    # Pentru toate celelalte, inclusos telefon, îl păstrăm ca string
+                                    cell.value = original_value
                 
                 # Ajustăm lățimea coloanelor
                 for column in worksheet.columns:
@@ -400,17 +412,26 @@ class ExcelManager:
                 for col_name, col_index in columns_to_format.items():
                     if col_index:
                         col_letter = get_column_letter(col_index)
-                        # Formatăm toată coloana ca text
-                        for row in range(2, len(df_combined) + 2):  # Începem de la rândul 2 (după header)
+                        # Formatăm întreaga coloană ca text (inclusiv header-ul)
+                        for row in range(1, len(df_combined) + 2):  # De la header (1) până la ultimul rând
                             cell = worksheet[f'{col_letter}{row}']
                             cell.number_format = '@'  # Format text
-                            # Forțăm valoarea să fie string
-                            if cell.value and str(cell.value).replace('.', '').replace('+', '').replace('-', '').replace(' ', '').isdigit():
-                                # Pentru CNP convertim din notație științifică dacă e necesar
-                                if col_name == 'CNP' and '.' in str(cell.value):
-                                    cell.value = str(int(float(cell.value)))
+                            
+                            # Pentru datele din rândurile de conținut (nu header)
+                            if row > 1 and cell.value is not None:
+                                # Convertim totul la string, indiferent de conținut
+                                original_value = str(cell.value).strip()
+                                
+                                # Pentru CNP, dacă este în notație științifică, îl convertim
+                                if col_name == 'CNP' and ('E+' in original_value or 'e+' in original_value or '.' in original_value):
+                                    try:
+                                        # Încercăm să convertim din notație științifică
+                                        cell.value = str(int(float(original_value)))
+                                    except:
+                                        cell.value = original_value
                                 else:
-                                    cell.value = str(cell.value)
+                                    # Pentru toate celelalte, inclusos telefon, îl păstrăm ca string
+                                    cell.value = original_value
                 
                 # Ajustăm lățimea coloanelor
                 for column in worksheet.columns:
