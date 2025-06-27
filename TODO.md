@@ -1,6 +1,56 @@
 # TODO List - Proiect OCR Form 230
+
 ## Data actualizare: 26 iunie 2025
 
+---
+
+## ✅ PROBLEMĂ REZOLVATĂ - STRUCTURĂ FOLDERE
+**Data rezolvare: 26 iunie 2025**
+
+### Problemă identificată și rezolvată:
+- ✅ **Corectare structură foldere pentru localități necunoscute** - **REZOLVAT**
+  - **Problemă**: Pentru localități necunoscute (nu găsite în ANAF), se crea structura `JUDET/JUDET/JUDET/persoane`
+  - **Soluție**: Modificat logica în `process_fields.py` să seteze doar `folder_localitate_mare` pentru localități necunoscute
+  - **Rezultat**: Acum se creează doar `JUDET/persoane` pentru localități necunoscute
+  - **Fișiere modificate**: 
+    - `src/processing/process_fields.py` - logica de determinare foldere
+    - `src/processing/process.py` - funcția `create_folder_hierarchy` și construirea căii
+
+- ✅ **Optimizare output console - eliminare mesaje repetitive** - **REZOLVAT**
+  - **Problemă**: Mesajele de eroare OCR și debug se repetau pentru fiecare zonă procesată
+  - **Soluție**: 
+    - Înlocuit `isinstance(reader, EffOCR)` cu `hasattr(reader, 'infer')` pentru a evita eroarea `name 'EffOCR' is not defined`
+    - Adăugat variabilă globală `ocr_type_announced` pentru a afișa tipul OCR doar o dată per fișier
+    - Comentat/redus mesajele de debug care se repetau frecvent
+  - **Rezultat**: Output-ul consolei este mult mai curat și ușor de citit
+  - **Fișiere modificate**: `src/processing/process.py`
+
+- ✅ **Îmbunătățire Excel - eliminare extensie din calea fișierului** - **REZOLVAT**
+  - **Problemă**: În Excel, coloana `Cale_Fisier` afișa calea cu extensia `.txt`
+  - **Soluție**: Folosit `os.path.splitext()` pentru a elimina extensia din calea relativă
+  - **Rezultat**: În Excel apare `Anaf\nume` în loc de `Anaf\nume.txt`
+  - **Fișiere modificate**: `src/excel/excel_manager.py`
+
+- ✅ **Actualizare Excel incrementală - în timp real** - **REZOLVAT**
+  - **Problemă**: Excel-ul se crea doar la sfârșitul procesării tuturor fișierelor
+  - **Soluție**: Implementat actualizare incrementală - fiecare formular procesat se adaugă imediat în Excel
+  - **Rezultat**: Excel-ul se actualizează după fiecare formular procesat, oferind progres în timp real
+  - **Avantaje**: 
+    - Progres vizibil în timp real
+    - Datele sunt salvate imediat (în caz de întrerupere, nu se pierd)
+    - Performanță mai bună pentru volume mari de date
+  - **Fișiere modificate**: 
+    - `src/excel/excel_manager.py` - adăugată `add_single_record_to_excel()`
+    - `src/processing/process.py` - integrare actualizare Excel după fiecare .txt creat
+    - `src/ocr/ocr.py` - eliminat apelul la `create_excel_summary` de la final
+    
+### Îmbunătățiri Excel implementate:
+- ✅ **Export Excel cu toate datele personale** - **IMPLEMENTAT**
+  - Generare automată fișier Excel cu sumar pentru toate persoanele
+  - Căutare recursivă în toate subfolderele pentru fișiere .txt
+  - Ordine corectă coloane: Nume, Inițiala Tatălui, Prenume, CNP, Adresa, ANAF de care aparțin, Telefon, Email, 2 Ani
+  - Extragere robustă de date din fișierele .txt generate de sistem
+  - **Fișiere create**: `src/excel/excel_manager.py`
 ---
 
 ## 🎨 INTERFAȚĂ UTILIZATOR (UI/UX)
@@ -152,6 +202,21 @@
   - Aplicare pentru ambele fișiere (.jpg și .txt)
   - Prevenire suprascriere accidentală
 
+- [ ] **Deschidere automată folder output** - *Deadline: 27 iunie 2025* - **INDEPLINIT**
+  - Deschidere automată a folderului de ieșire după finalizarea procesării
+  - Folosire os.startfile() pentru Windows
+  - Verificare existență folder înainte de deschidere
+  - Îmbunătățire experiență utilizator
+
+- [ ] **Creare fișier Excel cu date centralizate** - *Deadline: 27 iunie 2025* - **ÎMBUNĂTĂȚIT**
+  - Creare automată fișier Excel cu toate datele persoanelor procesate din toate subfolderele
+  - Extragere inteligentă informații: nume separat, inițiala tatălui, prenume, CNP, adresă
+  - Determinare automată ANAF de apartenență pe baza folderului localitate mic
+  - Organizare coloane în ordinea: Nume | Inițiala Tatălui | Prenume | CNP | Adresă | ANAF Aparțin | Telefon | Email | 2 Ani
+  - Căutare recursivă în toate folderele și subfolderele pentru fișiere .txt
+  - Formatare profesională Excel cu ajustare automată coloane
+  - Integrare completă cu datele din process_fields pentru consistență
+
 ---
 
 ## 🚀 DEPLOYMENT ȘI DISTRIBUȚIE
@@ -162,6 +227,7 @@
   - PyInstaller optimization
   - Reducere dimensiune executable
   - Teste pe diferite versiuni Windows
+  - Rezolvare probleme import dependencies (scipy, pdf2image, efficient-ocr)
 
 - [ ] **Microsoft Store package** - *Deadline: 18 martie 2025* - **INDEPLINIT**
   - MSIX packaging
@@ -231,14 +297,14 @@
 
 ## 📊 SUMMARY
 **Total tasks: 32**
-- ✅ Indeplinite: 25
-- ⏳ Neindeplinite: 6
+- ✅ Indeplinite: 26
+- ⏳ Neindeplinite: 5
 - 🔄 În progres: 0
 
-**Progres general: 80%**
+**Progres general: 81.25%**
 
 ---
 
-*Ultima actualizare: 26 iunie 2025*
+*Ultima actualizare: 27 iunie 2025*
 
 *Următoarea review: 3 iulie 2025*
