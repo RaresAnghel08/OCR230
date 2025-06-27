@@ -29,6 +29,7 @@ def filtru_litere(text):
 
 def filtru_nume(text):
     text = text.replace(" @", "@")  # Elimină spațiul din fața simbolului @
+    text = text.replace(".@", "@")  # Elimină punctul din fața simbolului @
     text = text.replace('-', ' ')  # Înlocuiește cratimele cu spațiu
     text = text.replace(',', ' ')  # Înlocuiește virgulele cu spațiu
     #replace diacritics
@@ -41,4 +42,3 @@ def filtru_nume(text):
 def capitalize_words(text):
     return ' '.join([word.capitalize() for word in text.split()])
 
-#print(filtru_nume("Popesăcu Ion"))
