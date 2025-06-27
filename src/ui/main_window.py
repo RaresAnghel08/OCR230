@@ -349,15 +349,6 @@ def run_main_window():
         height=46.0
     )
     
-    # Text overlay pentru buton (pentru a afișa START/STOP)
-    start_button_text = canvas.create_text(
-        401.0,  # Centrul butonului pe X
-        510.0,  # Centrul butonului pe Y
-        anchor="center",
-        text="START PROCESARE",
-        fill="#FFFFFF",
-        font=("Inter", 16, "bold")
-    )
     progress_bar = None
     # Definirea Progress Bar-ului
     def create_custom_progress_bar(root):

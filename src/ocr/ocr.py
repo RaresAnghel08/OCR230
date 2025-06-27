@@ -240,6 +240,11 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
         # open output folder
         if os.path.exists(folder_output):
             os.startfile(folder_output)
+            
+        # open excel file if it exists
+        excel_path = os.path.join(folder_output, "Date_Persoane_OCR.xlsx")
+        if os.path.exists(excel_path):
+            os.startfile(excel_path)
         # Call the reset progress callback after processing is complete
         reset_progress_callback()
         
