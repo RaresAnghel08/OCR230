@@ -152,6 +152,12 @@
   - Aplicare pentru ambele fișiere (.jpg și .txt)
   - Prevenire suprascriere accidentală
 
+- [ ] **Deschidere automată folder output** - *Deadline: 27 iunie 2025* - **INDEPLINIT**
+  - Deschidere automată a folderului de ieșire după finalizarea procesării
+  - Folosire os.startfile() pentru Windows
+  - Verificare existență folder înainte de deschidere
+  - Îmbunătățire experiență utilizator
+
 ---
 
 ## 🚀 DEPLOYMENT ȘI DISTRIBUȚIE

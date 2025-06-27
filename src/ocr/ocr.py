@@ -196,8 +196,13 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
         print(f"Eroare în timpul procesării: {e}")
         messagebox.showerror("Eroare", f"Eroare în timpul procesării: {e}")
     finally:
+        # open output folder
+        if os.path.exists(folder_output):
+            os.startfile(folder_output)
         # Call the reset progress callback after processing is complete
         reset_progress_callback()
+        
+    
 
 '''
 def run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback):
