@@ -11,6 +11,10 @@ EffOCR = None
 global eff_ocr
 eff_ocr = False
 
+# Variabilă globală pentru a controla procesarea
+processing_active = False
+stop_processing = False
+
 def import_ocr_libraries():
     """Import condițional pentru bibliotecile OCR"""
     global easyocr, EffOCR
@@ -44,6 +48,7 @@ def import_ocr_libraries():
 
 from src.processing.process import set_reader, proceseaza_fisier
 from src.utils.utils import update_progress
+# from src.excel.excel_manager import create_excel_summary  # Nu mai este necesar, se folosește actualizare incrementală
 from PIL import Image
 
 # Variabilă globală pentru pdf2image
@@ -134,68 +139,104 @@ def initialize_reader(button_5_state):
     
     set_reader(reader)  # set reader-ul in process.py
 
-def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root):
-    # Inițializează reader-ul OCR
-    initialize_reader(button_5_state)
+def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None):
+    global processing_active, stop_processing
     
-    # Inițializează pdf2image dacă este disponibil
-    import_pdf2image()
-
-    # Verificăm dacă folderul de intrare există
-    if not os.path.exists(folder_input):
-        messagebox.showerror("Eroare", f"Folderul de intrare '{folder_input}' nu există!")
-        return
-
-    # Verificăm dacă folderul de ieșire există, dacă nu, îl creăm
-    if not os.path.exists(folder_output):
-        os.makedirs(folder_output)
-
-    # Procesăm PDF-urile dacă pdf2image este disponibil
-    if pdf2image is not None:
-        # Luăm fiecare PDF și îl convertim în imagini
-        pdf_files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith('.pdf')]
-
-        for pdf_file in pdf_files:
-            try:
-                images = pdf2image.convert_from_path(pdf_file, poppler_path=None) # teoretic nu deschide cmd
-                # images = pdf2image.convert_from_path(pdf_file) # deschide cmd
-                for i, image in enumerate(images):
-                    # Redimensionăm imaginea la dimensiunea A4
-                    image = image.resize((1241, 1754), Image.LANCZOS)
-                    image_path = os.path.join(folder_input, f"{os.path.splitext(os.path.basename(pdf_file))[0]}_page_{i + 1}.png")
-                    image.save(image_path)
-                # Ștergem fișierul PDF
-                os.remove(pdf_file)
-            except Exception as e:
-                print(f"Eroare la procesarea PDF {pdf_file}: {e}")
-    else:
-        print("PDF processing nu este disponibil. pdf2image nu este instalat.")
+    # Setăm starea de procesare
+    processing_active = True
+    stop_processing = False
     
-    # Obținem lista de fișiere din folderul de intrare
-    files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith(('jpg', 'jpeg', 'png'))]
-
-    # Verificăm dacă sunt fișiere de procesat
-    if not files:
-        messagebox.showinfo("Info", "Nu au fost găsite fișiere de procesat în folderul de intrare.")
-        return
-
+    # Actualizăm butonul la starea de procesare (Stop)
+    if update_button_callback:
+        update_button_callback(True)
+    
     try:
+        # Inițializează reader-ul OCR
+        initialize_reader(button_5_state)
+        
+        # Inițializează pdf2image dacă este disponibil
+        import_pdf2image()
+
+        # Verificăm dacă folderul de intrare există
+        if not os.path.exists(folder_input):
+            messagebox.showerror("Eroare", f"Folderul de intrare '{folder_input}' nu există!")
+            return
+
+        # Verificăm dacă folderul de ieșire există, dacă nu, îl creăm
+        if not os.path.exists(folder_output):
+            os.makedirs(folder_output)
+
+        # Procesăm PDF-urile dacă pdf2image este disponibil
+        if pdf2image is not None:
+            # Luăm fiecare PDF și îl convertim în imagini
+            pdf_files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith('.pdf')]
+
+            for pdf_file in pdf_files:
+                if stop_processing:  # Verificăm dacă trebuie să oprim
+                    print("Procesarea a fost oprită de utilizator.")
+                    return
+                try:
+                    images = pdf2image.convert_from_path(pdf_file, poppler_path=None) # teoretic nu deschide cmd
+                    # images = pdf2image.convert_from_path(pdf_file) # deschide cmd
+                    for i, image in enumerate(images):
+                        # Redimensionăm imaginea la dimensiunea A4
+                        image = image.resize((1241, 1754), Image.LANCZOS)
+                        image_path = os.path.join(folder_input, f"{os.path.splitext(os.path.basename(pdf_file))[0]}_page_{i + 1}.png")
+                        image.save(image_path)
+                    # Ștergem fișierul PDF
+                    os.remove(pdf_file)
+                except Exception as e:
+                    print(f"Eroare la procesarea PDF {pdf_file}: {e}")
+        else:
+            print("PDF processing nu este disponibil. pdf2image nu este instalat.")
+        
+        # Obținem lista de fișiere din folderul de intrare
+        files = [os.path.join(folder_input, f) for f in os.listdir(folder_input) if f.lower().endswith(('jpg', 'jpeg', 'png'))]
+
+        # Verificăm dacă sunt fișiere de procesat
+        if not files:
+            messagebox.showinfo("Info", "Nu au fost găsite fișiere de procesat în folderul de intrare.")
+            return
+
         total_files = len(files)
         
         for i, file in enumerate(files):
+            # Verificăm dacă trebuie să oprim procesarea
+            if stop_processing:
+                print("Procesarea a fost oprită de utilizator.")
+                messagebox.showinfo("Oprit", f"Procesarea a fost oprită. Au fost procesate {i} din {total_files} fișiere.")
+                return
+                
             # Procesăm fiecare fișier
             proceseaza_fisier(file, folder_output, coordonate)
             print(f"Procesăm fișierul: {file}")
 
             # Actualizăm progress bar-ul
-            update_progress(progress_bar, i + 1, total_files,root)
+            update_progress(progress_bar, i + 1, total_files, root)
 
-        # Afișăm un mesaj de succes
-        messagebox.showinfo("Succes", "Procesarea fișierelor a fost finalizată.")
+        # Afișăm un mesaj de succes doar dacă nu am fost opriți
+        if not stop_processing:
+            excel_path = os.path.join(folder_output, "Date_Persoane_OCR.xlsx")
+            if os.path.exists(excel_path):
+                messagebox.showinfo("Succes", f"Procesarea fișierelor a fost finalizată.\nFișierul Excel a fost actualizat: {excel_path}")
+            else:
+                messagebox.showinfo("Succes", "Procesarea fișierelor a fost finalizată.")
+        
+        # Nu mai este necesar să creăm Excel-ul la final, se actualizează incremental
+        # print("Excel-ul a fost actualizat incremental pe parcursul procesării.")
+            
     except Exception as e:
         print(f"Eroare în timpul procesării: {e}")
         messagebox.showerror("Eroare", f"Eroare în timpul procesării: {e}")
     finally:
+        # Resetăm starea de procesare
+        processing_active = False
+        stop_processing = False
+        
+        # Actualizăm butonul înapoi la starea inițială (Start)
+        if update_button_callback:
+            update_button_callback(False)
+        
         # open output folder
         if os.path.exists(folder_output):
             os.startfile(folder_output)
@@ -209,5 +250,16 @@ def run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, 
     threading.Thread(target=lambda: run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback)).start()
 '''
 
-def run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root):
-    threading.Thread(target=lambda: run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root)).start()
+def run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None):
+    threading.Thread(target=lambda: run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback)).start()
+
+def stop_current_processing():
+    """Oprește procesarea curentă"""
+    global stop_processing
+    stop_processing = True
+    print("Solicitare de oprire a procesării...")
+
+def is_processing_active():
+    """Returnează True dacă procesarea este activă"""
+    global processing_active
+    return processing_active

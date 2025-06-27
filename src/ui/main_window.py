@@ -3,7 +3,7 @@ import webbrowser
 from tkinter import Tk, Canvas, Button, PhotoImage
 from tkinter import filedialog
 import os
-from src.ocr.ocr import run_processing_threaded
+from src.ocr.ocr import run_processing_threaded, is_processing_active, stop_current_processing
 from src.ui.splash import show_splash
 from ..processing.coordonate import coordonate
 from tkinter.ttk import Progressbar
@@ -298,7 +298,24 @@ def run_main_window():
         height=28.0
     )
 
+    # Funcție pentru actualizarea stării butonului
+    def update_button_state(is_processing):
+        """Actualizează imaginea butonului în funcție de starea de procesare"""
+        if is_processing:
+            Button_start.config(image=button_image_stop)
+        else:
+            Button_start.config(image=button_image_start)
+
     def start_processing():
+        # Verificăm dacă procesarea este deja activă
+        if is_processing_active():
+            # Oprim procesarea
+            stop_current_processing()
+            # Resetăm butonul imediat
+            Button_start.config(image=button_image_start)
+            print("Procesarea a fost oprită de utilizator.")
+            return
+        
         # Verifică dacă folderul de intrare este selectat
         if not folder_input:
             messagebox.showwarning("Atenție", "Te rugăm să selectezi un folder de intrare.")
@@ -309,9 +326,13 @@ def run_main_window():
             
         # Dacă ambele foldere sunt selectate, rulează procesarea
         else:
-            run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress, root)
+            # Rulăm procesarea în thread separat
+            run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress, root, update_button_state)
     # Imagine pentru butonul Start (Button_start)
     button_image_start = PhotoImage(file=relative_to_assets("button_start.png"))
+    # Pentru butonul Stop, folosim aceeași imagine (poate fi înlocuită cu o imagine specifică)
+    button_image_stop = button_image_start  # Momentan folosim aceeași imagine
+        
     Button_start = Button(
         image=button_image_start,
         borderwidth=0,
@@ -326,6 +347,16 @@ def run_main_window():
         y=487.0,
         width=746.0,
         height=46.0
+    )
+    
+    # Text overlay pentru buton (pentru a afișa START/STOP)
+    start_button_text = canvas.create_text(
+        401.0,  # Centrul butonului pe X
+        510.0,  # Centrul butonului pe Y
+        anchor="center",
+        text="START PROCESARE",
+        fill="#FFFFFF",
+        font=("Inter", 16, "bold")
     )
     progress_bar = None
     # Definirea Progress Bar-ului
@@ -385,6 +416,9 @@ def run_main_window():
 
         # Asigurăm că progresul este exact 0 după tranziție
         progress_bar['value'] = 0
+        
+        # Resetăm butonul la starea inițială (Start)
+        Button_start.config(image=button_image_start)
 
     canvas.create_text(
         277.0,
