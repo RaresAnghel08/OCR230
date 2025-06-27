@@ -39,7 +39,7 @@ def run_main_window():
         # Setăm dimensiunea și poziția ferestrei
         root.geometry(f"{window_width}x{window_height}+{win_pos_right}+{win_pos_down}")
         root.deiconify()
-        root.title("F230-OCR")
+        root.title("OCR230")  # Setăm titlul ferestrei
         root.geometry("800x600")
         root.configure(bg="#D9D9D9")
         # Fundal și icon
