@@ -11,3 +11,5 @@ pyinstaller
 scipy==1.15.0
 openpyxl
 pandas
+matplotlib
+reportlab
