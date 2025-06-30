@@ -31,10 +31,16 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 - 🔄 Suport pentru batch processing (formulare multiple)
 - 📋 Export incremental în Excel cu formatare corectă (CNP, telefon ca text)
 - ⏯️ Funcționalitate Start/Stop pentru control procesare
-- 🚫 Gestionare duplicate în Excel
+- 🚫 Gestionare duplicate în Excel cu detectare automată
 - ⚡ Interfață intuitivă cu buton pentru accelerație grafică GPU/CPU
 - 🎨 Splash screen cu animație de încărcare
-- 📂 Deschidere automată folder rezultate și Excel la finalizare
+- 📂 Deschidere automată folder rezultate, Excel și PDF la finalizare
+- ✅ **Validare CNP automată** conform algoritmului oficial românesc
+- 🔄 **Detectare duplicate** pe baza CNP-ului cu raportare detaliată
+- 📋 **Export CSV automat** pentru compatibilitate cu alte sisteme
+- 📄 **Rapoarte PDF** cu statistici, grafice și analize detaliate
+- 📊 **Fereastra de rapoarte** cu statistici în timp real după procesare
+- 🔍 **Validare email și telefon** cu detectare automată a formatelor incorecte
 
 ## 📈 Performanță
 
@@ -47,12 +53,12 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 
 ## 🔧 Detalii tehnice
 
-### 📊 Structura codului (2,672 linii Python):
-- **UI & UX**: 446 linii (17%) - Interfață și experiență utilizator
-- **Excel & Export**: 474 linii (18%) - Gestionare export date
-- **OCR & Processing**: 673 linii (25%) - Logica principală de procesare
-- **ANAF Modules**: 873 linii (33%) - Validare teritorială
-- **Utilities**: 204 linii (7%) - Funcții auxiliare
+### 📊 Structura codului (3,493 linii Python):
+- **UI & UX**: ~580 linii (17%) - Interfață și experiență utilizator
+- **Excel & Export**: ~700 linii (20%) - Gestionare export date și validare
+- **OCR & Processing**: ~750 linii (21%) - Logica principală de procesare
+- **ANAF Modules**: ~950 linii (27%) - Validare teritorială
+- **Utilities & Validation**: ~513 linii (15%) - Funcții auxiliare și validare CNP
 
 ### 📁 Algoritm procesare:
 1. **Conversie PDF → PNG** (dacă e cazul) cu pdf2image
@@ -60,14 +66,19 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 3. **Extragere text** din zone predefinite (coordonate.py)
 4. **Filtrare și curățare text** (filtre.py)
 5. **Separare câmpuri individuale** (process_fields.py)
-6. **Validare și determinare ANAF** (anaf/*.py)
-7. **Creare structură foldere**
-8. **Export TXT + adăugare incrementală în Excel**
-9. **Actualizare progress bar**
+6. **Validare CNP, email, telefon** cu algoritmi specifici
+7. **Detectare duplicate** pe baza CNP-ului
+8. **Validare și determinare ANAF** (anaf/*.py)
+9. **Creare structură foldere**
+10. **Export TXT + adăugare incrementală în Excel**
+11. **Generare automată CSV și PDF** cu statistici
+12. **Actualizare progress bar și rapoarte**
 
 ### 💾 Format fișiere output:
 - **TXT**: `nume\ninitiala_tatalui\nprenume\ncnp\nadresa\ntelefon\nemail\n2_ani`
-- **Excel**: Coloane ordonate cu formatare text pentru CNP și telefon
+- **Excel**: Coloane ordonate cu formatare text pentru CNP și telefon, validare automată
+- **CSV**: Export automat pentru compatibilitate cu alte sisteme (UTF-8 BOM, separator `;`)
+- **PDF**: Raport complet cu statistici, grafice, analize și detectare duplicate
 - **Structură foldere**: `output/ANAF_REGION/persoane/`
 
 ## 🔒 Securitate
@@ -79,6 +90,11 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 - 🔐 **Respectarea principiilor GDPR** – nicio transmitere externă a datelor
 - 🔍 **Verificare integritate date** înainte de export
 - 🚫 **Protecție împotriva overwrite** accidental în Excel
+- ✅ **Validare CNP** conform algoritmului oficial cu cifra de control
+- 📞 **Validare telefon** cu detectare formate românești standard
+- 📧 **Validare email** cu regex pentru formate standard
+- 🔄 **Detectare duplicate** automată cu raportare detaliată
+- 📊 **Backup automat** al datelor în multiple formate (Excel, CSV, PDF)
 
 ## 🧪 Testare
 
@@ -88,6 +104,11 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 - **Testare performanță**: GPU vs CPU, formulare multiple
 - **Securitate**: validare input + rezistență la fișiere greșite
 - **Bug tracking**: prin GitHub Issues + TODO.md actualizat
+- **Validare CNP**: testare cu CNP-uri valide și invalide conform algoritmului oficial
+- **Detectare duplicate**: verificare precisie identificare CNP-uri duplicate
+- **Export multiple formate**: testare consistență date între Excel, CSV și PDF
+- **Rapoarte PDF**: verificare corectitudine statistici și grafice
+- **UI/UX**: testare fereastra de rapoarte și deschidere automată fișiere
 - **Testare interfață**: toate butoanele și funcționalitățile
 
 ## 🔁 Versionare și dezvoltare
