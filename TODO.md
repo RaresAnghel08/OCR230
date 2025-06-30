@@ -1,6 +1,72 @@
 # TODO List - Proiect OCR Form 230
 
-## Data actualizare: 26 iunie 2025
+## Data actualizare: 30 iunie 2025
+
+---
+
+## ✅ FUNCȚIONALITĂȚI NOI IMPLEMENTATE - IUNIE 2025
+**Data implementare: 30 iunie 2025**
+
+### 🔍 Validare și Verificare Date
+- ✅ **Validare CNP automată** - **IMPLEMENTAT**
+  - Algoritm conform standardului oficial românesc
+  - Verificare cifră de control și validitate format
+  - Detectare CNP-uri incomplete sau eronate
+  - **Fișiere**: `src/excel/excel_manager.py::validate_cnp()`
+
+- ✅ **Detectare duplicate pe baza CNP** - **IMPLEMENTAT**
+  - Identificare automată CNP-uri duplicate în baza de date
+  - Raportare detaliată cu informații despre fiecare duplicat
+  - Grupare duplicate cu contorizare
+  - **Fișiere**: `src/excel/excel_manager.py::detect_duplicate_entries()`
+
+- ✅ **Validare telefon și email** - **IMPLEMENTAT**
+  - Verificare format telefon românesc (07xx, 02xx, 03xx)
+  - Validare format email cu regex standard
+  - Raportare automată erori de format
+  - **Fișiere**: `src/excel/excel_manager.py::validate_phone(), validate_email()`
+
+### 📊 Export și Raportare
+- ✅ **Export CSV automat** - **IMPLEMENTAT**
+  - Generare automată fișier CSV pentru compatibilitate
+  - Encoding UTF-8 BOM pentru Excel
+  - Separator `;` pentru standard european
+  - Salvare în folderul de output
+  - **Fișiere**: `src/excel/excel_manager.py::export_to_csv()`
+
+- ✅ **Rapoarte PDF cu statistici** - **IMPLEMENTAT**
+  - Generare automată raport PDF complet
+  - Statistici generale (total înregistrări, CNP valide/invalide, duplicate)
+  - Grafice interactive (distribuție 1 an vs 2 ani, top ANAF)
+  - Tabel distribuție pe județe/ANAF
+  - Salvare în folderul de output ca `Raport_OCR_F230.pdf`
+  - **Fișiere**: `src/excel/excel_manager.py::export_to_pdf_report()`
+
+- ✅ **Fereastra de rapoarte cu statistici reale** - **IMPLEMENTAT**
+  - Afișare statistici calculate din Excel în timp real
+  - Calculul corect pentru "1 an" și "2 ani" pe baza coloanei `2_Ani`
+  - Integrare în fluxul de procesare (se afișează înainte de deschiderea fișierelor)
+  - **Fișiere**: `src/ui/rapoarte.py::show_rapoarte_window()`
+
+### 🔄 Deschidere Automată Fișiere
+- ✅ **Deschidere automată Excel, PDF și folder** - **IMPLEMENTAT**
+  - La apăsarea butonului "Continua" se deschid automat:
+    - Folderul de output
+    - Fișierul Excel
+    - Raportul PDF
+  - **Fișiere**: `src/ocr/ocr.py::open_final_results()`
+
+### 🔧 Optimizări Tehnice
+- ✅ **Format telefon corect în Excel** - **CORECTAT**
+  - Păstrare zero-uri de la început pentru numerele de telefon
+  - Eliminare doar a sufixului `.0` din conversiile float
+  - Format text pentru coloanele CNP și Telefon
+  - **Fișiere**: `src/excel/excel_manager.py`
+
+- ✅ **Generare automată toate formate** - **IMPLEMENTAT**
+  - Excel, CSV și PDF se generează automat la procesare
+  - Actualizare automată la adăugarea unei noi persoane
+  - **Fișiere**: `src/excel/excel_manager.py::create_excel_summary()`
 
 ---
 
@@ -305,6 +371,55 @@
 
 ---
 
-*Ultima actualizare: 27 iunie 2025*
+*Ultima actualizare: 30 iunie 2025*
 
 *Următoarea review: 3 iulie 2025*
+
+---
+
+## 🔮 FUNCȚIONALITĂȚI VIITOARE (PLANIFICATE)
+**Prioritate: Medie-Scăzută**
+
+### 📊 Analize Avansate
+- [ ] **Dashboard cu grafice live** - *Deadline: TBD*
+  - Grafice interactive cu matplotlib/plotly
+  - Distribuție pe județe în timp real
+  - Statistici de procesare (viteză, acuratețe)
+
+- [ ] **Comparare sesiuni de procesare** - *Deadline: TBD*
+  - Istoric procesări anterioare
+  - Comparare performanță și rezultate
+  - Trending lunar/anual
+
+### 🔍 Validare Extinsă
+- [ ] **Verificare adrese cu geocoding** - *Deadline: TBD*
+  - Validare existență adrese cu servicii externe
+  - Detecție adrese incomplete sau eronate
+  - Sugestii de corecție automată
+
+- [ ] **Spell check pentru nume** - *Deadline: TBD*
+  - Corectare automată a numelor cu AI/NLP
+  - Detectare și corectare diacritice
+  - Bază de date nume românești
+
+### 🔄 Funcționalități Backup și Sync
+- [ ] **Backup automat în cloud** - *Deadline: TBD*
+  - Sincronizare Google Drive/OneDrive
+  - Backup automat rezultate
+  - Restaurare din backup
+
+- [ ] **API REST pentru integrări** - *Deadline: TBD*
+  - Endpoint-uri pentru procesare externă
+  - Webhook notifications
+  - Integrare cu alte sisteme
+
+### 🎯 Îmbunătățiri UX
+- [ ] **Search și filtering în rezultate** - *Deadline: TBD*
+  - Căutare în rezultatele procesate
+  - Filtrare avansată (județ, perioadă, data procesării)
+  - Export rezultate filtrate
+
+- [ ] **Template-uri și profiluri** - *Deadline: TBD*
+  - Salvare setări ca profiluri reutilizabile
+  - Template-uri pentru diferite tipuri de formulare
+  - Import/export configurații

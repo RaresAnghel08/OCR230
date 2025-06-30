@@ -237,14 +237,41 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
         if update_button_callback:
             update_button_callback(False)
         
-        # open output folder
-        if os.path.exists(folder_output):
-            os.startfile(folder_output)
-            
-        # open excel file if it exists
-        excel_path = os.path.join(folder_output, "Date_Persoane_OCR.xlsx")
-        if os.path.exists(excel_path):
-            os.startfile(excel_path)
+        # Afișăm raportul înainte de a deschide folderul și Excel-ul
+        def open_final_results():
+            """Deschide folderul de output și toate fișierele generate (Excel, PDF, CSV)"""
+            # open output folder
+            if os.path.exists(folder_output):
+                os.startfile(folder_output)
+                
+            # open excel file if it exists
+            excel_path = os.path.join(folder_output, "Date_Persoane_OCR.xlsx")
+            if os.path.exists(excel_path):
+                os.startfile(excel_path)
+                
+            # open PDF report if it exists
+            pdf_path = os.path.join(folder_output, "Raport_OCR_F230.pdf")
+            if os.path.exists(pdf_path):
+                os.startfile(pdf_path)
+                
+            # Opțional: deschide și CSV-ul (poate fi prea mult)
+            # csv_path = os.path.join(folder_output, "Date_Persoane_OCR.csv")
+            # if os.path.exists(csv_path):
+            #     os.startfile(csv_path)
+        
+        # Afișăm fereastra de rapoarte doar dacă nu am fost opriți
+        if not stop_processing:
+            try:
+                from src.ui.rapoarte import show_rapoarte_window
+                reports_window = show_rapoarte_window(folder_output, open_final_results)
+            except Exception as e:
+                print(f"Eroare la afișarea raportului: {e}")
+                # Dacă raportul nu poate fi afișat, deschide direct rezultatele
+                open_final_results()
+        else:
+            # Dacă procesarea a fost oprită, deschide direct rezultatele
+            open_final_results()
+        
         # Call the reset progress callback after processing is complete
         reset_progress_callback()
         

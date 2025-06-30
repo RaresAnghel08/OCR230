@@ -33,7 +33,7 @@ def proceseaza_zona(coord, idx, image):
     else:
         zona_decupata = zona_decupata.resize((zona_decupata.width * 3, zona_decupata.height * 3))
     #save cropped image for debug in debug_media 
-    debug_on = True  # Setează True pentru a activa debug-ul
+    debug_on = False  # Setează True pentru a activa debug-ul
     if debug_on==True:
         debug_media_folder = "debug_media"
         os.makedirs(debug_media_folder, exist_ok=True)  # Creează folderul debug_media dacă nu există
