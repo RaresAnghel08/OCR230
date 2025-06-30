@@ -782,6 +782,7 @@ class ExcelManager:
             plt.close()
             
             # Adaugam graficul in PDF
+            story.append(Spacer(1, 20))
             story.append(Paragraph("<b>Grafice & Analize:</b>", styles['Heading2']))
             story.append(Spacer(1, 10))
             story.append(Image(chart_path, width=6*inch, height=3.6*inch))

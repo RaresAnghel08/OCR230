@@ -231,7 +231,7 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
             138.0,
             139.0,
             anchor="nw",
-            text="X formulare\nX formulare",
+            text="0 formulare\n0 formulare",
             fill="#000000",
             font=("Inter", 24 * -1)
         )
@@ -249,7 +249,7 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
             44.0,
             215.0,
             anchor="nw",
-            text="Total - X formulare",
+            text="Total - 0 formulare",
             fill="#000000",
             font=("Inter", 24 * -1)
         )
@@ -267,7 +267,7 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
             56.0,
             301.0,
             anchor="nw",
-            text="1. Judetul A - X \n2. Judetul B - Y \n3. Judetul C - Z ",
+            text="1. Judetul A - 0 \n2. Judetul B - 0 \n3. Judetul C - 0 ",
             fill="#000000",
             font=("Inter", 24 * -1)
         )
