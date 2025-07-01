@@ -212,12 +212,15 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
             
             # Actualizăm dashboard-ul cu fișierul curent ÎNAINTE de procesare
             if dashboard_callback:
-                dashboard_callback('current_file', os.path.basename(file))
+                filename = os.path.basename(file)
+                print(f"ÎNAINTE DE PROCESARE - Fișier: {filename}")
+                dashboard_callback('current_file', filename)
                 dashboard_callback('processed_files', i)  # Numărul de fișiere procesate până acum
-                print(f"Dashboard: Procesez fișierul {os.path.basename(file)} ({i+1}/{total_files})")
+                print(f"Dashboard: Procesez fișierul {filename} ({i+1}/{total_files})")
+                print(f"CALLBACK APELAT: dashboard_callback('current_file', '{filename}')")
                 
-            # Procesăm fiecare fișier
-            proceseaza_fisier(file, folder_output, coordonate)
+            # Procesăm fiecare fișier și obținem CNP-ul real extras
+            extracted_cnp = proceseaza_fisier(file, folder_output, coordonate)
             print(f"Procesăm fișierul: {file}")
 
             # Actualizăm progress bar-ul
@@ -227,37 +230,33 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
             if dashboard_callback:
                 dashboard_callback('processed_files', i + 1)  # Actualizăm cu fișierul procesat
                 
-                # Validăm CNP-ul direct din datele procesate
+                # Validăm CNP-ul real extras din OCR
                 try:
                     # Importăm clasa ExcelManager pentru validarea CNP
                     from src.excel.excel_manager import ExcelManager
                     excel_manager = ExcelManager(folder_output)
                     
-                    # Pentru moment, folosesc CNP-uri de test pentru a demonstra funcționalitatea
-                    # În viitor, ar trebui să modific process.py să returneze CNP-ul extras din OCR
-                    test_cnps = [
-                        "1234567890123",  # CNP invalid
-                        "1800101123456",  # CNP valid
-                        "2950712123456",  # CNP invalid
-                        "1900523123451"   # CNP valid (exemplu)
-                    ]
-                    
-                    # Simulez validarea cu un CNP de test pe baza indexului fișierului
-                    test_cnp = test_cnps[i % len(test_cnps)]
-                    
-                    is_valid, message = excel_manager.validate_cnp(test_cnp)
-                    
-                    # Actualizez contoarele
-                    if is_valid:
-                        run_processing.cnp_stats['valid'] += 1
+                    # Folosim CNP-ul real extras din OCR în loc de CNP-uri de test
+                    if extracted_cnp and extracted_cnp.strip():
+                        is_valid, message = excel_manager.validate_cnp(extracted_cnp.strip())
+                        
+                        # Actualizez contoarele
+                        if is_valid:
+                            run_processing.cnp_stats['valid'] += 1
+                        else:
+                            run_processing.cnp_stats['invalid'] += 1
+                        
+                        dashboard_callback('valid_cnp', run_processing.cnp_stats['valid'])
+                        dashboard_callback('invalid_cnp', run_processing.cnp_stats['invalid'])
+                        dashboard_callback('duplicates_found', run_processing.cnp_stats['duplicates'])
+                        
+                        print(f"CNP validat: {extracted_cnp} -> {'Valid' if is_valid else 'Invalid'} ({message})")
                     else:
+                        print(f"CNP nu a fost extras corect din fișierul {os.path.basename(file)}")
+                        # Incrementăm contorul de CNP-uri invalide pentru cazurile fără CNP
                         run_processing.cnp_stats['invalid'] += 1
+                        dashboard_callback('invalid_cnp', run_processing.cnp_stats['invalid'])
                     
-                    dashboard_callback('valid_cnp', run_processing.cnp_stats['valid'])
-                    dashboard_callback('invalid_cnp', run_processing.cnp_stats['invalid'])
-                    dashboard_callback('duplicates_found', run_processing.cnp_stats['duplicates'])
-                    
-                    print(f"CNP validat: {test_cnp} -> {'Valid' if is_valid else 'Invalid'} ({message})")
                     print(f"Dashboard actualizat: CNP valide={run_processing.cnp_stats['valid']}, invalide={run_processing.cnp_stats['invalid']}")
                         
                 except Exception as e:

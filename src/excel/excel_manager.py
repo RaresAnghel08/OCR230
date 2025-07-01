@@ -818,6 +818,9 @@ class ExcelManager:
             # Validare CNP
             if data.get('CNP'):
                 is_valid, message = self.validate_cnp(data['CNP'])
+                print('=='*60)
+                print(data['CNP'], is_valid, message)
+                print('=='*60)
                 if not is_valid:
                     errors_for_record.append(f"CNP: {message}")
                     invalid_count += 1

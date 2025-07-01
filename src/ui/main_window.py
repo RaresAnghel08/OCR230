@@ -476,8 +476,15 @@ def run_main_window():
         """Actualizează o statistică în dashboard"""
         print(f"CALLBACK DASHBOARD: {stat_name} = {value}")  # Debug îmbunătățit
         if stat_name in dashboard_stats:
+            old_value = dashboard_stats[stat_name]
             dashboard_stats[stat_name] = value
-            print(f"Statistică salvată: {stat_name} = {dashboard_stats[stat_name]}")
+            print(f"Statistică salvată: {stat_name} = {old_value} -> {dashboard_stats[stat_name]}")
+            
+            # Debug special pentru fișierul curent
+            if stat_name == 'current_file':
+                print(f"SPECIAL DEBUG - Fișier curent actualizat: '{value}'")
+                print(f"SPECIAL DEBUG - Valoare salvată în dashboard_stats: '{dashboard_stats['current_file']}'")
+            
             # Forțăm actualizarea în thread-ul principal pentru UI
             root.after(0, refresh_dashboard)
         else:
@@ -548,14 +555,17 @@ def run_main_window():
             
             # Actualizăm fișierul curent
             current_file = dashboard_stats['current_file']
+            print(f"REFRESH DASHBOARD DEBUG - current_file din stats: '{current_file}'")
             if current_file:  # Verificăm dacă există un fișier curent
                 if len(current_file) > 30:
                     current_file = "..." + current_file[-27:]
+                print(f"REFRESH DASHBOARD DEBUG - Actualizez cu: '{current_file}'")
                 dashboard_frame.itemconfig(
                     dashboard_widgets['current_file_label'], 
                     text=current_file
                 )
             else:
+                print("REFRESH DASHBOARD DEBUG - Nu există fișier curent, afișez 'În așteptare...'")
                 dashboard_frame.itemconfig(
                     dashboard_widgets['current_file_label'], 
                     text="În așteptare..."
