@@ -110,14 +110,6 @@ def run_main_window():
         fill="#C4C4C4",
         outline="")
 
-    canvas.create_rectangle(
-        28.0,
-        535.0,
-        772.0,
-        547.0,
-        fill="#000000",
-        outline="")
-
     canvas.create_text(
         323.0,
         571.0,
@@ -293,7 +285,7 @@ def run_main_window():
     )
     button_5.place(
         x=470.0,
-        y=455.0,
+        y=490.0,  # Mutat cu 20px mai jos (480 + 20)
         width=42.0,
         height=28.0
     )
@@ -313,6 +305,8 @@ def run_main_window():
             stop_current_processing()
             # Resetăm butonul imediat
             Button_start.config(image=button_image_start)
+            # Ascundem dashboard-ul
+            hide_dashboard()
             print("Procesarea a fost oprită de utilizator.")
             return
         
@@ -326,8 +320,18 @@ def run_main_window():
             
         # Dacă ambele foldere sunt selectate, rulează procesarea
         else:
-            # Rulăm procesarea în thread separat
-            run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress, root, update_button_state)
+            # Resetăm și afișăm dashboard-ul
+            reset_dashboard()
+            show_dashboard()
+            
+            # Calculăm numărul total de fișiere pentru dashboard
+            import os
+            files = [f for f in os.listdir(folder_input) if f.lower().endswith(('jpg', 'jpeg', 'png', 'pdf'))]
+            update_dashboard_stats('total_files', len(files))
+            update_dashboard_stats('start_time', time.time())
+            
+            # Rulăm procesarea în thread separat cu callback pentru dashboard
+            run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress, root, update_button_state, update_dashboard_stats)
     # Imagine pentru butonul Start (Button_start)
     button_image_start = PhotoImage(file=relative_to_assets("button_start.png"))
     # Pentru butonul Stop, folosim aceeași imagine (poate fi înlocuită cu o imagine specifică)
@@ -344,7 +348,7 @@ def run_main_window():
     )
     Button_start.place(
         x=28.0,
-        y=487.0,
+        y=445.0, 
         width=746.0,
         height=46.0
     )
@@ -354,7 +358,7 @@ def run_main_window():
     def create_custom_progress_bar(root):
         # Creăm un container pentru progresul nostru pentru un efect vizual mai plăcut
         progress_container = Canvas(root, bg="#D9D9D9", width=744, height=20, bd=0, highlightthickness=0, relief="flat")
-        progress_container.place(x=28, y=535)  # Poziționăm progresul sub butonul de Start
+        progress_container.place(x=28, y=520)  # Poziționăm progresul cu 20px mai jos (500 + 20)
 
         # Bara de progres personalizată
         progress_bar = Progressbar(progress_container, orient="horizontal", length=744, mode="determinate", 
@@ -413,12 +417,200 @@ def run_main_window():
 
     canvas.create_text(
         277.0,
-        460.0,
+        495.0,
         anchor="nw",
         text="Folosire accelerație grafică",
         fill="#1E1E1E",
         font=("Inter", 16 * -1)
     )
+
+    # ==================== DASHBOARD LIVE ====================
+    # Variabile pentru statistici live
+    dashboard_stats = {
+        'total_files': 0,
+        'processed_files': 0,
+        'valid_cnp': 0,
+        'invalid_cnp': 0,
+        'duplicates_found': 0,
+        'current_file': '',
+        'processing_speed': 0.0,
+        'estimated_time_left': 0,
+        'start_time': None
+    }
+    
+    dashboard_widgets = {}
+    dashboard_frame = None  # Variabilă globală pentru dashboard
+    
+    def create_live_dashboard(root):
+        """Creează dashboard-ul cu statistici live"""
+        nonlocal dashboard_frame
+        # Container pentru dashboard (mutat mai sus, între folder selection și buton Start)
+        dashboard_frame = Canvas(root, bg="#F0F0F0", width=744, height=120, bd=2, relief="solid")
+        dashboard_frame.place(x=28, y=310)  # Mutat cu 20px mai jos (290 + 20)
+        
+        # Titlu dashboard
+        dashboard_frame.create_text(372, 15, text="📊 Statistici Live", font=("Inter", 14, "bold"), fill="#2C3E50")
+        
+        # Linia de separare
+        dashboard_frame.create_line(50, 25, 694, 25, fill="#BDC3C7", width=1)
+        
+        # Coloana 1 - Progres general
+        dashboard_frame.create_text(120, 40, text="📋 Progres General", font=("Inter", 10, "bold"), fill="#34495E")
+        dashboard_widgets['files_label'] = dashboard_frame.create_text(120, 55, text="Fișiere: 0/0", font=("Inter", 9), fill="#2C3E50")
+        dashboard_widgets['speed_label'] = dashboard_frame.create_text(120, 70, text="Viteză: 0.0 fișiere/min", font=("Inter", 9), fill="#2C3E50")
+        dashboard_widgets['eta_label'] = dashboard_frame.create_text(120, 85, text="Timp rămas: --", font=("Inter", 9), fill="#2C3E50")
+        
+        # Coloana 2 - Validare date
+        dashboard_frame.create_text(372, 40, text="✅ Validare Date", font=("Inter", 10, "bold"), fill="#34495E")
+        dashboard_widgets['cnp_valid_label'] = dashboard_frame.create_text(372, 55, text="CNP valide: 0", font=("Inter", 9), fill="#27AE60")
+        dashboard_widgets['cnp_invalid_label'] = dashboard_frame.create_text(372, 70, text="CNP invalide: 0", font=("Inter", 9), fill="#E74C3C")
+        dashboard_widgets['duplicates_label'] = dashboard_frame.create_text(372, 85, text="Duplicate: 0", font=("Inter", 9), fill="#F39C12")
+        
+        # Coloana 3 - Fișier curent
+        dashboard_frame.create_text(600, 40, text="📄 Fișier Curent", font=("Inter", 10, "bold"), fill="#34495E")
+        dashboard_widgets['current_file_label'] = dashboard_frame.create_text(600, 60, text="În așteptare...", font=("Inter", 8), fill="#7F8C8D", width=200)
+        
+        return dashboard_frame
+    
+    def update_dashboard_stats(stat_name, value):
+        """Actualizează o statistică în dashboard"""
+        print(f"CALLBACK DASHBOARD: {stat_name} = {value}")  # Debug îmbunătățit
+        if stat_name in dashboard_stats:
+            old_value = dashboard_stats[stat_name]
+            dashboard_stats[stat_name] = value
+            print(f"Statistică salvată: {stat_name} = {old_value} -> {dashboard_stats[stat_name]}")
+            
+            # Debug special pentru fișierul curent
+            if stat_name == 'current_file':
+                print(f"SPECIAL DEBUG - Fișier curent actualizat: '{value}'")
+                print(f"SPECIAL DEBUG - Valoare salvată în dashboard_stats: '{dashboard_stats['current_file']}'")
+            
+            # Forțăm actualizarea în thread-ul principal pentru UI
+            root.after(0, refresh_dashboard)
+        else:
+            print(f"EROARE: Statistică necunoscută: {stat_name}")
+            print(f"Statistici disponibile: {list(dashboard_stats.keys())}")
+    
+    def refresh_dashboard():
+        """Actualizează toate widget-urile din dashboard cu datele curente"""
+        if not dashboard_widgets or not dashboard_frame:
+            print("Dashboard widgets sau frame nu sunt disponibile")
+            return
+            
+        try:
+            # Calculăm statistici derivate
+            if dashboard_stats['start_time'] and dashboard_stats['processed_files'] > 0:
+                elapsed_time = time.time() - dashboard_stats['start_time']
+                dashboard_stats['processing_speed'] = (dashboard_stats['processed_files'] / elapsed_time) * 60  # fișiere/min
+                
+                if dashboard_stats['processing_speed'] > 0:
+                    remaining_files = dashboard_stats['total_files'] - dashboard_stats['processed_files']
+                    dashboard_stats['estimated_time_left'] = remaining_files / (dashboard_stats['processing_speed'] / 60)  # secunde
+            
+            # Actualizăm label-urile direct pe dashboard_frame
+            dashboard_frame.itemconfig(
+                dashboard_widgets['files_label'], 
+                text=f"Fișiere: {dashboard_stats['processed_files']}/{dashboard_stats['total_files']}"
+            )
+            
+            # Format pentru viteză
+            speed_text = f"Viteză: {dashboard_stats['processing_speed']:.1f} fișiere/min"
+            dashboard_frame.itemconfig(
+                dashboard_widgets['speed_label'], 
+                text=speed_text
+            )
+            
+            # Format pentru timp rămas
+            eta = dashboard_stats['estimated_time_left']
+            if eta > 0:
+                if eta > 3600:  # > 1 oră
+                    eta_text = f"Timp rămas: {eta/3600:.1f}h"
+                elif eta > 60:  # > 1 minut
+                    eta_text = f"Timp rămas: {eta/60:.1f}min"
+                else:
+                    eta_text = f"Timp rămas: {eta:.0f}s"
+            else:
+                eta_text = "Timp rămas: --"
+            
+            dashboard_frame.itemconfig(
+                dashboard_widgets['eta_label'], 
+                text=eta_text
+            )
+            
+            # Actualizăm validarea datelor
+            dashboard_frame.itemconfig(
+                dashboard_widgets['cnp_valid_label'], 
+                text=f"CNP valide: {dashboard_stats['valid_cnp']}"
+            )
+            
+            dashboard_frame.itemconfig(
+                dashboard_widgets['cnp_invalid_label'], 
+                text=f"CNP invalide: {dashboard_stats['invalid_cnp']}"
+            )
+            
+            dashboard_frame.itemconfig(
+                dashboard_widgets['duplicates_label'], 
+                text=f"Duplicate: {dashboard_stats['duplicates_found']}"
+            )
+            
+            # Actualizăm fișierul curent
+            current_file = dashboard_stats['current_file']
+            print(f"REFRESH DASHBOARD DEBUG - current_file din stats: '{current_file}'")
+            if current_file:  # Verificăm dacă există un fișier curent
+                if len(current_file) > 30:
+                    current_file = "..." + current_file[-27:]
+                print(f"REFRESH DASHBOARD DEBUG - Actualizez cu: '{current_file}'")
+                dashboard_frame.itemconfig(
+                    dashboard_widgets['current_file_label'], 
+                    text=current_file
+                )
+            else:
+                print("REFRESH DASHBOARD DEBUG - Nu există fișier curent, afișez 'În așteptare...'")
+                dashboard_frame.itemconfig(
+                    dashboard_widgets['current_file_label'], 
+                    text="În așteptare..."
+                )
+            
+            # Forțăm actualizarea interfeței
+            root.update_idletasks()
+            
+            print(f"DASHBOARD ACTUALIZAT COMPLET: {dashboard_stats['processed_files']}/{dashboard_stats['total_files']}, "
+                  f"CNP: {dashboard_stats['valid_cnp']}/{dashboard_stats['invalid_cnp']}, "
+                  f"Fișier: {dashboard_stats['current_file']}")
+            
+        except Exception as e:
+            print(f"EROARE la actualizarea dashboard-ului: {e}")
+            import traceback
+            traceback.print_exc()
+    
+    def reset_dashboard():
+        """Resetează statisticile dashboard-ului"""
+        dashboard_stats.update({
+            'total_files': 0,
+            'processed_files': 0,
+            'valid_cnp': 0,
+            'invalid_cnp': 0,
+            'duplicates_found': 0,
+            'current_file': '',
+            'processing_speed': 0.0,
+            'estimated_time_left': 0,
+            'start_time': None
+        })
+        refresh_dashboard()
+    
+    def hide_dashboard():
+        """Ascunde dashboard-ul"""
+        if dashboard_frame:
+            dashboard_frame.place_forget()
+    
+    def show_dashboard():
+        """Afișează dashboard-ul"""
+        if dashboard_frame:
+            dashboard_frame.place(x=28, y=310)
+    
+    # Creăm dashboard-ul (inițial ascuns)
+    dashboard_frame = create_live_dashboard(root)
+    hide_dashboard()  # Ascundem inițial dashboard-ul
 
     root.withdraw()
     show_splash(root, create_main_window)

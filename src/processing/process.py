@@ -206,6 +206,9 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
         print(f"Eroare la adăugarea în Excel: {e}")
     
     # print(f"Fișierul text {fisier_txt} a fost creat.")  # Comentat pentru a reduce output-ul
+    
+    # Returnăm CNP-ul extras pentru validare în fluxul principal
+    return cnp_total
 
 def create_folder_hierarchy(output_folder, folder_localitate_mare, folder_localitate_med, folder_localitate_mic):
     # Creează folderele pentru localitate și subfolderele corespunzătoare

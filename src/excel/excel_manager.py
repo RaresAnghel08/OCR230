@@ -782,6 +782,7 @@ class ExcelManager:
             plt.close()
             
             # Adaugam graficul in PDF
+            story.append(Spacer(1, 20))
             story.append(Paragraph("<b>Grafice & Analize:</b>", styles['Heading2']))
             story.append(Spacer(1, 10))
             story.append(Image(chart_path, width=6*inch, height=3.6*inch))
@@ -817,6 +818,9 @@ class ExcelManager:
             # Validare CNP
             if data.get('CNP'):
                 is_valid, message = self.validate_cnp(data['CNP'])
+                print('=='*60)
+                print(data['CNP'], is_valid, message)
+                print('=='*60)
                 if not is_valid:
                     errors_for_record.append(f"CNP: {message}")
                     invalid_count += 1
