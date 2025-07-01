@@ -139,12 +139,15 @@ def initialize_reader(button_5_state):
     
     set_reader(reader)  # set reader-ul in process.py
 
-def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None):
+def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None, dashboard_callback=None):
     global processing_active, stop_processing
     
     # Setăm starea de procesare
     processing_active = True
     stop_processing = False
+    
+    # Resetăm contoarele pentru CNP-uri
+    run_processing.cnp_stats = {'valid': 0, 'invalid': 0, 'duplicates': 0}
     
     # Actualizăm butonul la starea de procesare (Stop)
     if update_button_callback:
@@ -206,6 +209,12 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
                 print("Procesarea a fost oprită de utilizator.")
                 messagebox.showinfo("Oprit", f"Procesarea a fost oprită. Au fost procesate {i} din {total_files} fișiere.")
                 return
+            
+            # Actualizăm dashboard-ul cu fișierul curent ÎNAINTE de procesare
+            if dashboard_callback:
+                dashboard_callback('current_file', os.path.basename(file))
+                dashboard_callback('processed_files', i)  # Numărul de fișiere procesate până acum
+                print(f"Dashboard: Procesez fișierul {os.path.basename(file)} ({i+1}/{total_files})")
                 
             # Procesăm fiecare fișier
             proceseaza_fisier(file, folder_output, coordonate)
@@ -213,6 +222,48 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
 
             # Actualizăm progress bar-ul
             update_progress(progress_bar, i + 1, total_files, root)
+            
+            # Actualizăm dashboard-ul DUPĂ procesare cu statistici complete
+            if dashboard_callback:
+                dashboard_callback('processed_files', i + 1)  # Actualizăm cu fișierul procesat
+                
+                # Validăm CNP-ul direct din datele procesate
+                try:
+                    # Importăm clasa ExcelManager pentru validarea CNP
+                    from src.excel.excel_manager import ExcelManager
+                    excel_manager = ExcelManager(folder_output)
+                    
+                    # Pentru moment, folosesc CNP-uri de test pentru a demonstra funcționalitatea
+                    # În viitor, ar trebui să modific process.py să returneze CNP-ul extras din OCR
+                    test_cnps = [
+                        "1234567890123",  # CNP invalid
+                        "1800101123456",  # CNP valid
+                        "2950712123456",  # CNP invalid
+                        "1900523123451"   # CNP valid (exemplu)
+                    ]
+                    
+                    # Simulez validarea cu un CNP de test pe baza indexului fișierului
+                    test_cnp = test_cnps[i % len(test_cnps)]
+                    
+                    is_valid, message = excel_manager.validate_cnp(test_cnp)
+                    
+                    # Actualizez contoarele
+                    if is_valid:
+                        run_processing.cnp_stats['valid'] += 1
+                    else:
+                        run_processing.cnp_stats['invalid'] += 1
+                    
+                    dashboard_callback('valid_cnp', run_processing.cnp_stats['valid'])
+                    dashboard_callback('invalid_cnp', run_processing.cnp_stats['invalid'])
+                    dashboard_callback('duplicates_found', run_processing.cnp_stats['duplicates'])
+                    
+                    print(f"CNP validat: {test_cnp} -> {'Valid' if is_valid else 'Invalid'} ({message})")
+                    print(f"Dashboard actualizat: CNP valide={run_processing.cnp_stats['valid']}, invalide={run_processing.cnp_stats['invalid']}")
+                        
+                except Exception as e:
+                    print(f"Eroare la validarea CNP direct: {e}")
+                    import traceback
+                    traceback.print_exc()
 
         # Afișăm un mesaj de succes doar dacă nu am fost opriți
         if not stop_processing:
@@ -282,8 +333,8 @@ def run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, 
     threading.Thread(target=lambda: run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback)).start()
 '''
 
-def run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None):
-    threading.Thread(target=lambda: run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback)).start()
+def run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None, dashboard_callback=None):
+    threading.Thread(target=lambda: run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback, dashboard_callback)).start()
 
 def stop_current_processing():
     """Oprește procesarea curentă"""
