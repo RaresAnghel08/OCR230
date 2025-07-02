@@ -212,12 +212,9 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
             
             # Actualizăm dashboard-ul cu fișierul curent ÎNAINTE de procesare
             if dashboard_callback:
-                filename = os.path.basename(file)
-                print(f"ÎNAINTE DE PROCESARE - Fișier: {filename}")
-                dashboard_callback('current_file', filename)
+                dashboard_callback('current_file', os.path.basename(file))
                 dashboard_callback('processed_files', i)  # Numărul de fișiere procesate până acum
-                print(f"Dashboard: Procesez fișierul {filename} ({i+1}/{total_files})")
-                print(f"CALLBACK APELAT: dashboard_callback('current_file', '{filename}')")
+                print(f"Dashboard: Procesez fișierul {os.path.basename(file)} ({i+1}/{total_files})")
                 
             # Procesăm fiecare fișier și obținem CNP-ul real extras
             extracted_cnp = proceseaza_fisier(file, folder_output, coordonate)

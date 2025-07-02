@@ -53,12 +53,12 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 
 ## 🔧 Detalii tehnice
 
-### 📊 Structura codului (3,650+ linii Python):
-- **UI & UX**: ~650 linii (18%) - Interfață și experiență utilizator cu dashboard live
-- **Excel & Export**: ~700 linii (19%) - Gestionare export date și validare
-- **OCR & Processing**: ~800 linii (22%) - Logica principală cu validare CNP reală
-- **ANAF Modules**: ~950 linii (26%) - Validare teritorială
-- **Utilities & Validation**: ~550 linii (15%) - Funcții auxiliare și validare CNP
+### 📊 Structura codului (3,493 linii Python):
+- **UI & UX**: ~580 linii (17%) - Interfață și experiență utilizator
+- **Excel & Export**: ~700 linii (20%) - Gestionare export date și validare
+- **OCR & Processing**: ~750 linii (21%) - Logica principală de procesare
+- **ANAF Modules**: ~950 linii (27%) - Validare teritorială
+- **Utilities & Validation**: ~513 linii (15%) - Funcții auxiliare și validare CNP
 
 ### 📁 Algoritm procesare:
 1. **Conversie PDF → PNG** (dacă e cazul) cu pdf2image
@@ -66,15 +66,13 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 3. **Extragere text** din zone predefinite (coordonate.py)
 4. **Filtrare și curățare text** (filtre.py)
 5. **Separare câmpuri individuale** (process_fields.py)
-6. **Extragere CNP real** din datele OCR
-7. **Validare CNP, email, telefon** cu algoritmi specifici în timp real
-8. **Actualizare dashboard live** cu statistici CNP valid/invalid
-9. **Detectare duplicate** pe baza CNP-ului
-10. **Validare și determinare ANAF** (anaf/*.py)
-11. **Creare structură foldere**
-12. **Export TXT + adăugare incrementală în Excel**
-13. **Generare automată CSV și PDF** cu statistici
-14. **Actualizare progress bar și dashboard** cu feedback vizual live
+6. **Validare CNP, email, telefon** cu algoritmi specifici
+7. **Detectare duplicate** pe baza CNP-ului
+8. **Validare și determinare ANAF** (anaf/*.py)
+9. **Creare structură foldere**
+10. **Export TXT + adăugare incrementală în Excel**
+11. **Generare automată CSV și PDF** cu statistici
+12. **Actualizare progress bar și rapoarte**
 
 ### 💾 Format fișiere output:
 - **TXT**: `nume\ninitiala_tatalui\nprenume\ncnp\nadresa\ntelefon\nemail\n2_ani`
@@ -111,9 +109,6 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 - **Export multiple formate**: testare consistență date între Excel, CSV și PDF
 - **Rapoarte PDF**: verificare corectitudine statistici și grafice
 - **UI/UX**: testare fereastra de rapoarte și deschidere automată fișiere
-- **Dashboard live**: testare actualizare în timp real a statisticilor
-- **Validare CNP reală**: verificare cu CNP-uri extrase din OCR vs. hardcodate
-- **Feedback vizual**: testare responsivitate dashboard și callback-uri
 - **Testare interfață**: toate butoanele și funcționalitățile
 
 ## 🔁 Versionare și dezvoltare
@@ -163,8 +158,6 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 - **Accelerație GPU**: bifează opțiunea din interfață pentru performanță sporită
 - **Foldere de lucru**: selectează folderul cu formulare și folderul pentru rezultate
 - **Funcția Start/Stop**: oprește procesarea în orice moment prin același buton
-- **Dashboard live**: urmărește progresul în timp real cu statistici CNP valid/invalid
-- **Feedback vizual**: vezi fișierul curent procesat și contoarele actualizate live
 
 ## 📍 Public țintă
 
@@ -185,15 +178,13 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 
 ## 📈 Statistici proiect
 
-- **Linii de cod**: 3,700+ (Python)
-- **Fișiere**: 20+ module Python
+- **Linii de cod**: 2,672 (Python)
+- **Fișiere**: 20 module Python
 - **Arhitectură**: Modulară și scalabilă
 - **Testare**: 3,000+ formulare procesate
 - **Performanță**: 95% reducere timp vs. manual
 - **Securitate**: 100% procesare locală
 - **Compatibilitate**: Windows 10/11
-- **Dashboard**: Statistici live în timp real
-- **Validare**: CNP-uri validate
 
 ## 📄 Licență și utilizare
 

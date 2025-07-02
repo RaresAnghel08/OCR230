@@ -23,9 +23,6 @@ Acest proiect ajută ONG-urile să automatizeze procesul de extragere a datelor 
 - **Export CSV**: Generare automată de fișiere CSV pentru compatibilitate cu alte sisteme.
 - **Rapoarte PDF**: Creare automată de rapoarte PDF cu statistici și grafice interactive.
 - **Raport de validare**: Fereastra de rapoarte cu statistici în timp real după procesare.
-- **Dashboard live**: Statistici în timp real pe parcursul procesării cu CNP-uri valide/invalide.
-- **Validare CNP reală**: Validare automată a CNP-urilor extrase din OCR (nu hardcodate).
-- **Feedback vizual**: Afișare în timp real a fișierului curent procesat și progres.
 - **Deschidere automată**: Excel, PDF și folderul de output se deschid automat la finalizare.
 
 ## Modele OCR utilizate
@@ -74,9 +71,6 @@ This project helps NGOs automate the process of extracting data from Form 230, s
 - **CSV export**: Automatic generation of CSV files for compatibility with other systems.
 - **PDF reports**: Automatic creation of PDF reports with interactive statistics and charts.
 - **Validation report**: Reports window with real-time statistics after processing.
-- **Live dashboard**: Real-time statistics during processing with valid/invalid CNPs.
-- **Real CNP validation**: Automatic validation of CNPs extracted from OCR (not hardcoded).
-- **Visual feedback**: Real-time display of current file being processed and progress.
 - **Automatic opening**: Excel, PDF and output folder open automatically upon completion.
 
 ## OCR Models Used

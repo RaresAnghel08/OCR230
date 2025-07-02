@@ -4,29 +4,8 @@
 
 ---
 
-## ✅ FUNCȚIONALITĂȚI NOI IMPLEMENTATE - IULIE 2025
-**Data implementare: 1 iulie 2025**
-
-### 📊 Dashboard Live și Statistici în Timp Real
-- ✅ **Dashboard live cu statistici procesare** - **IMPLEMENTAT**
-  - Afișare în timp real a progresului procesării
-  - Contorizare automată CNP-uri valide/invalide
-  - Statistici duplicate și fișierul curent procesat
-  - Repoziționare UI pentru vizibilitate optimă
-  - **Fișiere**: `src/ui/main_window.py::create_dashboard_frame(), update_dashboard_stats()`
-
-- ✅ **Validare CNP live cu CNP-uri reale** - **IMPLEMENTAT**
-  - Validare CNP-urilor extrase din OCR în timp real
-  - Eliminare hardcodare CNP-uri de test
-  - Integrare directă cu extragerea din `process.py`
-  - Actualizare contoare valid/invalid în dashboard
-  - **Fișiere**: `src/ocr/ocr.py`, `src/processing/process.py`
-
-- ✅ **Callback system pentru statistici** - **IMPLEMENTAT**
-  - Sistem de callback-uri pentru actualizare dashboard
-  - Transmitere statistici între module în thread-ul principal
-  - Debug extensiv pentru urmărire flux de date
-  - **Fișiere**: `src/ocr/ocr.py::run_processing_threaded()`
+## ✅ FUNCȚIONALITĂȚI NOI IMPLEMENTATE - IUNIE 2025
+**Data implementare: 30 iunie 2025**
 
 ### 🔍 Validare și Verificare Date
 - ✅ **Validare CNP automată** - **IMPLEMENTAT**
@@ -69,19 +48,6 @@
   - Integrare în fluxul de procesare (se afișează înainte de deschiderea fișierelor)
   - **Fișiere**: `src/ui/rapoarte.py::show_rapoarte_window()`
 
-### 🎨 UI/UX Îmbunătățiri
-- ✅ **Repoziționare elemente UI** - **IMPLEMENTAT**
-  - Dashboard live, buton Start, accelerație grafică repositionate cu +20px
-  - Progress bar mare și text aferent repositionate pentru claritate
-  - Eliminare progress bar mic duplicat din dashboard
-  - **Fișiere**: `src/ui/main_window.py`
-
-- ✅ **Feedback vizual live** - **IMPLEMENTAT**
-  - Actualizare în timp real a fișierului curent procesat
-  - Contoare vizuale pentru CNP-uri valide/invalide
-  - Interfață responsivă cu actualizare în thread-ul principal
-  - **Fișiere**: `src/ui/main_window.py::update_dashboard_stats()`
-
 ### 🔄 Deschidere Automată Fișiere
 - ✅ **Deschidere automată Excel, PDF și folder** - **IMPLEMENTAT**
   - La apăsarea butonului "Continua" se deschid automat:
@@ -91,13 +57,6 @@
   - **Fișiere**: `src/ocr/ocr.py::open_final_results()`
 
 ### 🔧 Optimizări Tehnice
-- ✅ **Integrare CNP real din OCR** - **IMPLEMENTAT**
-  - Eliminare hardcodare CNP-uri de test (ex: "1234567890123")
-  - Utilizare CNP-uri reale extrase din process.py
-  - Funcția proceseaza_fisier() returnează CNP-ul extras
-  - Validare directă în fluxul de procesare
-  - **Fișiere**: `src/processing/process.py`, `src/ocr/ocr.py`
-
 - ✅ **Format telefon corect în Excel** - **CORECTAT**
   - Păstrare zero-uri de la început pentru numerele de telefon
   - Eliminare doar a sufixului `.0` din conversiile float
@@ -403,16 +362,16 @@
 
 
 ## 📊 SUMMARY
-**Total tasks: 35**
-- ✅ Indeplinite: 29
+**Total tasks: 32**
+- ✅ Indeplinite: 26
 - ⏳ Neindeplinite: 5
 - 🔄 În progres: 0
 
-**Progres general: 82.86%**
+**Progres general: 81.25%**
 
 ---
 
-*Ultima actualizare: 1 iulie 2025*
+*Ultima actualizare: 30 iunie 2025*
 
 *Următoarea review: 3 iulie 2025*
 
