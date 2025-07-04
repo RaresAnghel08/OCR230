@@ -54,11 +54,6 @@ def run_main_window():
         # Leagă funcția de închidere de evenimentul de închidere al ferestrei
         root.protocol("WM_DELETE_WINDOW", on_close)
 
-    # root.title("F230-OCR")
-    # root.iconbitmap('Assets/favicon.ico')
-    # root.geometry("800x600")
-    # root.configure(bg="#D9D9D9")
-
     canvas = Canvas(
         root,
         bg="#FFFFFF",

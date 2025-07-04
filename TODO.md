@@ -1,40 +1,39 @@
-# TODO List - Proiect OCR Form 230
+# TODO List - Proiect OCR230
 
-## Data actualizare: 30 iunie 2025
+## Data actualizare: 4 IULIE 2025
 
 ---
 
-## ✅ FUNCȚIONALITĂȚI NOI IMPLEMENTATE - IUNIE 2025
-**Data implementare: 30 iunie 2025**
+## ✅ FUNCȚIONALITĂȚI NOI INDEPLINITE - IUNIE-IULIE 2025
 
 ### 🔍 Validare și Verificare Date
-- ✅ **Validare CNP automată** - **IMPLEMENTAT**
+- ✅ **Validare CNP automată** - **INDEPLINIT**
   - Algoritm conform standardului oficial românesc
   - Verificare cifră de control și validitate format
   - Detectare CNP-uri incomplete sau eronate
   - **Fișiere**: `src/excel/excel_manager.py::validate_cnp()`
 
-- ✅ **Detectare duplicate pe baza CNP** - **IMPLEMENTAT**
+- ✅ **Detectare duplicate pe baza CNP** - **INDEPLINIT**
   - Identificare automată CNP-uri duplicate în baza de date
   - Raportare detaliată cu informații despre fiecare duplicat
   - Grupare duplicate cu contorizare
   - **Fișiere**: `src/excel/excel_manager.py::detect_duplicate_entries()`
 
-- ✅ **Validare telefon și email** - **IMPLEMENTAT**
+- ✅ **Validare telefon și email** - **INDEPLINIT**
   - Verificare format telefon românesc (07xx, 02xx, 03xx)
   - Validare format email cu regex standard
   - Raportare automată erori de format
   - **Fișiere**: `src/excel/excel_manager.py::validate_phone(), validate_email()`
 
 ### 📊 Export și Raportare
-- ✅ **Export CSV automat** - **IMPLEMENTAT**
+- ✅ **Export CSV automat** - **INDEPLINIT**
   - Generare automată fișier CSV pentru compatibilitate
   - Encoding UTF-8 BOM pentru Excel
   - Separator `;` pentru standard european
   - Salvare în folderul de output
   - **Fișiere**: `src/excel/excel_manager.py::export_to_csv()`
 
-- ✅ **Rapoarte PDF cu statistici** - **IMPLEMENTAT**
+- ✅ **Rapoarte PDF cu statistici** - **INDEPLINIT**
   - Generare automată raport PDF complet
   - Statistici generale (total înregistrări, CNP valide/invalide, duplicate)
   - Grafice interactive (distribuție 1 an vs 2 ani, top ANAF)
@@ -42,14 +41,14 @@
   - Salvare în folderul de output ca `Raport_OCR_F230.pdf`
   - **Fișiere**: `src/excel/excel_manager.py::export_to_pdf_report()`
 
-- ✅ **Fereastra de rapoarte cu statistici reale** - **IMPLEMENTAT**
+- ✅ **Fereastra de rapoarte cu statistici reale** - **INDEPLINIT**
   - Afișare statistici calculate din Excel în timp real
   - Calculul corect pentru "1 an" și "2 ani" pe baza coloanei `2_Ani`
   - Integrare în fluxul de procesare (se afișează înainte de deschiderea fișierelor)
   - **Fișiere**: `src/ui/rapoarte.py::show_rapoarte_window()`
 
 ### 🔄 Deschidere Automată Fișiere
-- ✅ **Deschidere automată Excel, PDF și folder** - **IMPLEMENTAT**
+- ✅ **Deschidere automată Excel, PDF și folder** - **INDEPLINIT**
   - La apăsarea butonului "Continua" se deschid automat:
     - Folderul de output
     - Fișierul Excel
@@ -63,7 +62,7 @@
   - Format text pentru coloanele CNP și Telefon
   - **Fișiere**: `src/excel/excel_manager.py`
 
-- ✅ **Generare automată toate formate** - **IMPLEMENTAT**
+- ✅ **Generare automată toate formate** - **INDEPLINIT**
   - Excel, CSV și PDF se generează automat la procesare
   - Actualizare automată la adăugarea unei noi persoane
   - **Fișiere**: `src/excel/excel_manager.py::create_excel_summary()`
@@ -111,7 +110,7 @@
     - `src/ocr/ocr.py` - eliminat apelul la `create_excel_summary` de la final
     
 ### Îmbunătățiri Excel implementate:
-- ✅ **Export Excel cu toate datele personale** - **IMPLEMENTAT**
+- ✅ **Export Excel cu toate datele personale** - **INDEPLINIT**
   - Generare automată fișier Excel cu sumar pentru toate persoanele
   - Căutare recursivă în toate subfolderele pentru fișiere .txt
   - Ordine corectă coloane: Nume, Inițiala Tatălui, Prenume, CNP, Adresa, ANAF de care aparțin, Telefon, Email, 2 Ani
@@ -257,7 +256,7 @@
   - Backup automată
   - Cleanup fișiere temporare
 
-- [ ] **Export multiple formate** - *Deadline: 10 decembrie 2025* - **NEINDEPLINIT**
+- [ ] **Export multiple formate** - *Deadline: 10 decembrie 2025* - **INDEPLINIT**
   - CSV pentru Excel
   - JSON pentru APIs
   - PDF pentru rapoarte
@@ -362,18 +361,18 @@
 
 
 ## 📊 SUMMARY
-**Total tasks: 32**
-- ✅ Indeplinite: 26
+**Total tasks: 44**
+- ✅ Indeplinite: 39
 - ⏳ Neindeplinite: 5
-- 🔄 În progres: 0
+- 🔄 În progres: 2
 
-**Progres general: 81.25%**
+**Progres general: 86.63%**
 
 ---
 
-*Ultima actualizare: 30 iunie 2025*
+*Ultima actualizare: 4 iulie 2025*
 
-*Următoarea review: 3 iulie 2025*
+*Următoarea review: 7 iulie 2025*
 
 ---
 

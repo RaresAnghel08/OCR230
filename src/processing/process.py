@@ -205,8 +205,6 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     except Exception as e:
         print(f"Eroare la adăugarea în Excel: {e}")
     
-    # print(f"Fișierul text {fisier_txt} a fost creat.")  # Comentat pentru a reduce output-ul
-    
     # Returnăm CNP-ul extras pentru validare în fluxul principal
     return cnp_total
 
@@ -225,10 +223,8 @@ def create_folder_hierarchy(output_folder, folder_localitate_mare, folder_locali
         folder_localitate_med_path = os.path.join(folder_localitate_mare_path, folder_localitate_med.strip())
         if folder_localitate_mic.strip():
             folder_localitate_mic_path = os.path.join(folder_localitate_med_path, folder_localitate_mic.strip())
-            # print(f"Creăm folderul ierarhic complet: {folder_localitate_mare_path} -> {folder_localitate_med_path} -> {folder_localitate_mic_path}")
             os.makedirs(folder_localitate_mic_path, exist_ok=True)
         else:
-            # print(f"Creăm folderul ierarhic parțial: {folder_localitate_mare_path} -> {folder_localitate_med_path}")
             os.makedirs(folder_localitate_med_path, exist_ok=True)
     else:
         print(f"Creăm doar folderul principal: {folder_localitate_mare_path}")

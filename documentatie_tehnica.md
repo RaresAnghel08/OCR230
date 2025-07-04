@@ -245,7 +245,7 @@ Toate dependențele utilizate sunt compatibile cu licența MIT și permit utiliz
 
 #### 📧 Informații de contact
 - **Proiect**: InfoEducație România
-- **Aplicație**: OCR230 - Microsoft Store
+- **Aplicație**: F230-OCR - Microsoft Store
 - **Repository**: GitHub - OCR230_infoeducatie
 - **Suport**: Issues pe GitHub
 - **Email**: raresanghel2008@gmail.com
