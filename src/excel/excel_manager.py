@@ -790,6 +790,7 @@ class ExcelManager:
             
             # Funcție pentru watermark pe fiecare pagină
             def add_watermark(canvas, doc):
+                canvas.setTitle("Raport OCR F230")
                 watermark_path = os.path.join(os.path.dirname(__file__), '../../Assets/favicon.png')
                 watermark_path = os.path.abspath(watermark_path)
                 try:
