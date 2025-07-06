@@ -651,7 +651,7 @@ class ExcelManager:
             return False
     
     def export_to_pdf_report(self, pdf_file_path=None):
-        """Genereaza raport PDF cu statistici și grafice - salvează în folderul de output"""
+        """Genereaza raport PDF cu statistici, grafice și watermark pe fiecare pagină"""
         try:
             # Verificam daca matplotlib și reportlab sunt disponibile
             try:
@@ -663,6 +663,8 @@ class ExcelManager:
                 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
                 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
                 from reportlab.lib.units import inch
+                from reportlab.pdfgen import canvas as pdfcanvas
+                from reportlab.lib.utils import ImageReader
             except ImportError:
                 print("❌ Pentru export PDF este nevoie de: pip install matplotlib reportlab")
                 return False
@@ -680,7 +682,6 @@ class ExcelManager:
             df = pd.read_excel(self.excel_file_path, sheet_name='Date_Persoane')
             
             # Cream documentul PDF
-            doc = SimpleDocTemplate(pdf_file_path, pagesize=A4)
             story = []
             styles = getSampleStyleSheet()
             
@@ -787,8 +788,28 @@ class ExcelManager:
             story.append(Spacer(1, 10))
             story.append(Image(chart_path, width=6*inch, height=3.6*inch))
             
-            # Construim PDF-ul
-            doc.build(story)
+            # Funcție pentru watermark pe fiecare pagină
+            def add_watermark(canvas, doc):
+                watermark_path = os.path.join(os.path.dirname(__file__), '../../Assets/favicon.png')
+                watermark_path = os.path.abspath(watermark_path)
+                try:
+                    img = ImageReader(watermark_path)
+                    page_width, page_height = A4
+                    # Dimensiune watermark (ajustabilă)
+                    wm_width = page_width * 0.4
+                    wm_height = page_width * 0.4
+                    x = (page_width - wm_width) / 2
+                    y = (page_height - wm_height) / 2
+                    canvas.saveState()
+                    canvas.setFillAlpha(0.15)
+                    canvas.drawImage(img, x, y, width=wm_width, height=wm_height, mask='auto', preserveAspectRatio=True)
+                    canvas.restoreState()
+                except Exception as e:
+                    print(f"[Watermark] Eroare la adăugarea watermarkului: {e}")
+            
+            # Construim PDF-ul cu watermark pe fiecare pagină
+            doc = SimpleDocTemplate(pdf_file_path, pagesize=A4)
+            doc.build(story, onFirstPage=add_watermark, onLaterPages=add_watermark)
             
             # Ștergem imaginea temporara
             try:
