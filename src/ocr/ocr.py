@@ -361,5 +361,4 @@ def stop_current_processing():
 
 def is_processing_active():
     """Returnează True dacă procesarea este activă"""
-    global processing_active
     return processing_active
