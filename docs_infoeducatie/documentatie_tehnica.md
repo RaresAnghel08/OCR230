@@ -53,12 +53,15 @@ Aplicația combină algoritmi avansați de OCR cu o interfață grafică intuiti
 
 ## 🔧 Detalii tehnice
 
-### 📊 Structura codului (3,493 linii Python):
-- **UI & UX**: ~580 linii (17%) - Interfață și experiență utilizator
-- **Excel & Export**: ~700 linii (20%) - Gestionare export date și validare
-- **OCR & Processing**: ~750 linii (21%) - Logica principală de procesare
-- **ANAF Modules**: ~950 linii (27%) - Validare teritorială
-- **Utilities & Validation**: ~513 linii (15%) - Funcții auxiliare și validare CNP
+### 📊 Structura codului (3,737 linii Python):
+- **UI & UX**: 955 linii (26%) - Interfață și experiență utilizator
+- **Excel & Export**: 946 linii (25%) - Gestionare export date și validare
+- **OCR & Processing**: 316 linii (8%) - Logica principală de procesare
+- **ANAF Modules**: 975 linii (26%) - Validare teritorială
+- **Utilities & Validation**: 26 linii (1%) - Funcții auxiliare și validare CNP
+- **Names**: 15 linii (<1%) - Validare și procesare nume
+- **Main & Config**: 504 linii (14%) - Configurare inițială și funcția principală
+- **Assets**: Resurse grafice și icoane
 
 ### 📁 Algoritm procesare:
 1. **Conversie PDF → PNG** (dacă e cazul) cu pdf2image
@@ -245,7 +248,7 @@ Toate dependențele utilizate sunt compatibile cu licența MIT și permit utiliz
 
 #### 📧 Informații de contact
 - **Proiect**: InfoEducație România
-- **Aplicație**: OCR230 - Microsoft Store
+- **Aplicație**: F230-OCR - Microsoft Store
 - **Repository**: GitHub - OCR230_infoeducatie
 - **Suport**: Issues pe GitHub
 - **Email**: raresanghel2008@gmail.com

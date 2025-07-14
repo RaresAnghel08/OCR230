@@ -16,11 +16,10 @@ def cautare_anaf(localitate):
 
     for data in anaf_data:
         for directie, judete in data.items():
-            #if isinstance(directie, dict):  # Verifică dacă directie este un dicționar
                 for judet, unitati in judete.items():
-                    if isinstance(unitati, dict):  # Verifică dacă unitati este un dicționar
+                    if isinstance(unitati, dict):
                         for unitate, localitati in unitati.items():
-                            if isinstance(localitati, list):  # Verifică dacă localitati este o listă
+                            if isinstance(localitati, list):
                                 for loc in localitati:
                                     if loc.lower() == lower_localitate:
                                         return unitate, judet, directie
@@ -198,8 +197,6 @@ def process_fields(text_initial, idx, debug_switch=False):
             if debug_switch:
                 debug_afisare(idx, "Telefon", text_initial, text_filtrat)
         elif idx == 15:  # 2 ani (zona 16)
-            #save cropped image in folder_localitate_mic
-            
             if text_initial != "":
                 doiani = "Da"
             else:

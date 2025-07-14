@@ -16,7 +16,7 @@ def replace_diacritics(text):
     text = text.replace('Î', 'I')
     text = text.replace('Ș', 'S')
     text = text.replace('Ț', 'T')
-    return text  # Add return statement
+    return text
 
 # Funcție pentru a păstra doar litere (fără spații și alte caractere)
 def filtru_litere(text):
@@ -25,7 +25,6 @@ def filtru_litere(text):
     #replace diacritics
     text = replace_diacritics(text)
     return ''.join(re.findall(r'[a-zA-Z ]', text))  # Păstrează doar literele
-    return text  # Add return statement
 
 def filtru_nume(text):
     text = text.replace(" @", "@")  # Elimină spațiul din fața simbolului @
@@ -36,7 +35,6 @@ def filtru_nume(text):
     text = replace_diacritics(text)
     # Păstrează doar literele și spațiile
     return ''.join(re.findall(r'[a-zA-Z ]', text))
-    return text  # Add return statement
 
 # Funcție pentru a capitaliza prima literă din fiecare cuvânt
 def capitalize_words(text):

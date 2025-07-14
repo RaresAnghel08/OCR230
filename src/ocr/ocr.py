@@ -25,6 +25,32 @@ def import_ocr_libraries():
             try:
                 from efficient_ocr import EffOCR
                 print("EfficientOCR importat cu succes.")
+                effocr = EffOCR(
+  config={
+      'Recognizer': {
+          'char': {
+              'model_backend': 'onnx',
+              'model_dir': './models',
+              'hf_repo_id': 'dell-research-harvard/effocr_en/char_recognizer',
+          },
+          'word': {
+              'model_backend': 'onnx',
+              'model_dir': './models',
+              'hf_repo_id': 'dell-research-harvard/effocr_en/word_recognizer',
+          },
+      },
+      'Localizer': {
+          'model_dir': './models',
+          'hf_repo_id': 'dell-research-harvard/effocr_en',
+          'model_backend': 'onnx'
+      },
+      'Line': {
+          'model_dir': './models',
+          'hf_repo_id': 'dell-research-harvard/effocr_en',
+          'model_backend': 'onnx',
+      },
+  }
+)
             except ImportError as e:
                 print(f"EfficientOCR nu poate fi importat: {e}")
                 EffOCR = None
@@ -48,7 +74,6 @@ def import_ocr_libraries():
 
 from src.processing.process import set_reader, proceseaza_fisier
 from src.utils.utils import update_progress
-# from src.excel.excel_manager import create_excel_summary  # Nu mai este necesar, se folosește actualizare incrementală
 from PIL import Image
 
 # Variabilă globală pentru pdf2image
@@ -71,7 +96,6 @@ def import_pdf2image():
         print(f"Eroare neașteptată la importul pdf2image: {e}")
         pdf2image = None
         return False
-# from main import update_progress
 
 # Inițializăm reader-ul cu o valoare implicită pentru GPU
 reader = None
@@ -212,12 +236,9 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
             
             # Actualizăm dashboard-ul cu fișierul curent ÎNAINTE de procesare
             if dashboard_callback:
-                filename = os.path.basename(file)
-                print(f"ÎNAINTE DE PROCESARE - Fișier: {filename}")
-                dashboard_callback('current_file', filename)
+                dashboard_callback('current_file', os.path.basename(file))
                 dashboard_callback('processed_files', i)  # Numărul de fișiere procesate până acum
-                print(f"Dashboard: Procesez fișierul {filename} ({i+1}/{total_files})")
-                print(f"CALLBACK APELAT: dashboard_callback('current_file', '{filename}')")
+                print(f"Dashboard: Procesez fișierul {os.path.basename(file)} ({i+1}/{total_files})")
                 
             # Procesăm fiecare fișier și obținem CNP-ul real extras
             extracted_cnp = proceseaza_fisier(file, folder_output, coordonate)
@@ -271,9 +292,6 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
                 messagebox.showinfo("Succes", f"Procesarea fișierelor a fost finalizată.\nFișierul Excel a fost actualizat: {excel_path}")
             else:
                 messagebox.showinfo("Succes", "Procesarea fișierelor a fost finalizată.")
-        
-        # Nu mai este necesar să creăm Excel-ul la final, se actualizează incremental
-        # print("Excel-ul a fost actualizat incremental pe parcursul procesării.")
             
     except Exception as e:
         print(f"Eroare în timpul procesării: {e}")
@@ -290,7 +308,7 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
         # Afișăm raportul înainte de a deschide folderul și Excel-ul
         def open_final_results():
             """Deschide folderul de output și toate fișierele generate (Excel, PDF, CSV)"""
-            # open output folder
+            # open output folder if it exists
             if os.path.exists(folder_output):
                 os.startfile(folder_output)
                 
