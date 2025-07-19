@@ -2,7 +2,6 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 import threading
-import scipy # Importăm scipy pentru a rezolva problema cu _cyutility
 
 # Importăm easyocr doar când avem nevoie de el
 easyocr = None
