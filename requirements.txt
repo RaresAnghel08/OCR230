@@ -4,11 +4,9 @@ pillow
 numpy
 pystray==0.3.3
 pdf2image
-poppler-utils
 efficient-ocr
 auto-py-to-exe
 pyinstaller
-scipy==1.15.0
 openpyxl
 pandas
 matplotlib

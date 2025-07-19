@@ -24,7 +24,7 @@ Poți testa aplicația OCR230 în două moduri:
 ## 3. Testează cu date de exemplu
 - Când ți se cere, selectează arhiva de la linkul de mai jos ca **folder de intrare** (extrage-o mai întâi dacă este zip/rar):
 
-  **[Exemplu de input](https://example.com/input.zip)**
+  **[Exemplu de input](https://drive.google.com/file/d/1nI1d_cY7AhxaeA4wava27F50RIcvGuM6/view?usp=drive_link)**
 
 - Selectează **orice** folder de pe disc ca **folder de ieșire** (unde vor fi salvate rezultatele) sau **creează unul nou**.
 
@@ -38,4 +38,4 @@ Gata! Aplicația va afișa progresul live și va genera rapoarte Excel, PDF și 
 - **CSV**: Un fișier CSV cu datele extrase, util pentru analiză sau import în alte aplicații.
 - **TXT**: Fiecare formular procesat va avea un fișier TXT generat cu datele extrase.
 
-**[Exemplu de output](https://example.com/output.zip)**
+**[Exemplu de output](https://drive.google.com/file/d/1B3ceFqAjWMjCvj4Sajq2SyXw3xKQHZN4/view?usp=drive_link)**

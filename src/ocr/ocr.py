@@ -2,7 +2,6 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 import threading
-import scipy # Importăm scipy pentru a rezolva problema cu _cyutility
 
 # Importăm easyocr doar când avem nevoie de el
 easyocr = None
@@ -26,30 +25,30 @@ def import_ocr_libraries():
                 from efficient_ocr import EffOCR
                 print("EfficientOCR importat cu succes.")
                 effocr = EffOCR(
-  config={
-      'Recognizer': {
-          'char': {
-              'model_backend': 'onnx',
-              'model_dir': './models',
-              'hf_repo_id': 'dell-research-harvard/effocr_en/char_recognizer',
-          },
-          'word': {
-              'model_backend': 'onnx',
-              'model_dir': './models',
-              'hf_repo_id': 'dell-research-harvard/effocr_en/word_recognizer',
-          },
-      },
-      'Localizer': {
-          'model_dir': './models',
-          'hf_repo_id': 'dell-research-harvard/effocr_en',
-          'model_backend': 'onnx'
-      },
-      'Line': {
-          'model_dir': './models',
-          'hf_repo_id': 'dell-research-harvard/effocr_en',
-          'model_backend': 'onnx',
-      },
-  }
+    config={
+        'Recognizer': {
+            'char': {
+                'model_backend': 'onnx',
+                'model_dir': './models',
+                'hf_repo_id': 'dell-research-harvard/effocr_en/char_recognizer',
+            },
+            'word': {
+                'model_backend': 'onnx',
+                'model_dir': './models',
+                'hf_repo_id': 'dell-research-harvard/effocr_en/word_recognizer',
+            },
+        },
+        'Localizer': {
+            'model_dir': './models',
+            'hf_repo_id': 'dell-research-harvard/effocr_en',
+            'model_backend': 'onnx'
+        },
+        'Line': {
+            'model_dir': './models',
+            'hf_repo_id': 'dell-research-harvard/effocr_en',
+            'model_backend': 'onnx',
+        },
+    }
 )
             except ImportError as e:
                 print(f"EfficientOCR nu poate fi importat: {e}")
@@ -203,7 +202,7 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
                     print("Procesarea a fost oprită de utilizator.")
                     return
                 try:
-                    images = pdf2image.convert_from_path(pdf_file, poppler_path=None) # teoretic nu deschide cmd
+                    images = pdf2image.convert_from_path(pdf_file)
                     # images = pdf2image.convert_from_path(pdf_file) # deschide cmd
                     for i, image in enumerate(images):
                         # Redimensionăm imaginea la dimensiunea A4
@@ -361,5 +360,4 @@ def stop_current_processing():
 
 def is_processing_active():
     """Returnează True dacă procesarea este activă"""
-    global processing_active
     return processing_active
