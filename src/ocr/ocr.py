@@ -25,30 +25,30 @@ def import_ocr_libraries():
                 from efficient_ocr import EffOCR
                 print("EfficientOCR importat cu succes.")
                 effocr = EffOCR(
-  config={
-      'Recognizer': {
-          'char': {
-              'model_backend': 'onnx',
-              'model_dir': './models',
-              'hf_repo_id': 'dell-research-harvard/effocr_en/char_recognizer',
-          },
-          'word': {
-              'model_backend': 'onnx',
-              'model_dir': './models',
-              'hf_repo_id': 'dell-research-harvard/effocr_en/word_recognizer',
-          },
-      },
-      'Localizer': {
-          'model_dir': './models',
-          'hf_repo_id': 'dell-research-harvard/effocr_en',
-          'model_backend': 'onnx'
-      },
-      'Line': {
-          'model_dir': './models',
-          'hf_repo_id': 'dell-research-harvard/effocr_en',
-          'model_backend': 'onnx',
-      },
-  }
+    config={
+        'Recognizer': {
+            'char': {
+                'model_backend': 'onnx',
+                'model_dir': './models',
+                'hf_repo_id': 'dell-research-harvard/effocr_en/char_recognizer',
+            },
+            'word': {
+                'model_backend': 'onnx',
+                'model_dir': './models',
+                'hf_repo_id': 'dell-research-harvard/effocr_en/word_recognizer',
+            },
+        },
+        'Localizer': {
+            'model_dir': './models',
+            'hf_repo_id': 'dell-research-harvard/effocr_en',
+            'model_backend': 'onnx'
+        },
+        'Line': {
+            'model_dir': './models',
+            'hf_repo_id': 'dell-research-harvard/effocr_en',
+            'model_backend': 'onnx',
+        },
+    }
 )
             except ImportError as e:
                 print(f"EfficientOCR nu poate fi importat: {e}")
