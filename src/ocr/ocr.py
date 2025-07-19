@@ -203,7 +203,7 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
                     print("Procesarea a fost oprită de utilizator.")
                     return
                 try:
-                    images = pdf2image.convert_from_path(pdf_file, poppler_path=None) # teoretic nu deschide cmd
+                    images = pdf2image.convert_from_path(pdf_file)
                     # images = pdf2image.convert_from_path(pdf_file) # deschide cmd
                     for i, image in enumerate(images):
                         # Redimensionăm imaginea la dimensiunea A4
