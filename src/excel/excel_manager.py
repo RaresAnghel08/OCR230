@@ -184,9 +184,13 @@ class ExcelManager:
             if 'Telefon' in df.columns:
                 df['Telefon'] = df['Telefon'].astype(str)
             
+            # Add a new column 'Validitate_CNP' next to 'CNP'
+            if 'CNP' in df.columns:
+                df['Validitate_CNP'] = df['CNP'].apply(lambda cnp: 'DA' if self.validate_cnp(cnp)[0] else 'NU')
+            
             # Reordonam coloanele pentru a respecta ordinea ceruta
             preferred_columns = [
-                'Nume', 'Initiala_Tatalui', 'Prenume', 'CNP', 'Adresa', 'ANAF_Apartin', 'Telefon', 'Email', '2_Ani'
+                'Nume', 'Initiala_Tatalui', 'Prenume', 'CNP', 'Validitate_CNP', 'Adresa', 'ANAF_Apartin', 'Telefon', 'Email', '2_Ani'
             ]
             
             # Adaugam coloanele suplimentare la sfârșit pentru referinta
@@ -406,9 +410,13 @@ class ExcelManager:
             if 'Telefon' in df_combined.columns:
                 df_combined['Telefon'] = df_combined['Telefon'].astype(str)
             
+            # Add a new column 'Validitate_CNP' next to 'CNP'
+            if 'CNP' in df_combined.columns:
+                df_combined['Validitate_CNP'] = df_combined['CNP'].apply(lambda cnp: 'DA' if self.validate_cnp(cnp)[0] else 'NU')
+            
             # Reordonam coloanele pentru a respecta ordinea ceruta
             preferred_columns = [
-                'Nume', 'Initiala_Tatalui', 'Prenume', 'CNP', 'Adresa', 'ANAF_Apartin', 'Telefon', 'Email', '2_Ani'
+                'Nume', 'Initiala_Tatalui', 'Prenume', 'CNP', 'Validitate_CNP', 'Adresa', 'ANAF_Apartin', 'Telefon', 'Email', '2_Ani'
             ]
             
             # Adaugam coloanele suplimentare la sfârșit pentru referinta
