@@ -1,6 +1,121 @@
-# TODO List - Proiect OCR Form 230
-## Data actualizare: 26 iunie 2025
+# TODO List - Proiect OCR230
 
+## Data actualizare: 4 IULIE 2025
+
+---
+
+## ✅ FUNCȚIONALITĂȚI NOI INDEPLINITE - IUNIE-IULIE 2025
+
+### 🔍 Validare și Verificare Date
+- ✅ **Validare CNP automată** - **INDEPLINIT**
+  - Algoritm conform standardului oficial românesc
+  - Verificare cifră de control și validitate format
+  - Detectare CNP-uri incomplete sau eronate
+  - **Fișiere**: `src/excel/excel_manager.py::validate_cnp()`
+
+- ✅ **Detectare duplicate pe baza CNP** - **INDEPLINIT**
+  - Identificare automată CNP-uri duplicate în baza de date
+  - Raportare detaliată cu informații despre fiecare duplicat
+  - Grupare duplicate cu contorizare
+  - **Fișiere**: `src/excel/excel_manager.py::detect_duplicate_entries()`
+
+- ✅ **Validare telefon și email** - **INDEPLINIT**
+  - Verificare format telefon românesc (07xx, 02xx, 03xx)
+  - Validare format email cu regex standard
+  - Raportare automată erori de format
+  - **Fișiere**: `src/excel/excel_manager.py::validate_phone(), validate_email()`
+
+### 📊 Export și Raportare
+- ✅ **Export CSV automat** - **INDEPLINIT**
+  - Generare automată fișier CSV pentru compatibilitate
+  - Encoding UTF-8 BOM pentru Excel
+  - Separator `;` pentru standard european
+  - Salvare în folderul de output
+  - **Fișiere**: `src/excel/excel_manager.py::export_to_csv()`
+
+- ✅ **Rapoarte PDF cu statistici** - **INDEPLINIT**
+  - Generare automată raport PDF complet
+  - Statistici generale (total înregistrări, CNP valide/invalide, duplicate)
+  - Grafice interactive (distribuție 1 an vs 2 ani, top ANAF)
+  - Tabel distribuție pe județe/ANAF
+  - Salvare în folderul de output ca `Raport_OCR_F230.pdf`
+  - **Fișiere**: `src/excel/excel_manager.py::export_to_pdf_report()`
+
+- ✅ **Fereastra de rapoarte cu statistici reale** - **INDEPLINIT**
+  - Afișare statistici calculate din Excel în timp real
+  - Calculul corect pentru "1 an" și "2 ani" pe baza coloanei `2_Ani`
+  - Integrare în fluxul de procesare (se afișează înainte de deschiderea fișierelor)
+  - **Fișiere**: `src/ui/rapoarte.py::show_rapoarte_window()`
+
+### 🔄 Deschidere Automată Fișiere
+- ✅ **Deschidere automată Excel, PDF și folder** - **INDEPLINIT**
+  - La apăsarea butonului "Continua" se deschid automat:
+    - Folderul de output
+    - Fișierul Excel
+    - Raportul PDF
+  - **Fișiere**: `src/ocr/ocr.py::open_final_results()`
+
+### 🔧 Optimizări Tehnice
+- ✅ **Format telefon corect în Excel** - **CORECTAT**
+  - Păstrare zero-uri de la început pentru numerele de telefon
+  - Eliminare doar a sufixului `.0` din conversiile float
+  - Format text pentru coloanele CNP și Telefon
+  - **Fișiere**: `src/excel/excel_manager.py`
+
+- ✅ **Generare automată toate formate** - **INDEPLINIT**
+  - Excel, CSV și PDF se generează automat la procesare
+  - Actualizare automată la adăugarea unei noi persoane
+  - **Fișiere**: `src/excel/excel_manager.py::create_excel_summary()`
+
+---
+
+## ✅ PROBLEMĂ REZOLVATĂ - STRUCTURĂ FOLDERE
+**Data rezolvare: 26 iunie 2025**
+
+### Problemă identificată și rezolvată:
+- ✅ **Corectare structură foldere pentru localități necunoscute** - **REZOLVAT**
+  - **Problemă**: Pentru localități necunoscute (nu găsite în ANAF), se crea structura `JUDET/JUDET/JUDET/persoane`
+  - **Soluție**: Modificat logica în `process_fields.py` să seteze doar `folder_localitate_mare` pentru localități necunoscute
+  - **Rezultat**: Acum se creează doar `JUDET/persoane` pentru localități necunoscute
+  - **Fișiere modificate**: 
+    - `src/processing/process_fields.py` - logica de determinare foldere
+    - `src/processing/process.py` - funcția `create_folder_hierarchy` și construirea căii
+
+- ✅ **Optimizare output console - eliminare mesaje repetitive** - **REZOLVAT**
+  - **Problemă**: Mesajele de eroare OCR și debug se repetau pentru fiecare zonă procesată
+  - **Soluție**: 
+    - Înlocuit `isinstance(reader, EffOCR)` cu `hasattr(reader, 'infer')` pentru a evita eroarea `name 'EffOCR' is not defined`
+    - Adăugat variabilă globală `ocr_type_announced` pentru a afișa tipul OCR doar o dată per fișier
+    - Comentat/redus mesajele de debug care se repetau frecvent
+  - **Rezultat**: Output-ul consolei este mult mai curat și ușor de citit
+  - **Fișiere modificate**: `src/processing/process.py`
+
+- ✅ **Îmbunătățire Excel - eliminare extensie din calea fișierului** - **REZOLVAT**
+  - **Problemă**: În Excel, coloana `Cale_Fisier` afișa calea cu extensia `.txt`
+  - **Soluție**: Folosit `os.path.splitext()` pentru a elimina extensia din calea relativă
+  - **Rezultat**: În Excel apare `Anaf\nume` în loc de `Anaf\nume.txt`
+  - **Fișiere modificate**: `src/excel/excel_manager.py`
+
+- ✅ **Actualizare Excel incrementală - în timp real** - **REZOLVAT**
+  - **Problemă**: Excel-ul se crea doar la sfârșitul procesării tuturor fișierelor
+  - **Soluție**: Implementat actualizare incrementală - fiecare formular procesat se adaugă imediat în Excel
+  - **Rezultat**: Excel-ul se actualizează după fiecare formular procesat, oferind progres în timp real
+  - **Avantaje**: 
+    - Progres vizibil în timp real
+    - Datele sunt salvate imediat (în caz de întrerupere, nu se pierd)
+    - Performanță mai bună pentru volume mari de date
+  - **Fișiere modificate**: 
+    - `src/excel/excel_manager.py` - adăugată `add_single_record_to_excel()`
+    - `src/processing/process.py` - integrare actualizare Excel după fiecare .txt creat
+    - `src/ocr/ocr.py` - eliminat apelul la `create_excel_summary` de la final
+    
+### Îmbunătățiri Excel implementate:
+- ✅ **Export Excel cu toate datele personale** - **INDEPLINIT**
+  - Generare automată fișier Excel cu sumar pentru toate persoanele
+  - Căutare recursivă în toate subfolderele pentru fișiere .txt
+  - Ordine corectă coloane: Nume, Inițiala Tatălui, Prenume, CNP, Adresa, ANAF de care aparțin, Telefon, Email, 2 Ani
+  - Extragere robustă de date din fișierele .txt generate de sistem
+  - **Fișiere create**: `src/excel/excel_manager.py`
 ---
 
 ## 🎨 INTERFAȚĂ UTILIZATOR (UI/UX)
@@ -141,7 +256,7 @@
   - Backup automată
   - Cleanup fișiere temporare
 
-- [ ] **Export multiple formate** - *Deadline: 10 decembrie 2025* - **NEINDEPLINIT**
+- [ ] **Export multiple formate** - *Deadline: 10 decembrie 2025* - **INDEPLINIT**
   - CSV pentru Excel
   - JSON pentru APIs
   - PDF pentru rapoarte
@@ -151,6 +266,21 @@
   - Adăugare număr secvențial (ex: "Popescu Marcel 2", "Popescu Marcel 3")
   - Aplicare pentru ambele fișiere (.jpg și .txt)
   - Prevenire suprascriere accidentală
+
+- [ ] **Deschidere automată folder output** - *Deadline: 27 iunie 2025* - **INDEPLINIT**
+  - Deschidere automată a folderului de ieșire după finalizarea procesării
+  - Folosire os.startfile() pentru Windows
+  - Verificare existență folder înainte de deschidere
+  - Îmbunătățire experiență utilizator
+
+- [ ] **Creare fișier Excel cu date centralizate** - *Deadline: 27 iunie 2025* - **ÎMBUNĂTĂȚIT**
+  - Creare automată fișier Excel cu toate datele persoanelor procesate din toate subfolderele
+  - Extragere inteligentă informații: nume separat, inițiala tatălui, prenume, CNP, adresă
+  - Determinare automată ANAF de apartenență pe baza folderului localitate mic
+  - Organizare coloane în ordinea: Nume | Inițiala Tatălui | Prenume | CNP | Adresă | ANAF Aparțin | Telefon | Email | 2 Ani
+  - Căutare recursivă în toate folderele și subfolderele pentru fișiere .txt
+  - Formatare profesională Excel cu ajustare automată coloane
+  - Integrare completă cu datele din process_fields pentru consistență
 
 ---
 
@@ -162,6 +292,7 @@
   - PyInstaller optimization
   - Reducere dimensiune executable
   - Teste pe diferite versiuni Windows
+  - Rezolvare probleme import dependencies (scipy, pdf2image, efficient-ocr)
 
 - [ ] **Microsoft Store package** - *Deadline: 18 martie 2025* - **INDEPLINIT**
   - MSIX packaging
@@ -230,15 +361,64 @@
 
 
 ## 📊 SUMMARY
-**Total tasks: 32**
-- ✅ Indeplinite: 25
-- ⏳ Neindeplinite: 6
-- 🔄 În progres: 0
+**Total tasks: 44**
+- ✅ Indeplinite: 39
+- ⏳ Neindeplinite: 5
+- 🔄 În progres: 2
 
-**Progres general: 80%**
+**Progres general: 86.63%**
 
 ---
 
-*Ultima actualizare: 26 iunie 2025*
+*Ultima actualizare: 4 iulie 2025*
 
-*Următoarea review: 3 iulie 2025*
+*Următoarea review: 7 iulie 2025*
+
+---
+
+## 🔮 FUNCȚIONALITĂȚI VIITOARE (PLANIFICATE)
+**Prioritate: Medie-Scăzută**
+
+### 📊 Analize Avansate
+- [ ] **Dashboard cu grafice live** - *Deadline: TBD*
+  - Grafice interactive cu matplotlib/plotly
+  - Distribuție pe județe în timp real
+  - Statistici de procesare (viteză, acuratețe)
+
+- [ ] **Comparare sesiuni de procesare** - *Deadline: TBD*
+  - Istoric procesări anterioare
+  - Comparare performanță și rezultate
+  - Trending lunar/anual
+
+### 🔍 Validare Extinsă
+- [ ] **Verificare adrese cu geocoding** - *Deadline: TBD*
+  - Validare existență adrese cu servicii externe
+  - Detecție adrese incomplete sau eronate
+  - Sugestii de corecție automată
+
+- [ ] **Spell check pentru nume** - *Deadline: TBD*
+  - Corectare automată a numelor cu AI/NLP
+  - Detectare și corectare diacritice
+  - Bază de date nume românești
+
+### 🔄 Funcționalități Backup și Sync
+- [ ] **Backup automat în cloud** - *Deadline: TBD*
+  - Sincronizare Google Drive/OneDrive
+  - Backup automat rezultate
+  - Restaurare din backup
+
+- [ ] **API REST pentru integrări** - *Deadline: TBD*
+  - Endpoint-uri pentru procesare externă
+  - Webhook notifications
+  - Integrare cu alte sisteme
+
+### 🎯 Îmbunătățiri UX
+- [ ] **Search și filtering în rezultate** - *Deadline: TBD*
+  - Căutare în rezultatele procesate
+  - Filtrare avansată (județ, perioadă, data procesării)
+  - Export rezultate filtrate
+
+- [ ] **Template-uri și profiluri** - *Deadline: TBD*
+  - Salvare setări ca profiluri reutilizabile
+  - Template-uri pentru diferite tipuri de formulare
+  - Import/export configurații

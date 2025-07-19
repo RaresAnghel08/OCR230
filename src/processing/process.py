@@ -7,6 +7,8 @@ from src.processing.filtre import capitalize_words
 
 global eff_ocr
 eff_ocr = False  # Setează True dacă EfficientOCR este disponibil, altfel False
+ocr_type_announced = False  # Variabilă pentru a afișa tipul OCR doar o dată
+
 if eff_ocr == True:
     try:
         from efficient_ocr import EffOCR
@@ -31,7 +33,7 @@ def proceseaza_zona(coord, idx, image):
     else:
         zona_decupata = zona_decupata.resize((zona_decupata.width * 3, zona_decupata.height * 3))
     #save cropped image for debug in debug_media 
-    debug_on = True  # Setează True pentru a activa debug-ul
+    debug_on = False  # Setează True pentru a activa debug-ul
     if debug_on==True:
         debug_media_folder = "debug_media"
         os.makedirs(debug_media_folder, exist_ok=True)  # Creează folderul debug_media dacă nu există
@@ -44,33 +46,45 @@ def proceseaza_zona(coord, idx, image):
     zona_np = np.array(zona_decupata)  # convert in numpy array
     
     # Verificăm tipul de reader și folosim metoda corespunzătoare
+    global ocr_type_announced
+    
     try:
-        if isinstance(reader, EffOCR) and eff_ocr == True :
+        # Verificăm dacă reader-ul are metoda 'infer' (specifică pentru EfficientOCR)
+        if hasattr(reader, 'infer') and eff_ocr == True:
             # Folosim EfficientOCR
-            print(f"Folosim EfficientOCR pentru zona {idx}")
+            if not ocr_type_announced:
+                print("Se folosește EfficientOCR pentru toate zonele OCR")
+                ocr_type_announced = True
             rezultate = reader.infer(zona_np)
             text = rezultate if isinstance(rezultate, str) else str(rezultate)
         else:
             # Folosim EasyOCR (fallback)
-            print(f"Folosim EasyOCR pentru zona {idx}")
+            if not ocr_type_announced:
+                print("Se folosește EasyOCR pentru toate zonele OCR")
+                ocr_type_announced = True
             rezultate = reader.readtext(zona_np)
             text = " ".join([rezultat[1] for rezultat in rezultate])  # extract text from results
     except Exception as e:
-        print(f"Eroare la OCR pentru zona {idx}: {e}")
+        if not ocr_type_announced:
+            print(f"Eroare la inițializarea OCR: {e}")
+            print("Se va folosi EasyOCR ca fallback pentru toate zonele")
+            ocr_type_announced = True
         # Fallback la EasyOCR dacă EfficientOCR eșuează
         try:
-            print(f"Fallback la EasyOCR pentru zona {idx}")
             rezultate = reader.readtext(zona_np)
             text = " ".join([rezultat[1] for rezultat in rezultate])
         except Exception as e2:
-            print(f"Eroare și la EasyOCR pentru zona {idx}: {e2}")
+            print(f"Eroare critică la OCR pentru zona {idx}: {e2}")
             text = ""  # Return empty string if both fail
     
-    print(f"OCR text pentru zona {idx}: {text}")  # Afișează textul OCR pentru debug
+    # print(f"OCR text pentru zona {idx}: {text}")  # Comentat pentru a reduce output-ul
     return text
 
 # Funcția pentru procesarea fișierelor
 def proceseaza_fisier(image_path, output_folder, coordonate):
+    # Reset variabila pentru afișarea tipului OCR pentru fiecare fișier nou
+    global ocr_type_announced
+    ocr_type_announced = False
     
     image = Image.open(image_path)  # Încarcă imaginea
     print(f"Procesăm fișierul: {image_path}")  # Debug: Afișăm numele fișierului procesat
@@ -90,7 +104,6 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     # Parcurgem coordonatele și procesăm fiecare zonă
     for idx, coord in enumerate(coordonate):
         text_initial = proceseaza_zona(coord, idx, image)
-        print(f"Text inițial pentru zona {idx}: {text_initial}")  # Debug: Afișăm textul inițial
         temp_prenume, temp_nume, temp_initiala_tatalui, temp_strada, temp_numar, temp_cnp_total, temp_email, temp_judet, temp_localitate, temp_cp, temp_bloc, temp_scara, temp_etaj, temp_apartament, temp_phone, temp_doiani, temp_folder_localitate_mic, temp_folder_localitate_med, temp_folder_localitate_mare = process_fields(text_initial, idx, False)  # debug_switch este True pentru debug
         # Atribuire valorilor returnate la variabilele finale
         if temp_prenume:
@@ -131,8 +144,6 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
             folder_localitate_med = temp_folder_localitate_med
         if temp_folder_localitate_mare:
             folder_localitate_mare = temp_folder_localitate_mare
-        # Debug: Afișăm valorile actualizate după fiecare iterație
-        print(f"Variabile după process_fields: prenume={prenume}, nume={nume}, strada={strada}, etc.")  # Debug
 
     # Generăm adresa
     adresa = f"Str. {strada} NR. {numar} LOC. {localitate} JUD. {judet}"
@@ -147,7 +158,6 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     if cp:
         adresa += f" CP. {cp}"
 
-    # Debug: Afișăm adresa generată
     print(f"Rezultate procesare: {nume} {prenume}, {email}, {phone}, {adresa}")  # Debug: Afișăm rezultatele procesării
 
     # Nume fișier nou
@@ -158,7 +168,16 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     create_folder_hierarchy(output_folder, folder_localitate_mare, folder_localitate_med, folder_localitate_mic)
 
     # Creează calea completă a folderului de destinație
-    folder_localitate = os.path.join(output_folder, folder_localitate_mare.strip(), folder_localitate_med.strip(), folder_localitate_mic.strip())
+    # Pentru localități necunoscute, construim calea doar cu folderele care nu sunt goale
+    path_parts = [output_folder]
+    if folder_localitate_mare.strip():
+        path_parts.append(folder_localitate_mare.strip())
+    if folder_localitate_med.strip():
+        path_parts.append(folder_localitate_med.strip())
+    if folder_localitate_mic.strip():
+        path_parts.append(folder_localitate_mic.strip())
+    
+    folder_localitate = os.path.join(*path_parts)
     
     # Verifică dacă fișierul există și adaugă număr secvențial dacă e necesar
     nume_fisier_final = nume_fisier_nou
@@ -172,7 +191,6 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     
     # Mutăm și redenumim imaginea cu numele final
     noua_cale_imagine = os.path.join(folder_localitate, nume_fisier_final)
-    print(f"Mutăm imaginea la: {noua_cale_imagine}")  # Debug
     shutil.move(image_path, noua_cale_imagine)
 
     # Creează fișierul text cu numele final
@@ -180,19 +198,36 @@ def proceseaza_fisier(image_path, output_folder, coordonate):
     with open(fisier_txt, 'w', encoding='utf-8') as f:
         f.write(f"{nume}\n{initiala_tatalui}\n{prenume}\n{cnp_total}\n{adresa}\n{phone}\n{email}\n{doiani}")
     
-    print(f"Fișierul text {fisier_txt} a fost creat.")
+    # Adăugăm imediat înregistrarea în Excel
+    try:
+        from src.excel.excel_manager import add_single_person_to_excel
+        add_single_person_to_excel(output_folder, fisier_txt)
+    except Exception as e:
+        print(f"Eroare la adăugarea în Excel: {e}")
+    
+    # Returnăm CNP-ul extras pentru validare în fluxul principal
+    return cnp_total
 
 def create_folder_hierarchy(output_folder, folder_localitate_mare, folder_localitate_med, folder_localitate_mic):
     # Creează folderele pentru localitate și subfolderele corespunzătoare
+    # Pentru localități necunoscute, doar folder_localitate_mare va fi setat
+    
+    if not folder_localitate_mare.strip():
+        print("Eroare: folder_localitate_mare este gol!")
+        return
+    
     folder_localitate_mare_path = os.path.join(output_folder, folder_localitate_mare.strip())
-    folder_localitate_med_path = os.path.join(folder_localitate_mare_path, folder_localitate_med.strip())
-    folder_localitate_mic_path = os.path.join(folder_localitate_med_path, folder_localitate_mic.strip())
+    
+    # Verifică dacă avem nivele suplimentare de foldere
+    if folder_localitate_med.strip():
+        folder_localitate_med_path = os.path.join(folder_localitate_mare_path, folder_localitate_med.strip())
+        if folder_localitate_mic.strip():
+            folder_localitate_mic_path = os.path.join(folder_localitate_med_path, folder_localitate_mic.strip())
+            os.makedirs(folder_localitate_mic_path, exist_ok=True)
+        else:
+            os.makedirs(folder_localitate_med_path, exist_ok=True)
+    else:
+        print(f"Creăm doar folderul principal: {folder_localitate_mare_path}")
+        os.makedirs(folder_localitate_mare_path, exist_ok=True)
 
-    print(f"Creăm folderul ierarhic: {folder_localitate_mare_path} -> {folder_localitate_med_path} -> {folder_localitate_mic_path}")
-
-    # Crează toate folderele dacă nu există
-    os.makedirs(folder_localitate_mare_path, exist_ok=True)
-    os.makedirs(folder_localitate_med_path, exist_ok=True)
-    os.makedirs(folder_localitate_mic_path, exist_ok=True)
-
-    print(f"Folderele au fost create sau există deja.")
+    # print(f"Folderele au fost create sau există deja.")  # Comentat pentru a reduce output-ul

@@ -16,11 +16,10 @@ def cautare_anaf(localitate):
 
     for data in anaf_data:
         for directie, judete in data.items():
-            #if isinstance(directie, dict):  # Verifică dacă directie este un dicționar
                 for judet, unitati in judete.items():
-                    if isinstance(unitati, dict):  # Verifică dacă unitati este un dicționar
+                    if isinstance(unitati, dict):
                         for unitate, localitati in unitati.items():
-                            if isinstance(localitati, list):  # Verifică dacă localitati este o listă
+                            if isinstance(localitati, list):
                                 for loc in localitati:
                                     if loc.lower() == lower_localitate:
                                         return unitate, judet, directie
@@ -132,14 +131,17 @@ def process_fields(text_initial, idx, debug_switch=False):
                 print("am intrat in if")
                 folder_localitate_mic,folder_localitate_med, folder_localitate_mare = cautare_anaf(localitate) # Caută localitatea în baza de date ANAF
                 if folder_localitate_mic == "Unknown":
-                    folder_localitate_mic = localitate
+                    # Pentru localități necunoscute, creăm doar un singur folder cu numele localității
+                    folder_localitate_mic = ""  # persoanele vor fi direct în folder_localitate_mare
+                    folder_localitate_med = ""  # fără nivel mediu
+                    folder_localitate_mare = localitate  # doar un singur folder cu numele localității
                     folder_localitate = localitate
                     #debug_afisare(idx, "Localitate", text_initial, text_filtrat)
                     print(cautare_anaf(localitate))
-                    print(f"Localitatea din if {localitate} nu a fost găsită în baza de date ANAF")
-                if folder_localitate_med == "UnKnown":
+                    print(f"Localitatea din if {localitate} nu a fost găsită în baza de date ANAF - se va crea un singur folder: {localitate}")
+                elif folder_localitate_med == "UnKnown":
                     folder_localitate_med = localitate
-                if folder_localitate_mare == "UNKNOWN":
+                elif folder_localitate_mare == "UNKNOWN":
                     folder_localitate_mare = localitate
             elif localitate.lower() == "bucuresti":
                 print(f"am intrat in else, cautam judetul {judet}")
@@ -151,10 +153,14 @@ def process_fields(text_initial, idx, debug_switch=False):
                 print(cautare_anaf(temp_judet))
                 print(f"Judetul {judet} nu a fost găsită în baza de date ANAF")
                 if folder_localitate_mic == "Unknown":
+                    # Pentru judete necunoscute, creăm doar un singur folder cu numele localității
+                    folder_localitate_mic = ""  # persoanele vor fi direct în folder_localitate_mare
+                    folder_localitate_med = ""  # fără nivel mediu
+                    folder_localitate_mare = localitate  # doar un singur folder cu numele localității
                     folder_localitate = localitate
-                if folder_localitate_med == "UnKnown":
+                elif folder_localitate_med == "UnKnown":
                     folder_localitate_med = judet
-                if folder_localitate_mare == "UNKNOWN":
+                elif folder_localitate_mare == "UNKNOWN":
                     folder_localitate_mare = judet
             print(text_initial)
             print(text_filtrat)
@@ -191,8 +197,6 @@ def process_fields(text_initial, idx, debug_switch=False):
             if debug_switch:
                 debug_afisare(idx, "Telefon", text_initial, text_filtrat)
         elif idx == 15:  # 2 ani (zona 16)
-            #save cropped image in folder_localitate_mic
-            
             if text_initial != "":
                 doiani = "Da"
             else:

@@ -3,9 +3,11 @@
 Acest proiect oferă o soluție eficientă pentru ONG-uri care doresc să extragă datele din formularele 230. Folosind tehnologia OCR (Optical Character Recognition), programul procesează imagini ale formularelor, extrage informațiile relevante și le salvează într-un format structurat. De asemenea, fișierele sunt organizate în foldere specifice, pe baza localităților, pentru o gestionare ușoară.
 
 ## Download
-[English version](https://apps.microsoft.com/detail/9n0198c2nvr1?hl=en-GB&gl=en)
+- [English version](https://apps.microsoft.com/detail/9n0198c2nvr1?hl=en-GB&gl=en)
 
-[Versiunea in română](https://apps.microsoft.com/detail/9n0198c2nvr1?hl=ro-RO&gl=RO)
+- [Versiunea in română](https://apps.microsoft.com/detail/9n0198c2nvr1?hl=ro-RO&gl=RO)
+
+- [Github Release](https://github.com/F230-OCR/OCR230_infoeducatie/releases)
 
 ## Scopul Proiectului
 
@@ -17,6 +19,13 @@ Acest proiect ajută ONG-urile să automatizeze procesul de extragere a datelor 
 - **Filtrarea datelor**: Se aplică filtre pentru a extrage doar datele relevante (ex. cifre, litere).
 - **Organizarea fișierelor**: Imaginile procesate sunt mutate într-un folder specific localității, iar fișierele text sunt salvate în același folder.
 - **Redenumirea fișierelor**: Fișierele sunt redenumite în funcție de numele și prenumele persoanei pentru o gestionare mai ușoară.
+- **Export Excel automat**: Toate datele sunt centralizate într-un fișier Excel cu formatare profesională.
+- **Validare CNP**: Verificare automată a CNP-urilor conform algoritmului oficial românesc.
+- **Detectare duplicate**: Identificare automată a CNP-urilor duplicate cu raportare detaliată.
+- **Export CSV**: Generare automată de fișiere CSV pentru compatibilitate cu alte sisteme.
+- **Rapoarte PDF**: Creare automată de rapoarte PDF cu statistici și grafice interactive.
+- **Raport de validare**: Fereastra de rapoarte cu statistici în timp real după procesare.
+- **Deschidere automată**: Excel, PDF și folderul de output se deschid automat la finalizare.
 
 ## Modele OCR utilizate
 
@@ -58,6 +67,13 @@ This project helps NGOs automate the process of extracting data from Form 230, s
 - **Data filtering**: Filters are applied to extract only relevant data (e.g., numbers, letters).
 - **File organization**: Processed images are moved to a folder specific to the locality, and text files are saved in the same folder.
 - **File renaming**: Files are renamed according to the person's first name and last name for easier management.
+- **Automatic Excel export**: All data is centralized in an Excel file with professional formatting.
+- **CNP validation**: Automatic verification of CNPs according to the official Romanian algorithm.
+- **Duplicate detection**: Automatic identification of duplicate CNPs with detailed reporting.
+- **CSV export**: Automatic generation of CSV files for compatibility with other systems.
+- **PDF reports**: Automatic creation of PDF reports with interactive statistics and charts.
+- **Validation report**: Reports window with real-time statistics after processing.
+- **Automatic opening**: Excel, PDF and output folder open automatically upon completion.
 
 ## OCR Models Used
 
