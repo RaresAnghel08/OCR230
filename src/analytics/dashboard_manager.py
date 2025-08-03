@@ -75,13 +75,6 @@ class DashboardManager:
         
         conn.commit()
         
-        # Verifică dacă există date, dacă nu - creează date de test
-        cursor.execute('SELECT COUNT(*) FROM processing_sessions')
-        session_count = cursor.fetchone()[0]
-        
-        if session_count == 0:
-            print("📊 Creez date de test pentru dashboard...")
-            self._create_sample_data()
         
         conn.close()
     
@@ -528,6 +521,9 @@ class DashboardManager:
     
     def _create_general_stats_chart(self, data):
         """Creează graficul cu statistici generale"""
+        # 🔥 OBȚINE STATISTICILE LIVE PENTRU A INCLUDE SESIUNEA CURENTĂ
+        live_stats = self.get_live_stats()
+        
         if data['sessions'].empty:
             # Încearcă să încarce date din Excel chiar dacă nu există sesiuni
             excel_data = self._load_excel_data()
@@ -536,18 +532,24 @@ class DashboardManager:
                 total_valid_cnp = len(excel_data[excel_data['CNP'].notna()])
                 total_invalid_cnp = total_files - total_valid_cnp
                 
+                # 📈 ADAUGĂ DATELE LIVE LA TOTALURI DACĂ EXISTĂ
+                if live_stats:
+                    total_files += live_stats.get('files_processed', 0)
+                    total_valid_cnp += live_stats.get('cnp_valid', 0)
+                    total_invalid_cnp += live_stats.get('cnp_invalid', 0)
+                
                 fig = go.Figure()
                 
                 fig.add_trace(go.Indicator(
                     mode = "number",
                     value = total_files,
-                    title = {"text": "📄 Total Persoane (Excel)"},
+                    title = {"text": "📄 Total Fișiere Procesate" + (" (Include Live)" if live_stats and live_stats.get('files_processed', 0) > 0 else "")},
                     domain = {'row': 0, 'column': 0}
                 ))
                 
                 fig.add_trace(go.Indicator(
                     mode = "number+gauge",
-                    value = (total_valid_cnp / total_files * 100) if total_files > 0 else 0,
+                    value = (total_valid_cnp / (total_valid_cnp + total_invalid_cnp) * 100) if (total_valid_cnp + total_invalid_cnp) > 0 else 0,
                     title = {"text": "✅ Rata CNP Complete (%)"},
                     gauge = {'axis': {'range': [None, 100]},
                             'bar': {'color': "green"},
@@ -560,20 +562,61 @@ class DashboardManager:
                 fig.update_layout(
                     grid = {'rows': 1, 'columns': 2, 'pattern': "independent"},
                     height=300,
-                    title="Statistici din Date Excel"
+                    title="Statistici Generale" + (" + Live Session" if live_stats and live_stats.get('files_processed', 0) > 0 else "")
                 )
                 
                 return fig
             else:
-                return go.Figure().add_annotation(text="Nu există date disponibile. Rulează o procesare pentru a vedea statistici.", x=0.5, y=0.5)
+                # Dacă nu există nici Excel nici sesiuni, dar există date live
+                if live_stats and live_stats.get('files_processed', 0) > 0:
+                    fig = go.Figure()
+                    
+                    fig.add_trace(go.Indicator(
+                        mode = "number",
+                        value = live_stats.get('files_processed', 0),
+                        title = {"text": "📄 Total Fișiere Procesate (Live)"},
+                        domain = {'row': 0, 'column': 0}
+                    ))
+                    
+                    total_cnp = live_stats.get('cnp_valid', 0) + live_stats.get('cnp_invalid', 0)
+                    cnp_rate = (live_stats.get('cnp_valid', 0) / total_cnp * 100) if total_cnp > 0 else 0
+                    
+                    fig.add_trace(go.Indicator(
+                        mode = "number+gauge",
+                        value = cnp_rate,
+                        title = {"text": "✅ Rata CNP Complete (%)"},
+                        gauge = {'axis': {'range': [None, 100]},
+                                'bar': {'color': "green"},
+                                'steps': [{'range': [0, 50], 'color': "lightgray"},
+                                         {'range': [50, 80], 'color': "yellow"},
+                                         {'range': [80, 100], 'color': "lightgreen"}]},
+                        domain = {'row': 0, 'column': 1}
+                    ))
+                    
+                    fig.update_layout(
+                        grid = {'rows': 1, 'columns': 2, 'pattern': "independent"},
+                        height=300,
+                        title="Statistici Live"
+                    )
+                    
+                    return fig
+                else:
+                    return go.Figure().add_annotation(text="Nu există date disponibile. Rulează o procesare pentru a vedea statistici.", x=0.5, y=0.5)
         
         df = data['sessions']
         
-        # Calculează totalurile
+        # Calculează totalurile din sesiunile anterioare
         total_files = df['files_processed'].sum()
         total_valid_cnp = df['cnp_valid'].sum()
         total_invalid_cnp = df['cnp_invalid'].sum()
         total_duplicates = df['duplicates_found'].sum()
+        
+        # 🔥 ADAUGĂ DATELE LIVE LA TOTALURI DACĂ EXISTĂ O SESIUNE ACTIVĂ
+        if live_stats and live_stats.get('files_processed', 0) > 0:
+            total_files += live_stats.get('files_processed', 0)
+            total_valid_cnp += live_stats.get('cnp_valid', 0)
+            total_invalid_cnp += live_stats.get('cnp_invalid', 0)
+            total_duplicates += live_stats.get('duplicates_found', 0)
         
         fig = go.Figure()
         
@@ -581,7 +624,7 @@ class DashboardManager:
         fig.add_trace(go.Indicator(
             mode = "number+delta",
             value = total_files,
-            title = {"text": "📄 Total Fișiere Procesate"},
+            title = {"text": "📄 Total Fișiere Procesate" + (" (Include Live)" if live_stats and live_stats.get('files_processed', 0) > 0 else "")},
             domain = {'row': 0, 'column': 0}
         ))
         
@@ -600,7 +643,7 @@ class DashboardManager:
         fig.update_layout(
             grid = {'rows': 1, 'columns': 2, 'pattern': "independent"},
             height=300,
-            title="Statistici din Sesiuni de Procesare"
+            title="Statistici din Sesiuni de Procesare" + (" + Live Session" if live_stats and live_stats.get('files_processed', 0) > 0 else "")
         )
         
         return fig
@@ -620,9 +663,10 @@ class DashboardManager:
         # Creează indicatori pentru sesiunea live
         fig = make_subplots(
             rows=2, cols=2,
-            subplot_titles=("Fișiere Procesate", "CNP Valide", "Viteză Procesare", "Timp Rămas"),
+            subplot_titles=("Fișiere Procesate", "CNP Valide"),
             specs=[[{"type": "indicator"}, {"type": "indicator"}],
-                   [{"type": "indicator"}, {"type": "indicator"}]]
+                   [{"type": "indicator"}, {"type": "indicator"}]],
+            vertical_spacing=0.25  # Măresc spațiul vertical între rânduri și mai mult
         )
         
         # Fișiere procesate
@@ -657,7 +701,7 @@ class DashboardManager:
         fig.add_trace(go.Indicator(
             mode="number",
             value=live_stats.get('processing_speed', 0),
-            title={"text": "fișiere/min"},
+            title={"text": "Viteză Procesare (fișiere/min)"},
             number={'suffix': " f/min"}
         ), row=2, col=1)
         
@@ -674,7 +718,7 @@ class DashboardManager:
         ), row=2, col=2)
         
         fig.update_layout(
-            height=350,
+            height=350,  # Măresc înălțimea și mai mult pentru spațiu optim
             title_text="🔥 Sesiune Live de Procesare",
             title_x=0.5
         )
