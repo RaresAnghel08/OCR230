@@ -592,6 +592,98 @@ def run_main_window():
         if dashboard_frame:
             dashboard_frame.place(x=28, y=310)
     
+    # Funcții pentru noile funcționalități
+    def open_analytics_dashboard():
+        """Deschide dashboard-ul de analiză avansată"""
+        try:
+            if not folder_output:
+                messagebox.showwarning("Atenție", "Selectează mai întâi un folder de output.")
+                return
+            
+            from src.ui.analytics_ui import show_analytics_dashboard
+            show_analytics_dashboard(root, folder_output)
+        except ImportError:
+            messagebox.showinfo("Info", "Modulele de analiză nu sunt disponibile. Rulează 'pip install -r requirements.txt'")
+        except Exception as e:
+            messagebox.showerror("Eroare", f"Eroare la deschiderea analytics: {e}")
+    
+    def open_search_ai():
+        """Deschide interfața de căutare și AI/ML"""
+        try:
+            if not folder_output:
+                messagebox.showwarning("Atenție", "Selectează mai întâi un folder de output.")
+                return
+            
+            from src.ui.search_ai_ui import show_search_ai_window
+            show_search_ai_window(root, folder_output)
+        except ImportError:
+            messagebox.showinfo("Info", "Modulele AI/ML nu sunt disponibile. Rulează 'pip install -r requirements.txt'")
+        except Exception as e:
+            messagebox.showerror("Eroare", f"Eroare la deschiderea Search & AI: {e}")
+    
+    # Butoan pentru Analytics Dashboard - poziție în partea dreaptă
+    try:
+        # Încercăm să încărcăm imaginea pentru buton, fallback la buton simplu
+        button_analytics = Button(
+            root,
+            text="📊 Analytics",
+            font=("Arial", 10, "bold"),
+            bg="#4CAF50",
+            fg="white",
+            command=open_analytics_dashboard,
+            relief="raised",
+            bd=2,
+            padx=15,
+            pady=5
+        )
+        button_analytics.place(x=600, y=150, width=120, height=40)
+    except Exception as e:
+        print(f"Eroare la crearea butonului Analytics: {e}")
+    
+    # Buton pentru Search & AI/ML - sub butonul de Analytics
+    try:
+        button_search_ai = Button(
+            root,
+            text="🔍 Search & AI",
+            font=("Arial", 10, "bold"),
+            bg="#2196F3",
+            fg="white",
+            command=open_search_ai,
+            relief="raised",
+            bd=2,
+            padx=15,
+            pady=5
+        )
+        button_search_ai.place(x=600, y=200, width=120, height=40)
+    except Exception as e:
+        print(f"Eroare la crearea butonului Search & AI: {e}")
+    
+    # Status pentru noile funcționalități
+    try:
+        # Verificăm disponibilitatea modulelor
+        ai_status_text = "🟡 Verificare module..."
+        try:
+            import plotly
+            import dash
+            import spacy
+            import whoosh
+            ai_status_text = "🟢 AI/ML: Disponibil"
+        except ImportError:
+            ai_status_text = "🔴 AI/ML: Instaleaza deps"
+        
+        status_label = Button(
+            root,
+            text=ai_status_text,
+            font=("Arial", 8),
+            bg="#f0f0f0",
+            fg="gray",
+            relief="flat",
+            state="disabled"
+        )
+        status_label.place(x=600, y=250, width=120, height=20)
+    except Exception as e:
+        print(f"Eroare la crearea status label: {e}")
+
     # Creăm dashboard-ul (inițial ascuns)
     dashboard_frame = create_live_dashboard(root)
     hide_dashboard()  # Ascundem inițial dashboard-ul
