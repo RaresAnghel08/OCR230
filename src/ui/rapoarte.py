@@ -272,33 +272,91 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
             font=("Inter", 24 * -1)
         )
     
-    # Buton pentru a continua
+    # === BUTOANE NOOILE FUNCȚIONALITĂȚI ===
+    # Frame pentru butoanele de funcționalități avansate
+    
+    def open_analytics_dashboard():
+        """Deschide dashboard-ul de analiză avansată"""
+        try:
+            from src.ui.analytics_ui import show_analytics_dashboard
+            show_analytics_dashboard(window, output_folder)
+        except ImportError:
+            from tkinter import messagebox
+            messagebox.showinfo("Info", "Modulele de analiză nu sunt disponibile. Rulează 'pip install -r requirements.txt'")
+        except Exception as e:
+            from tkinter import messagebox
+            messagebox.showerror("Eroare", f"Eroare la deschiderea analytics: {e}")
+    
+    def open_search_ai():
+        """Deschide interfața de căutare și AI/ML"""
+        try:
+            from src.ui.search_ai_ui import show_search_ai_window
+            show_search_ai_window(window, output_folder)
+        except ImportError:
+            from tkinter import messagebox
+            messagebox.showinfo("Info", "Modulele AI/ML nu sunt disponibile. Rulează 'pip install -r requirements.txt'")
+        except Exception as e:
+            from tkinter import messagebox
+            messagebox.showerror("Eroare", f"Eroare la deschiderea Search & AI: {e}")
+    
+    # Butoane pentru funcționalități avansate - în linie (mai lungi)
+    analytics_button = Button(
+        window,
+        text="📊 Analytics Dashboard",
+        command=open_analytics_dashboard,
+        font=("Inter", 11, "bold"),
+        bg="#4CAF50",
+        fg="white",
+        relief="raised",
+        bd=2,
+        padx=20,
+        pady=8
+    )
+    analytics_button.place(x=180, y=380, width=200, height=40)
+    
+    search_ai_button = Button(
+        window,
+        text="🔍 Search & AI/ML",
+        command=open_search_ai,
+        font=("Inter", 11, "bold"),
+        bg="#2196F3",
+        fg="white",
+        relief="raised",
+        bd=2,
+        padx=20,
+        pady=8
+    )
+    search_ai_button.place(x=420, y=380, width=200, height=40)
+    
+    # === BUTOANE PRINCIPALE ===
+    # Butoanele Continuă și Închide - în linie
     continue_button = Button(
         window,
         text="Continuă la rezultate",
         command=continue_to_results,
-        font=("Inter", 16),
+        font=("Inter", 14, "bold"),
         bg="#3DA5D9",
         fg="white",
-        relief="flat",
+        relief="raised",
+        bd=2,
         padx=20,
         pady=10
     )
-    continue_button.place(x=300, y=400, width=200, height=40)
+    continue_button.place(x=250, y=440, width=180, height=40)
     
-    # Buton pentru a închide
     close_button = Button(
         window,
         text="Închide",
         command=close_window,
-        font=("Inter", 14),
+        font=("Inter", 14, "bold"),
         bg="#CC4444",
         fg="white",
-        relief="flat",
+        relief="raised",
+        bd=2,
         padx=20,
         pady=8
     )
-    close_button.place(x=350, y=450, width=100, height=35)
+    close_button.place(x=450, y=440, width=100, height=40)
     
     return window
 

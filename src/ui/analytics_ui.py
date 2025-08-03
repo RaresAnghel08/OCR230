@@ -256,44 +256,59 @@ class AnalyticsDashboardUI:
                   command=self.close_window).grid(row=0, column=3, padx=5)
     
     def start_dashboard(self):
-        """Pornește dashboard-ul analytics"""
+        """Pornește dashboard-ul analytics cu gestionare îmbunătățită"""
         try:
             from src.analytics.dashboard_manager import launch_dashboard
+            import socket
             
-            port = int(self.port_var.get())
+            def find_free_port(start_port: int = 8050) -> int:
+                """Găsește un port liber începând cu start_port"""
+                for port_try in range(start_port, start_port + 10):
+                    try:
+                        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                            s.bind(('127.0.0.1', port_try))
+                            return port_try
+                    except OSError:
+                        continue
+                raise RuntimeError("Nu s-a găsit niciun port liber între 8050-8059")
             
-            # Pornește dashboard-ul într-un thread separat
-            self.dashboard_thread = threading.Thread(
-                target=launch_dashboard,
-                args=(self.output_folder, port),
-                daemon=True
-            )
+            # Găsește un port liber
+            try:
+                free_port = find_free_port(int(self.port_var.get()))
+                self.port_var.set(str(free_port))
+            except Exception as e:
+                messagebox.showerror("Eroare", f"Nu s-a găsit un port liber: {e}")
+                return
             
-            self.dashboard_thread.start()
+            # Pornește dashboard-ul
+            self.dashboard_thread = launch_dashboard(self.output_folder, free_port)
             self.dashboard_running = True
             
             # Actualizează UI
             self.start_btn.config(state="disabled")
             self.stop_btn.config(state="normal")
             self.open_browser_btn.config(state="normal")
-            self.status_var.set("🟢 Dashboard pornit")
+            self.status_var.set(f"🟢 Dashboard pornit pe portul {free_port}")
             self.status_label.config(foreground="green")
             
             # Actualizează URL-ul
-            self.url_var.set(f"http://localhost:{port}")
+            self.url_var.set(f"http://127.0.0.1:{free_port}")
             
             messagebox.showinfo("Succes", 
-                              f"Dashboard-ul a fost pornit!\nAccesează: http://localhost:{port}")
+                              f"Dashboard-ul a fost pornit!\n"
+                              f"Accesează: http://127.0.0.1:{free_port}\n"
+                              f"Browser-ul se va deschide automat în 2 secunde.")
             
-            # Deschide automat în browser după 2 secunde
-            self.analytics_window.after(2000, self.open_in_browser)
+            # Nu mai deschidem manual în browser, că o face funcția launch_dashboard
             
         except ImportError:
             messagebox.showerror("Eroare", 
                                "Modulele pentru dashboard nu sunt instalate.\n"
-                               "Rulați: pip install -r requirements.txt")
+                               "Instalează cu: pip install plotly dash dash-bootstrap-components")
         except Exception as e:
             messagebox.showerror("Eroare", f"Eroare la pornirea dashboard-ului: {e}")
+            import traceback
+            traceback.print_exc()
     
     def stop_dashboard(self):
         """Oprește dashboard-ul"""
