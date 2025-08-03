@@ -342,7 +342,7 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         padx=20,
         pady=10
     )
-    continue_button.place(x=250, y=440, width=180, height=40)
+    continue_button.place(x=250, y=440, width=200, height=40)
     
     close_button = Button(
         window,
