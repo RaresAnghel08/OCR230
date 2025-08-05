@@ -339,26 +339,61 @@ class AnalyticsDashboardUI:
             webbrowser.open(url)
     
     def refresh_quick_stats(self):
-        """Actualizează statisticile rapide"""
+        """Actualizează statisticile rapide cu date reale din DashboardManager"""
         try:
-            # Simulare încărcare date
             self.stats_tree.delete(*self.stats_tree.get_children())
-            
-            # Aici ai încărca date reale din dashboard_manager
-            demo_stats = [
-                ("Total Persoane", "1,247", "↗️ +15%", "156 noi"),
-                ("CNP Valide", "1,198", "↗️ +12%", "142 valide"),
-                ("Duplicate Găsite", "23", "↘️ -5%", "3 noi"),
-                ("Județe Procesate", "42", "→ 0%", "Stabil"),
-                ("Timp Mediu OCR", "5.2s", "↗️ +2%", "5.1s medie"),
-                ("Rata Succes", "96.2%", "↗️ +1%", "95.8% săpt."),
+            from src.analytics.dashboard_manager import DashboardManager
+            dashboard = DashboardManager(self.output_folder)
+            # Încarcă datele din baza de date și Excel
+            now = datetime.now()
+            start_date = (now - timedelta(days=30)).isoformat()
+            end_date = now.isoformat()
+            data = dashboard._load_analytics_data(start_date, end_date, 'all')
+            live_stats = dashboard.get_live_stats()
+            # Statistici generale
+            total_pers = 0
+            cnp_valid = 0
+            cnp_invalid = 0
+            duplicate_count = 0
+            judete_count = 0
+            avg_ocr_time = 0
+            avg_ocr_conf = 0
+            # Din sesiuni
+            df_sessions = data.get('sessions')
+            if df_sessions is not None and not df_sessions.empty:
+                total_pers = int(df_sessions['files_processed'].sum())
+                cnp_valid = int(df_sessions['cnp_valid'].sum())
+                cnp_invalid = int(df_sessions['cnp_invalid'].sum())
+                duplicate_count = int(df_sessions['duplicates_found'].sum())
+                avg_ocr_time = round(df_sessions['processing_time'].mean(), 2) if 'processing_time' in df_sessions else 0
+                avg_ocr_conf = round(df_sessions['avg_ocr_confidence'].mean(), 2) if 'avg_ocr_confidence' in df_sessions else 0
+            # Din live stats
+            if live_stats:
+                total_pers += int(live_stats.get('files_processed', 0))
+                cnp_valid += int(live_stats.get('cnp_valid', 0))
+                cnp_invalid += int(live_stats.get('cnp_invalid', 0))
+                duplicate_count += int(live_stats.get('duplicates_found', 0))
+            # Din Excel pentru județe
+            df_counties = data.get('counties')
+            if df_counties is not None and not df_counties.empty:
+                judete_count = df_counties['county_name'].nunique()
+            # Rata succes
+            total_cnp = cnp_valid + cnp_invalid
+            rata_succes = round((cnp_valid / total_cnp * 100), 2) if total_cnp > 0 else 0
+            # Trenduri simple (doar demo, se poate extinde cu calcule pe 7 zile)
+            trend = "↗️" if total_pers > 0 else "→"
+            # Populate treeview
+            stats = [
+                ("Total Persoane", str(total_pers), trend, f"{cnp_valid + cnp_invalid} total"),
+                ("CNP Valide", str(cnp_valid), trend, f"{cnp_valid} valide"),
+                ("Duplicate Găsite", str(duplicate_count), trend, f"{duplicate_count} noi"),
+                ("Județe Procesate", str(judete_count), trend, "Stabil"),
+                ("Timp Mediu OCR", f"{avg_ocr_time}s", trend, f"{avg_ocr_time}s medie"),
+                ("Rata Succes", f"{rata_succes}%", trend, f"{rata_succes}% săpt."),
             ]
-            
-            for stat in demo_stats:
+            for stat in stats:
                 self.stats_tree.insert("", "end", values=stat)
-            
             self.last_update_var.set(datetime.now().strftime("%H:%M:%S"))
-            
         except Exception as e:
             messagebox.showerror("Eroare", f"Eroare la actualizarea statisticilor: {e}")
     
