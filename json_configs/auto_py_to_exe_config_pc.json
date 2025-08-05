@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "D:/GITHUB/infoeducatie/OCR230_infoeducatie/main.py"
+   "value": "D:/GITHUB/OCR230/main.py"
   },
   {
    "optionDest": "onefile",
@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "D:/GITHUB/infoeducatie/OCR230_infoeducatie/Assets/favicon.ico"
+   "value": "D:/GITHUB/OCR230/Assets/favicon.ico"
   },
   {
    "optionDest": "name",
@@ -59,11 +59,11 @@
   },
   {
    "optionDest": "datas",
-   "value": "D:/GITHUB/infoeducatie/OCR230_infoeducatie/Assets;Assets/"
+   "value": "D:/GITHUB/OCR230/src;src/"
   },
   {
    "optionDest": "datas",
-   "value": "D:/GITHUB/infoeducatie/OCR230_infoeducatie/src;src/"
+   "value": "D:/GITHUB/OCR230/Assets;Assets/"
   }
  ],
  "nonPyinstallerOptions": {

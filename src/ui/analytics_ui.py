@@ -25,6 +25,14 @@ class AnalyticsDashboardUI:
         self.analytics_window.title("📊 OCR230 - Dashboard Analytics")
         self.analytics_window.geometry("800x600")
         self.analytics_window.resizable(True, True)
+        # Setează iconul ferestrei
+        import pathlib
+        from pathlib import Path
+        icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
+        try:
+            self.analytics_window.iconbitmap(str(icon_path))
+        except Exception:
+            pass
         
         # Configurare grid
         self.analytics_window.grid_columnconfigure(0, weight=1)

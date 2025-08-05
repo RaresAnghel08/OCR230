@@ -25,6 +25,14 @@ class SearchAIUI:
         self.search_window.title("🔍 OCR230 - Search & AI/ML")
         self.search_window.geometry("1000x700")
         self.search_window.resizable(True, True)
+        # Setează iconul ferestrei
+        import pathlib
+        from pathlib import Path
+        icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
+        try:
+            self.search_window.iconbitmap(str(icon_path))
+        except Exception:
+            pass
         
         # Configurare grid
         self.search_window.grid_columnconfigure(0, weight=1)

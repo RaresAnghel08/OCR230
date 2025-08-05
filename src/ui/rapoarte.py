@@ -21,7 +21,10 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
     window.resizable(False, False)
     # window logo
     icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
-    window.iconbitmap(str(icon_path))
+    try:
+        window.iconbitmap(str(icon_path))
+    except Exception:
+        pass
     # Facem fereastra modală
     window.transient()
     window.grab_set()

@@ -43,7 +43,10 @@ def run_main_window():
         root.configure(bg="#D9D9D9")
         # Fundal și icon
         icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
-        root.iconbitmap(str(icon_path))
+        try:
+            root.iconbitmap(str(icon_path))
+        except Exception:
+            pass
         # Funcție pentru închidere corectă a aplicației
         def on_close():
             root.quit()   # Oprește event loop-ul Tkinter
