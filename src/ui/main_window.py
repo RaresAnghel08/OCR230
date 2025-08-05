@@ -43,7 +43,10 @@ def run_main_window():
         root.configure(bg="#D9D9D9")
         # Fundal și icon
         icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
-        root.iconbitmap(str(icon_path))
+        try:
+            root.iconbitmap(str(icon_path))
+        except Exception:
+            pass
         # Funcție pentru închidere corectă a aplicației
         def on_close():
             root.quit()   # Oprește event loop-ul Tkinter
@@ -318,6 +321,28 @@ def run_main_window():
             reset_dashboard()
             show_dashboard()
             
+            # 🚀 DESCHIDE DASHBOARD-UL ANALYTICS AUTOMAT
+            try:
+                from src.analytics.dashboard_manager import launch_dashboard
+                import threading
+                
+                def launch_analytics_dashboard():
+                    """Lansează dashboard-ul analytics în background"""
+                    try:
+                        launch_dashboard(folder_output, 8050)
+                        print("📊 Dashboard analytics lansat automat!")
+                    except Exception as e:
+                        print(f"⚠️ Nu s-a putut lansa dashboard-ul automat: {e}")
+                
+                # Lansează dashboard-ul într-un thread separat
+                dashboard_thread = threading.Thread(target=launch_analytics_dashboard, daemon=True)
+                dashboard_thread.start()
+                
+            except ImportError:
+                print("⚠️ Dashboard analytics nu este disponibil")
+            except Exception as e:
+                print(f"⚠️ Eroare la lansarea dashboard-ului: {e}")
+            
             # Calculăm numărul total de fișiere pentru dashboard
             import os
             files = [f for f in os.listdir(folder_input) if f.lower().endswith(('jpg', 'jpeg', 'png', 'pdf'))]
@@ -434,6 +459,7 @@ def run_main_window():
     
     dashboard_widgets = {}
     dashboard_frame = None  # Variabilă globală pentru dashboard
+    analytics_manager = None  # Pentru actualizarea dashboard-ului analytics
     
     def create_live_dashboard(root):
         """Creează dashboard-ul cu statistici live"""
@@ -468,10 +494,42 @@ def run_main_window():
     
     def update_dashboard_stats(stat_name, value):
         """Actualizează o statistică în dashboard"""
+        nonlocal analytics_manager
+        
         print(f"CALLBACK DASHBOARD: {stat_name} = {value}")  # Debug îmbunătățit
         if stat_name in dashboard_stats:
             dashboard_stats[stat_name] = value
             print(f"Statistică salvată: {stat_name} = {dashboard_stats[stat_name]}")
+            
+            # 📊 ACTUALIZEAZĂ ȘI DASHBOARD-UL ANALYTICS LIVE
+            try:
+                if analytics_manager is None:
+                    from src.analytics.dashboard_manager import DashboardManager
+                    analytics_manager = DashboardManager(folder_output)
+                    analytics_manager.start_live_session()
+                    print("🚀 Sesiune live analytics începută!")
+                
+                # Mapează statisticile la formatul analytics
+                analytics_update = {}
+                if stat_name == 'processed_files':
+                    analytics_update['files_processed'] = value
+                elif stat_name == 'valid_cnp':
+                    analytics_update['cnp_valid'] = value
+                elif stat_name == 'invalid_cnp':
+                    analytics_update['cnp_invalid'] = value
+                elif stat_name == 'duplicates_found':
+                    analytics_update['duplicates_found'] = value
+                elif stat_name == 'current_file':
+                    analytics_update['current_file'] = value
+                elif stat_name == 'total_files':
+                    analytics_update['total_files'] = value
+                
+                if analytics_update:
+                    analytics_manager.update_live_stats(**analytics_update)
+                    
+            except Exception as e:
+                print(f"⚠️ Eroare la actualizarea analytics live: {e}")
+            
             # Forțăm actualizarea în thread-ul principal pentru UI
             root.after(0, refresh_dashboard)
         else:
@@ -569,6 +627,8 @@ def run_main_window():
     
     def reset_dashboard():
         """Resetează statisticile dashboard-ului"""
+        nonlocal analytics_manager
+        
         dashboard_stats.update({
             'total_files': 0,
             'processed_files': 0,
@@ -580,6 +640,15 @@ def run_main_window():
             'estimated_time_left': 0,
             'start_time': None
         })
+        
+        # Resetează și analytics manager-ul
+        if analytics_manager:
+            try:
+                analytics_manager.finish_live_session()
+            except Exception as e:
+                print(f"⚠️ Eroare la finalizarea sesiunii analytics: {e}")
+            analytics_manager = None
+            
         refresh_dashboard()
     
     def hide_dashboard():
@@ -592,6 +661,32 @@ def run_main_window():
         if dashboard_frame:
             dashboard_frame.place(x=28, y=310)
     
+    # Status pentru verificarea modulelor
+    try:
+        # Verificăm disponibilitatea modulelor
+        ai_status_text = "🟡 Verificare module..."
+        try:
+            import plotly
+            import dash
+            import spacy
+            import whoosh
+            ai_status_text = "🟢 AI/ML: Disponibil"
+        except ImportError:
+            ai_status_text = "🔴 AI/ML: Instaleaza deps"
+        
+        status_label = Button(
+            root,
+            text=ai_status_text,
+            font=("Arial", 8),
+            bg="#f0f0f0",
+            fg="gray",
+            relief="flat",
+            state="disabled"
+        )
+        status_label.place(x=600, y=150, width=140, height=20)
+    except Exception as e:
+        print(f"Eroare la crearea status label: {e}")
+
     # Creăm dashboard-ul (inițial ascuns)
     dashboard_frame = create_live_dashboard(root)
     hide_dashboard()  # Ascundem inițial dashboard-ul

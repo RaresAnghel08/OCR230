@@ -11,3 +11,17 @@ openpyxl
 pandas
 matplotlib
 reportlab
+# Dashboard Analytics Advanced
+plotly
+dash
+dash-bootstrap-components
+kaleido
+# AI/ML pentru îmbunătățiri automate
+spacy
+scikit-learn
+textdistance
+fuzzywuzzy
+python-Levenshtein
+# Search și filtrare avansată
+whoosh
+regex
