@@ -567,6 +567,66 @@ class ExcelManager:
             
         return True, "CNP valid"
     
+    def _extract_person_data_from_txt(self, txt_file_path):
+        """Extrage și convertește datele din txt pentru search index"""
+        try:
+            # Folosim funcția existentă pentru a extrage datele
+            excel_data = self.extract_data_from_txt(txt_file_path)
+            if not excel_data:
+                return None
+            
+            # Convertim în formatul necesar pentru SearchManager
+            search_data = {
+                'nume': excel_data.get('Nume', ''),
+                'prenume': excel_data.get('Prenume', ''),
+                'cnp': excel_data.get('CNP', ''),
+                'adresa': excel_data.get('Adresa', ''),
+                'telefon': excel_data.get('Telefon', ''),
+                'email': excel_data.get('Email', ''),
+                'judet': self._extract_judet_from_address(excel_data.get('Adresa', '')),
+                'localitate': self._extract_localitate_from_address(excel_data.get('Adresa', '')),
+                'processing_date': excel_data.get('Data_Procesare', ''),
+                'file_path': txt_file_path,
+                'anaf_sector': excel_data.get('ANAF_Apartin', ''),
+                'doiani': excel_data.get('2_Ani', '')
+            }
+            
+            return search_data
+            
+        except Exception as e:
+            print(f"Eroare la extragerea datelor pentru search: {e}")
+            return None
+    
+    def _extract_judet_from_address(self, adresa):
+        """Extrage județul din adresă"""
+        if not adresa:
+            return ''
+        
+        # Caută pattern-ul "JUD. numele_judetului"
+        import re
+        match = re.search(r'JUD\.?\s*([A-Z][a-zA-Z\s]+)', adresa, re.IGNORECASE)
+        if match:
+            judet = match.group(1).strip()
+            # Curăță sfârșitul (elimină caracterele care nu sunt litere)
+            judet = re.sub(r'[^a-zA-Z\s].*$', '', judet).strip()
+            return judet
+        return ''
+    
+    def _extract_localitate_from_address(self, adresa):
+        """Extrage localitatea din adresă"""
+        if not adresa:
+            return ''
+        
+        # Caută pattern-ul "LOC. numele_localitatii"
+        import re
+        match = re.search(r'LOC\.?\s*([A-Z][a-zA-Z\s]+)', adresa, re.IGNORECASE)
+        if match:
+            localitate = match.group(1).strip()
+            # Curăță sfârșitul până la următorul cuvânt cheie
+            localitate = re.sub(r'[^a-zA-Z\s].*$', '', localitate).strip()
+            return localitate
+        return ''
+
     def detect_duplicate_entries(self):
         """Detecteaza duplicate in Excel pe baza CNP-ului și returneaza un raport"""
         if not os.path.exists(self.excel_file_path):
@@ -960,6 +1020,66 @@ def create_excel_summary(output_folder):
         print(f"Eroare la crearea rezumatului Excel: {e}")
         return None
 
+    def _extract_person_data_from_txt(self, txt_file_path):
+        """Extrage și convertește datele din txt pentru search index"""
+        try:
+            # Folosim funcția existentă pentru a extrage datele
+            excel_data = self.extract_data_from_txt(txt_file_path)
+            if not excel_data:
+                return None
+            
+            # Convertim în formatul necesar pentru SearchManager
+            search_data = {
+                'nume': excel_data.get('Nume', ''),
+                'prenume': excel_data.get('Prenume', ''),
+                'cnp': excel_data.get('CNP', ''),
+                'adresa': excel_data.get('Adresa', ''),
+                'telefon': excel_data.get('Telefon', ''),
+                'email': excel_data.get('Email', ''),
+                'judet': self._extract_judet_from_address(excel_data.get('Adresa', '')),
+                'localitate': self._extract_localitate_from_address(excel_data.get('Adresa', '')),
+                'processing_date': excel_data.get('Data_Procesare', ''),
+                'file_path': txt_file_path,
+                'anaf_sector': excel_data.get('ANAF_Apartin', ''),
+                'doiani': excel_data.get('2_Ani', '')
+            }
+            
+            return search_data
+            
+        except Exception as e:
+            print(f"Eroare la extragerea datelor pentru search: {e}")
+            return None
+    
+    def _extract_judet_from_address(self, adresa):
+        """Extrage județul din adresă"""
+        if not adresa:
+            return ''
+        
+        # Caută pattern-ul "JUD. numele_judetului"
+        import re
+        match = re.search(r'JUD\.?\s*([A-Z][a-zA-Z\s]+)', adresa, re.IGNORECASE)
+        if match:
+            judet = match.group(1).strip()
+            # Curăță sfârșitul (elimină caracterele care nu sunt litere)
+            judet = re.sub(r'[^a-zA-Z\s].*$', '', judet).strip()
+            return judet
+        return ''
+    
+    def _extract_localitate_from_address(self, adresa):
+        """Extrage localitatea din adresă"""
+        if not adresa:
+            return ''
+        
+        # Caută pattern-ul "LOC. numele_localitatii"
+        import re
+        match = re.search(r'LOC\.?\s*([A-Z][a-zA-Z\s]+)', adresa, re.IGNORECASE)
+        if match:
+            localitate = match.group(1).strip()
+            # Curăță sfârșitul până la următorul cuvânt cheie
+            localitate = re.sub(r'[^a-zA-Z\s].*$', '', localitate).strip()
+            return localitate
+        return ''
+
 def add_single_person_to_excel(output_folder, txt_file_path):
     """Functie pentru a adauga o singura persoana in Excel și actualiza CSV/PDF"""
     try:
@@ -973,6 +1093,24 @@ def add_single_person_to_excel(output_folder, txt_file_path):
             
             print(f"📄 Actualizez raportul PDF...")
             excel_manager.export_to_pdf_report()
+            
+            # 🔍 ADAUGĂ PERSOANA ÎN SEARCH INDEX
+            try:
+                print(f"🔍 Adaug în search index...")
+                from src.search.search_manager import SearchManager
+                search_manager = SearchManager(output_folder)
+                
+                # Extrag datele din fișierul txt pentru search
+                person_data = excel_manager._extract_person_data_from_txt(txt_file_path)
+                if person_data:
+                    search_id = search_manager.add_person_to_index(person_data)
+                    print(f"✅ Adăugat în search index cu ID: {search_id}")
+                else:
+                    print("⚠️ Nu s-au putut extrage datele pentru search")
+                    
+            except Exception as search_error:
+                print(f"⚠️ Eroare la adăugarea în search index: {search_error}")
+                # Nu opresc procesarea pentru că Excel a fost deja actualizat
             
         return success
     except Exception as e:

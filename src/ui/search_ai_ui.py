@@ -384,19 +384,26 @@ class SearchAIUI:
     def check_ai_availability(self):
         """Verifică disponibilitatea modulelor AI/ML"""
         try:
-            from src.ai_ml.ai_manager import AIMLManager
             from src.search.search_manager import SearchManager
-            self.ai_status_var.set("🟢 AI/ML: Disponibil")
+            # Test rapid pentru a vedea dacă search-ul funcționează
+            test_manager = SearchManager(self.output_folder)
+            self.ai_status_var.set("🟢 Search: Disponibil")
             self.ai_status_label.config(foreground="green")
             self.ai_available = True
-        except ImportError:
-            self.ai_status_var.set("🔴 AI/ML: Indisponibil")
+        except ImportError as e:
+            self.ai_status_var.set("🔴 Search: Indisponibil")
             self.ai_status_label.config(foreground="red")
             self.ai_available = False
+            print(f"Search indisponibil: {e}")
     
     def perform_search(self):
         """Efectuează căutarea avansată"""
         query = self.search_var.get().strip()
+        
+        print(f"🔍 DEBUG perform_search called with query: '{query}'")
+        print(f"🔍 DEBUG output_folder: '{self.output_folder}'")
+        print(f"🔍 DEBUG ai_available: {self.ai_available}")
+        
         if not query:
             messagebox.showwarning("Atenție", "Introdu un termen de căutare.")
             return
@@ -425,10 +432,14 @@ class SearchAIUI:
         if self.has_email_var.get():
             filters['has_email'] = True
         
+        print(f"🔍 DEBUG filters: {filters}")
+        
         try:
             if self.ai_available:
                 from src.search.search_manager import SearchManager
                 search_manager = SearchManager(self.output_folder)
+                
+                print(f"🔍 DEBUG SearchManager created for folder: {self.output_folder}")
                 
                 # Efectuează căutarea
                 results = search_manager.advanced_search(
@@ -437,8 +448,13 @@ class SearchAIUI:
                     use_regex=self.regex_var.get()
                 )
                 
+                print(f"🔍 DEBUG search results: {len(results)} found")
+                for i, r in enumerate(results[:3]):  # Max 3 pentru debug
+                    print(f"   {i+1}. {r.get('nume')} {r.get('prenume')} din {r.get('judet')}")
+                
                 self.display_search_results(results)
             else:
+                print("🔍 DEBUG: AI not available, using demo results")
                 # Simulare rezultate pentru demo
                 demo_results = [
                     {
@@ -458,10 +474,15 @@ class SearchAIUI:
                 self.display_search_results(filtered_results)
                 
         except Exception as e:
+            print(f"🔍 DEBUG ERROR: {e}")
+            import traceback
+            traceback.print_exc()
             messagebox.showerror("Eroare", f"Eroare la căutare: {e}")
     
     def display_search_results(self, results):
         """Afișează rezultatele căutării"""
+        print(f"🔍 DEBUG display_search_results: {len(results)} rezultate")
+        
         # Curăță rezultatele anterioare
         self.results_tree.delete(*self.results_tree.get_children())
         
@@ -469,7 +490,8 @@ class SearchAIUI:
         self.results_info_var.set(f"Găsite {len(results)} rezultate")
         
         # Populează treeview
-        for result in results:
+        for i, result in enumerate(results):
+            print(f"🔍 DEBUG Adding result {i+1}: {result.get('nume')} {result.get('prenume')}")
             self.results_tree.insert("", "end", values=(
                 result.get('nume', ''),
                 result.get('prenume', ''),
@@ -481,6 +503,7 @@ class SearchAIUI:
             ))
         
         self.search_results = results
+        print(f"🔍 DEBUG display_search_results completed with {len(results)} results")
     
     def clear_search(self):
         """Curăță căutarea"""
@@ -865,6 +888,8 @@ def show_search_ai_window(parent, output_folder):
 if __name__ == "__main__":
     # Test UI
     root = tk.Tk()
+    # image
+    root.iconbitmap
     root.withdraw()  # Ascunde fereastra principală
     
     show_search_ai_window(root, "test_output")

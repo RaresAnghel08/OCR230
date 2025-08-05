@@ -540,6 +540,10 @@ def show_analytics_dashboard(parent, output_folder):
 if __name__ == "__main__":
     # Test UI
     root = tk.Tk()
+    import pathlib
+    from pathlib import Path
+    icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
+    root.iconbitmap(str(icon_path))
     root.withdraw()  # Ascunde fereastra principală
     
     show_analytics_dashboard(root, "test_output")

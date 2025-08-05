@@ -14,15 +14,16 @@ from pathlib import Path
 
 # Search dependencies
 try:
-    from whoosh.index import create_index, open_index
+    from whoosh.index import create_in, open_dir
     from whoosh.fields import Schema, TEXT, ID, DATETIME, NUMERIC
     from whoosh.qparser import QueryParser, MultifieldParser
     from whoosh import highlight
     import regex
     SEARCH_DEPENDENCIES_AVAILABLE = True
-except ImportError:
+    print("✅ Dependențele pentru search sunt disponibile!")
+except ImportError as e:
     SEARCH_DEPENDENCIES_AVAILABLE = False
-    print("⚠️ Dependențele pentru search nu sunt instalate. Rulați: pip install -r requirements.txt")
+    print(f"⚠️ Dependențele pentru search nu sunt instalate: {e}")
 
 class SearchManager:
     def __init__(self, output_folder: str):
@@ -130,10 +131,10 @@ class SearchManager:
         
         try:
             # Încearcă să deschidă indexul existent
-            self.search_index = open_index(self.index_dir)
+            self.search_index = open_dir(self.index_dir)
         except:
             # Creează index nou dacă nu există
-            self.search_index = create_index(self.index_dir, schema)
+            self.search_index = create_in(self.index_dir, schema)
     
     def load_saved_searches(self):
         """Încarcă căutările salvate"""
@@ -266,13 +267,9 @@ class SearchManager:
         
         if query:
             if use_regex:
-                # Căutare cu regex în multiple câmpuri
-                regex_conditions = []
-                for field in ['nume', 'prenume', 'adresa', 'telefon', 'email']:
-                    regex_conditions.append(f"{field} REGEXP ?")
-                    params.append(query)
-                
-                base_query += f" AND ({' OR '.join(regex_conditions)})"
+                # Pentru regex, selectăm toate recordurile și filtrăm în Python
+                # deoarece SQLite nu suportă REGEXP nativ
+                pass  # Nu adăugăm condiții SQL pentru regex
             else:
                 # Căutare text simplă
                 text_conditions = []
@@ -296,6 +293,27 @@ class SearchManager:
         
         df = pd.read_sql_query(base_query, conn, params=params)
         conn.close()
+        
+        # Dacă folosim regex, filtrăm rezultatele în Python
+        if use_regex and query:
+            try:
+                import re
+                compiled_pattern = re.compile(query, re.IGNORECASE)
+                filtered_results = []
+                
+                for _, row in df.iterrows():
+                    record = row.to_dict()
+                    # Verificăm dacă pattern-ul se potrivește în oricare din câmpuri
+                    for field in ['nume', 'prenume', 'adresa', 'telefon', 'email']:
+                        field_value = str(record.get(field, ''))
+                        if compiled_pattern.search(field_value):
+                            filtered_results.append(record)
+                            break  # Nu duplica rezultatul pentru aceeași persoană
+                
+                return filtered_results
+            except re.error as e:
+                print(f"Eroare regex: {e}")
+                return []
         
         return df.to_dict('records')
     
@@ -364,6 +382,13 @@ class SearchManager:
         """
         if not fields:
             fields = ['nume', 'prenume', 'cnp', 'adresa', 'telefon', 'email']
+        
+        # Validează că fields sunt câmpuri valide
+        valid_fields = ['nume', 'prenume', 'cnp', 'adresa', 'telefon', 'email', 'judet']
+        fields = [f for f in fields if f in valid_fields]
+        
+        if not fields:
+            return []
         
         try:
             compiled_pattern = re.compile(pattern, re.IGNORECASE)
