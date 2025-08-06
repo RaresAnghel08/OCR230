@@ -9,11 +9,6 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def show_rapoarte_window(output_folder=None, continue_callback=None):
-    """Afișează fereastra de rapoarte cu date din fișierul Excel"""
-    
-    # Calculăm statisticile din Excel dacă avem folderul
-    stats = calculate_stats_from_excel(output_folder) if output_folder else None
-    
     window = Toplevel()
     window.geometry("800x600")
     window.configure(bg = "#D9D9D9")
@@ -29,16 +24,45 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
     window.transient()
     window.grab_set()
     window.focus_set()
-    
     # Centrăm fereastra
     window.update_idletasks()
     x = (window.winfo_screenwidth() // 2) - (800 // 2)
     y = (window.winfo_screenheight() // 2) - (600 // 2)
     window.geometry(f"800x600+{x}+{y}")
-    
+
+    def send_report_via_email():
+        """Trimite rapoartele pe email (PDF/Excel/CSV)"""
+        from tkinter import simpledialog, messagebox
+        from src.utils.email_report import send_report_email
+        sender = simpledialog.askstring("Email Expeditor", "Adresa ta de email (Gmail):", parent=window)
+        password = simpledialog.askstring("Parola/APP Password Gmail", "Parola sau App Password Gmail:", parent=window, show='*')
+        recipient = simpledialog.askstring("Email Destinatar", "Adresa destinatarului:", parent=window)
+        if not sender or not password or not recipient:
+            messagebox.showwarning("Info", "Completează toate câmpurile pentru trimitere email.", parent=window)
+            return
+        subject = "Raport automat OCR230"
+        body = "Găsiți atașat raportul generat automat."
+        attachments = []
+        # Caută fișierele PDF/Excel/CSV din output_folder
+        for ext in ["pdf", "xlsx", "csv"]:
+            for fname in os.listdir(output_folder):
+                if fname.lower().endswith(ext):
+                    attachments.append(os.path.join(output_folder, fname))
+        if not attachments:
+            messagebox.showwarning("Info", "Nu s-au găsit fișiere PDF/Excel/CSV pentru atașare.", parent=window)
+            return
+        ok = send_report_email(sender, password, recipient, subject, body, attachments)
+        if ok:
+            messagebox.showinfo("Succes", f"Email trimis către {recipient}", parent=window)
+        else:
+            messagebox.showerror("Eroare", "Trimiterea emailului a eșuat.", parent=window)
+
+    # Calculăm statisticile din Excel dacă avem folderul
+    stats = calculate_stats_from_excel(output_folder) if output_folder else None
+
     def close_window():
         window.destroy()
-    
+
     def continue_to_results():
         """Închide fereastra de rapoarte și continuă cu deschiderea folderului și Excel-ului"""
         close_window()
@@ -360,6 +384,22 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         pady=8
     )
     close_button.place(x=450, y=440, width=100, height=40)
+    
+    # Buton pentru trimitere email raport
+    email_button = Button(
+        window,
+        text="✉️ Trimite Raport pe Email",
+        command=send_report_via_email,
+        font=("Inter", 11, "bold"),
+        bg="#F9A825",
+        fg="white",
+        relief="raised",
+        bd=2,
+        padx=20,
+        pady=8
+    )
+    email_button.place(x=320, y=500, width=220, height=40)
+    """Afișează fereastra de rapoarte cu date din fișierul Excel"""
     
     return window
 
