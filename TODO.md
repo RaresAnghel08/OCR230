@@ -1,4 +1,11 @@
 # TODO List - Proiect OCR230
+# Trimitere automată rapoarte pe email
+- [x] Integrare trimitere automată rapoarte pe email din fereastra Rapoarte
+- [x] Folosire cont Gmail dedicat (ocr230@gmail.com) cu App Password
+- [ ] Documentare în README despre configurarea App Password Gmail
+- [ ] Gestionare erori SMTP (ex: BadCredentials, blocare aplicații mai puțin sigure)
+- [ ] Opțiune pentru destinatar implicit sau listă de destinatari
+- [ ] Log trimitere email (succes/eroare)
 
 ## Data actualizare: 4 IULIE 2025
 
