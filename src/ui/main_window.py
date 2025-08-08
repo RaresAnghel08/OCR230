@@ -94,7 +94,7 @@ def run_main_window():
     )
     Button_ajutor.place(
         x=723.0,
-        y=567.0,
+        y=571.0,
         width=61.0,
         height=26.012451171875
     )
@@ -108,17 +108,25 @@ def run_main_window():
         outline="")
 
     canvas.create_text(
-        323.0,
-        571.0,
+        251.0,
+        572.0,
         anchor="nw",
-        text="™ F230-OCR",
+        text="™ OCR230",
+        fill="#000000",
+        font=("Inter", 14 * -1)
+    )
+    canvas.create_text(
+        487.0,
+        572.0,
+        anchor="nw",
+        text="ver. 2.5",
         fill="#000000",
         font=("Inter", 14 * -1)
     )
 
     canvas.create_text(
-        14.0,
-        571.0,
+        15.0,
+        572.0,
         anchor="nw",
         text="©2025 Rareș Anghel",
         fill="#000000",
@@ -126,19 +134,12 @@ def run_main_window():
     )
 
     canvas.create_text(
-        320.0,
-        18.0,
+        336.0,
+        17.0,
         anchor="nw",
-        text="F230-OCR",
+        text="OCR230",
         fill="#000000",
         font=("Inter", 32 * -1)
-    )
-
-    image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
-    image_1 = canvas.create_image(
-        55.0,
-        108.0,
-        image=image_image_1
     )
 
     canvas.create_rectangle(
@@ -156,39 +157,23 @@ def run_main_window():
         image=image_image_2
     )
 
-    # Păstrăm imaginile 3 și 4
-    image_image_3 = PhotoImage(file=relative_to_assets("image_3.png"))
-    image_3 = canvas.create_image(
-        397.0,
-        290.0,
-        image=image_image_3
-    )
-
-    image_image_4 = PhotoImage(file=relative_to_assets("image_4.png"))
-    image_4 = canvas.create_image(
-        397.0,
-        159.0,
-        image=image_image_4
-    )
-
-    # Text pentru mesajul că nu s-a selectat folderul de intrare
-    entry_folder_text = canvas.create_text(
-        297.0,
-        150.0,
+    canvas.create_text(
+        28.0,
+        55.0,
         anchor="nw",
-        text="Nu ai selectat niciun folder",
+        text="Bun venit, user!",
         fill="#000000",
-        font=("Inter", 16 * -1)
+        font=("Inter", 24 * -1),
+        # move it a layer up
     )
 
-    # Text pentru mesajul că nu s-a selectat folderul de ieșire
-    output_folder_text = canvas.create_text(
-        298.0,
-        281.0,
+    canvas.create_text(
+        28.0,
+        88.0,
         anchor="nw",
-        text="Nu ai selectat niciun folder",
+        text="ONG: user.ong",
         fill="#000000",
-        font=("Inter", 16 * -1)
+        font=("Inter", 24 * -1)
     )
 
     # Funcție pentru selectarea folderului de intrare
@@ -230,9 +215,9 @@ def run_main_window():
     )
     Button_output.place(
         x=25.0,
-        y=218.0,
+        y=217.0,
         width=749.0,
-        height=45.0
+        height=52.0
     )
 
     # Imagine pentru butonul de intrare (Button_input)
@@ -247,10 +232,45 @@ def run_main_window():
         background="#D9D9D9"
     )
     Button_input.place(
-        x=22.0,
-        y=84.0,
+        x=25.0,
+        y=122.0,
         width=755.0,
-        height=56.0
+        height=52.0
+    )
+    
+    # Păstrăm imaginile 3 și 4 pe cel mai de sus layer
+    image_image_3 = PhotoImage(file=relative_to_assets("selected_output.png"))
+    image_image_4 = PhotoImage(file=relative_to_assets("selected_input.png"))
+
+    # Adăugăm imaginile după toate celelalte elemente pentru a fi pe cel mai de sus layer
+    image_3 = canvas.create_image(
+        397.0,
+        284.0,
+        image=image_image_3
+    )
+    image_4 = canvas.create_image(
+        397.0,
+        189.0,
+        image=image_image_4
+    )
+    # Text pentru mesajul că nu s-a selectat folderul de intrare
+    entry_folder_text = canvas.create_text(
+        297.0,
+        180.0,
+        anchor="nw",
+        text="Nu ai selectat niciun folder",
+        fill="#000000",
+        font=("Inter", 16 * -1)
+    )
+
+    # Text pentru mesajul că nu s-a selectat folderul de ieșire
+    output_folder_text = canvas.create_text(
+        298.0,
+        275.0,
+        anchor="nw",
+        text="Nu ai selectat niciun folder",
+        fill="#000000",
+        font=("Inter", 16 * -1)
     )
     # Imagine pentru butonul de accelerație grafică (Button5)
     button_image_5 = PhotoImage(file=relative_to_assets("button_5_on.png"))
@@ -323,14 +343,20 @@ def run_main_window():
             
             # 🚀 DESCHIDE DASHBOARD-UL ANALYTICS AUTOMAT
             try:
-                from src.analytics.dashboard_manager import launch_dashboard
+                from src.analytics.dashboard_manager import launch_dashboard, DashboardManager
                 import threading
                 
+                # Creează instanța globală de analytics manager
+                if analytics_manager is None:
+                    analytics_manager = DashboardManager(folder_output)
+                    analytics_manager.start_live_session()
+                    print("🚀 Sesiune live analytics începută!")
+                
                 def launch_analytics_dashboard():
-                    """Lansează dashboard-ul analytics în background"""
+                    """Lansează dashboard-ul analytics în background folosind instanța existentă"""
                     try:
-                        launch_dashboard(folder_output, 8050)
-                        print("📊 Dashboard analytics lansat automat!")
+                        launch_dashboard(folder_output, 8050, analytics_manager)
+                        print("📊 Dashboard analytics lansat automat cu instanța unică!")
                     except Exception as e:
                         print(f"⚠️ Nu s-a putut lansa dashboard-ul automat: {e}")
                 
@@ -497,6 +523,18 @@ def run_main_window():
         nonlocal analytics_manager
         
         print(f"CALLBACK DASHBOARD: {stat_name} = {value}")  # Debug îmbunătățit
+        
+        # 🔴 PROCESARE COMPLETĂ - MARCHEAZĂ SFÂRȘITUL ȘI OPREȘTE REFRESH-URILE
+        if stat_name == 'processing_complete' and value:
+            try:
+                if analytics_manager:
+                    analytics_manager.mark_processing_complete()
+                    print("✅ Dashboard-ul a fost notificat că procesarea s-a terminat")
+                    print("🔴 Refresh-urile automate vor fi oprite în curând")
+            except Exception as e:
+                print(f"⚠️ Eroare la marcarea sfârșitul procesării: {e}")
+            return
+        
         if stat_name in dashboard_stats:
             dashboard_stats[stat_name] = value
             print(f"Statistică salvată: {stat_name} = {dashboard_stats[stat_name]}")
@@ -508,6 +546,12 @@ def run_main_window():
                     analytics_manager = DashboardManager(folder_output)
                     analytics_manager.start_live_session()
                     print("🚀 Sesiune live analytics începută!")
+                
+                # Handling pentru events speciale
+                if stat_name == 'processing_complete' and value:
+                    analytics_manager.mark_processing_complete()
+                    print("✅ Procesarea marcată ca fiind completă în analytics")
+                    return
                 
                 # Mapează statisticile la formatul analytics
                 analytics_update = {}
@@ -678,12 +722,12 @@ def run_main_window():
             root,
             text=ai_status_text,
             font=("Arial", 8),
-            bg="#f0f0f0",
+            bg="#d9d9d9",
             fg="gray",
             relief="flat",
             state="disabled"
         )
-        status_label.place(x=600, y=150, width=140, height=20)
+        status_label.place(x=600, y=495, width=140, height=20)
     except Exception as e:
         print(f"Eroare la crearea status label: {e}")
 
