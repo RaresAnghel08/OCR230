@@ -302,7 +302,7 @@ def run_main_window():
     )
     button_5.place(
         x=470.0,
-        y=490.0,  # Mutat cu 20px mai jos (480 + 20)
+        y=460.0,  # Mutat cu 20px mai jos (480 + 20)
         width=42.0,
         height=28.0
     )
@@ -393,7 +393,7 @@ def run_main_window():
     )
     Button_start.place(
         x=28.0,
-        y=445.0, 
+        y=487.0, 
         width=746.0,
         height=46.0
     )
@@ -462,7 +462,7 @@ def run_main_window():
 
     canvas.create_text(
         277.0,
-        495.0,
+        465.0,
         anchor="nw",
         text="Folosire accelerație grafică",
         fill="#1E1E1E",
@@ -727,7 +727,7 @@ def run_main_window():
             relief="flat",
             state="disabled"
         )
-        status_label.place(x=600, y=495, width=140, height=20)
+        status_label.place(x=600, y=465, width=140, height=20)
     except Exception as e:
         print(f"Eroare la crearea status label: {e}")
 

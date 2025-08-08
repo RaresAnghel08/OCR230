@@ -1,9 +1,11 @@
 from pathlib import Path
 import os
 from tkinter import Canvas, Button, PhotoImage, Toplevel
+import webbrowser
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("assets")
+PDF_PATH = OUTPUT_PATH / "assets"
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -88,21 +90,24 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         600.0,
         fill="#D9D9D9",
         outline="")
-
-    button_image_1 = PhotoImage(
-        file=relative_to_assets("button_ajutor.png"))
-    button_1 = Button(
-        image=button_image_1,
+    # Imagine pentru butonul Ajutor
+    button_image_ajutor = PhotoImage(file=relative_to_assets("button_ajutor.png"))
+    # Funcția de ajutor
+    def open_guide():
+        guide_path = PDF_PATH / "guide.pdf"
+        webbrowser.open(guide_path.as_uri())
+    Button_ajutor = Button(
+        image=button_image_ajutor,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
+        command=open_guide,
         relief="flat",
         activebackground="#D9D9D9",
-        bg="#D9D9D9"
+        background="#D9D9D9"
     )
-    button_1.place(
+    Button_ajutor.place(
         x=723.0,
-        y=567.0,
+        y=571.0,
         width=61.0,
         height=26.012451171875
     )
@@ -128,17 +133,25 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         outline="")
 
     canvas.create_text(
-        323.0,
-        570.0,
+        251.0,
+        572.0,
         anchor="nw",
-        text="™ F230-OCR",
+        text="™ OCR230",
+        fill="#000000",
+        font=("Inter", 14 * -1)
+    )
+    canvas.create_text(
+        487.0,
+        572.0,
+        anchor="nw",
+        text="ver. 2.5",
         fill="#000000",
         font=("Inter", 14 * -1)
     )
 
     canvas.create_text(
-        14.0,
-        571.0,
+        15.0,
+        572.0,
         anchor="nw",
         text="©2025 Rareș Anghel",
         fill="#000000",
@@ -146,10 +159,10 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
     )
 
     canvas.create_text(
-        320.0,
-        18.0,
+        336.0,
+        17.0,
         anchor="nw",
-        text="F230-OCR",
+        text="OCR230",
         fill="#000000",
         font=("Inter", 32 * -1)
     )
