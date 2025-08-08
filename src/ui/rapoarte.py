@@ -14,7 +14,7 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
     window = Toplevel()
     window.geometry("800x600")
     window.configure(bg = "#D9D9D9")
-    window.title("F230-OCR - Rapoarte")
+    window.title("OCR230 - Rapoarte")
     window.resizable(False, False)
     # window logo
     icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
@@ -111,7 +111,8 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         width=61.0,
         height=26.012451171875
     )
-
+    # rise button_ajutor
+    Button_ajutor.lift()
     try:
         image_image_1 = PhotoImage(
             file=relative_to_assets("image_2.png"))

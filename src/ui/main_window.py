@@ -316,6 +316,8 @@ def run_main_window():
             Button_start.config(image=button_image_start)
 
     def start_processing():
+        nonlocal analytics_manager  # Declarăm că vom modifica variabila din scope-ul părinte
+        
         # Verificăm dacă procesarea este deja activă
         if is_processing_active():
             # Oprim procesarea
@@ -403,7 +405,7 @@ def run_main_window():
     def create_custom_progress_bar(root):
         # Creăm un container pentru progresul nostru pentru un efect vizual mai plăcut
         progress_container = Canvas(root, bg="#D9D9D9", width=744, height=20, bd=0, highlightthickness=0, relief="flat")
-        progress_container.place(x=28, y=520)  # Poziționăm progresul cu 20px mai jos (500 + 20)
+        progress_container.place(x=28, y=530)
 
         # Bara de progres personalizată
         progress_bar = Progressbar(progress_container, orient="horizontal", length=744, mode="determinate", 
