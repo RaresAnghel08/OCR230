@@ -1,23 +1,25 @@
 from pathlib import Path
 import os
 from tkinter import Canvas, Button, PhotoImage, Toplevel
+import webbrowser
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("assets")
+PDF_PATH = OUTPUT_PATH / "assets"
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def show_rapoarte_window(output_folder=None, continue_callback=None):
-    """Afișează fereastra de rapoarte cu date din fișierul Excel"""
-    
-    # Calculăm statisticile din Excel dacă avem folderul
-    stats = calculate_stats_from_excel(output_folder) if output_folder else None
-    
+    # Permite transmiterea root pentru închidere corectă
+    import tkinter as tk
+    parent_root = None
+    if hasattr(show_rapoarte_window, "_root"):
+        parent_root = show_rapoarte_window._root
     window = Toplevel()
     window.geometry("800x600")
     window.configure(bg = "#D9D9D9")
-    window.title("F230-OCR - Rapoarte")
+    window.title("OCR230 - Rapoarte")
     window.resizable(False, False)
     # window logo
     icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
@@ -29,16 +31,49 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
     window.transient()
     window.grab_set()
     window.focus_set()
-    
     # Centrăm fereastra
     window.update_idletasks()
     x = (window.winfo_screenwidth() // 2) - (800 // 2)
     y = (window.winfo_screenheight() // 2) - (600 // 2)
     window.geometry(f"800x600+{x}+{y}")
-    
-    def close_window():
+
+    def send_report_via_email():
+        """Trimite rapoartele pe email (PDF/Excel/CSV)"""
+        from tkinter import simpledialog, messagebox
+        from src.utils.email_report import send_report_email
+        sender = simpledialog.askstring("Email Expeditor", "Adresa ta de email (Gmail):", parent=window)
+        password = simpledialog.askstring("Parola/APP Password Gmail", "Parola sau App Password Gmail:", parent=window, show='*')
+        recipient = simpledialog.askstring("Email Destinatar", "Adresa destinatarului:", parent=window)
+        if not sender or not password or not recipient:
+            messagebox.showwarning("Info", "Completează toate câmpurile pentru trimitere email.", parent=window)
+            return
+        subject = "Raport automat OCR230"
+        body = "Găsiți atașat raportul generat automat."
+        attachments = []
+        # Caută fișierele PDF/Excel/CSV din output_folder
+        for ext in ["pdf", "xlsx", "csv"]:
+            for fname in os.listdir(output_folder):
+                if fname.lower().endswith(ext):
+                    attachments.append(os.path.join(output_folder, fname))
+        if not attachments:
+            messagebox.showwarning("Info", "Nu s-au găsit fișiere PDF/Excel/CSV pentru atașare.", parent=window)
+            return
+        ok = send_report_email(sender, password, recipient, subject, body, attachments)
+        if ok:
+            messagebox.showinfo("Succes", f"Email trimis către {recipient}", parent=window)
+        else:
+            messagebox.showerror("Eroare", "Trimiterea emailului a eșuat.", parent=window)
+
+    # Calculăm statisticile din Excel dacă avem folderul
+    stats = calculate_stats_from_excel(output_folder) if output_folder else None
+
+    def on_close():
         window.destroy()
-    
+        if parent_root:
+            parent_root.quit()
+    def close_window():
+        on_close()
+
     def continue_to_results():
         """Închide fereastra de rapoarte și continuă cu deschiderea folderului și Excel-ului"""
         close_window()
@@ -65,24 +100,6 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         fill="#D9D9D9",
         outline="")
 
-    button_image_1 = PhotoImage(
-        file=relative_to_assets("button_ajutor.png"))
-    button_1 = Button(
-        image=button_image_1,
-        borderwidth=0,
-        highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
-        relief="flat",
-        activebackground="#D9D9D9",
-        bg="#D9D9D9"
-    )
-    button_1.place(
-        x=723.0,
-        y=567.0,
-        width=61.0,
-        height=26.012451171875
-    )
-
     try:
         image_image_1 = PhotoImage(
             file=relative_to_assets("image_2.png"))
@@ -104,17 +121,25 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         outline="")
 
     canvas.create_text(
-        323.0,
-        570.0,
+        251.0,
+        572.0,
         anchor="nw",
-        text="™ F230-OCR",
+        text="™ OCR230",
+        fill="#000000",
+        font=("Inter", 14 * -1)
+    )
+    canvas.create_text(
+        487.0,
+        572.0,
+        anchor="nw",
+        text="ver. 2.6",
         fill="#000000",
         font=("Inter", 14 * -1)
     )
 
     canvas.create_text(
-        14.0,
-        571.0,
+        15.0,
+        572.0,
         anchor="nw",
         text="©2025 Rareș Anghel",
         fill="#000000",
@@ -122,10 +147,10 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
     )
 
     canvas.create_text(
-        320.0,
-        18.0,
+        336.0,
+        17.0,
         anchor="nw",
-        text="F230-OCR",
+        text="OCR230",
         fill="#000000",
         font=("Inter", 32 * -1)
     )
@@ -361,6 +386,64 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
     )
     close_button.place(x=450, y=440, width=100, height=40)
     
+    # Buton pentru trimitere email raport
+    email_button = Button(
+        window,
+        text="✉️ Trimite Raport pe Email",
+        command=send_report_via_email,
+        font=("Inter", 11, "bold"),
+        bg="#F9A825",
+        fg="white",
+        relief="raised",
+        bd=2,
+        padx=20,
+        pady=8
+    )
+    email_button.place(x=320, y=500, width=220, height=40)
+    """Afișează fereastra de rapoarte cu date din fișierul Excel"""
+    # Buton Ajutor cu fallback la text dacă imaginea nu se încarcă
+    def open_guide():
+        guide_path = PDF_PATH / "guide.pdf"
+        if not guide_path.exists():
+            from tkinter import messagebox
+            messagebox.showerror("Eroare", f"Fișierul ghid nu există: {guide_path}", parent=window)
+            print(f"[DEBUG] Ghidul nu există: {guide_path}")
+            return
+        print(f"[DEBUG] Deschid ghidul: {guide_path}")
+        webbrowser.open(guide_path.as_uri())
+
+    button_ajutor = None
+    try:
+        print("[DEBUG] Încerc să încarc imaginea Ajutor")
+        button_image_ajutor = PhotoImage(file=relative_to_assets("button_ajutor_2.png"))
+        window.button_image_ajutor = button_image_ajutor  # Previne garbage collection
+        print("[DEBUG] Imagine Ajutor încărcată cu succes")
+        Button_ajutor = Button(
+            window,
+            image=button_image_ajutor,
+            borderwidth=0,
+            highlightthickness=0,
+            command=open_guide,
+            relief="flat",
+            activebackground="#D9D9D9",
+            background="#D9D9D9"
+        )
+        canvas.create_window(723, 581, window=Button_ajutor, width=61, height=28)
+        print("[DEBUG] Buton Ajutor plasat cu succes")
+    except Exception as e:
+        print(f"[DEBUG] Eroare la încărcarea imaginii Ajutor: {e}")
+        button_ajutor = Button(
+            window,
+            text="Ajutor",
+            command=open_guide,
+            font=("Inter", 12, "bold"),
+            bg="#F9A825",
+            fg="white",
+            relief="solid",
+            bd=3
+        )
+        canvas.create_window(723, 580, window=button_ajutor, width=85, height=34)
+    window.protocol("WM_DELETE_WINDOW", on_close)
     return window
 
 
@@ -413,3 +496,14 @@ def calculate_stats_from_excel(output_folder):
     except Exception as e:
         print(f"Eroare la calcularea statisticilor: {e}")
         return None
+
+
+# === Permite rularea directă a fișierului pentru testare ===
+if __name__ == "__main__":
+    import tkinter as tk
+    root = tk.Tk()
+    root.withdraw()  # Ascunde fereastra principală
+    # Setează root ca atribut pentru închidere corectă
+    show_rapoarte_window._root = root
+    show_rapoarte_window(output_folder=None)
+    root.mainloop()

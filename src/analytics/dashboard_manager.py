@@ -24,6 +24,8 @@ class DashboardManager:
         self.sessions_file = os.path.join(output_folder, "processing_sessions.json")
         self.live_stats_file = os.path.join(output_folder, "live_stats.json")  # Pentru statistici live
         self.current_session_id = None  # ID-ul sesiunii curente
+        self._excel_last_modified = None  # Pentru a detecta modificări Excel
+        self._processing_complete = False  # Flag pentru a opri refresh-urile inutile
         self.init_database()
         
     def init_database(self):
@@ -106,6 +108,10 @@ class DashboardManager:
     
     def start_live_session(self):
         """Începe o sesiune live de procesare"""
+        # Resetează flag-ul de procesare completă pentru o nouă sesiune
+        self._processing_complete = False
+        self._excel_last_modified = None
+        
         live_stats = {
             'session_start': datetime.now().isoformat(),
             'files_processed': 0,
@@ -135,6 +141,7 @@ class DashboardManager:
         }
         
         self.current_session_id = self.log_processing_session(session_data)
+        print("🔄 Nouă sesiune live începută - dashboard refresh reactivat")
         return self.current_session_id
     
     def update_live_stats(self, **kwargs):
@@ -171,6 +178,17 @@ class DashboardManager:
             
         except Exception as e:
             print(f"❌ Eroare la actualizarea statisticilor live: {e}")
+    
+    def mark_processing_complete(self):
+        """Marchează procesarea ca fiind completă pentru a opri refresh-urile automate"""
+        self._processing_complete = True
+        print("✅ Procesarea marcată ca fiind completă - dashboard refresh automat va fi oprit")
+    
+    def reset_processing_state(self):
+        """Resetează starea procesării pentru o nouă sesiune"""
+        self._processing_complete = False
+        self._excel_last_modified = None
+        print("🔄 Starea procesării resetată - dashboard refresh reactivat")
     
     def get_live_stats(self):
         """Obține statisticile live curente"""
@@ -213,7 +231,11 @@ class DashboardManager:
                 conn.commit()
                 conn.close()
                 
+                # Marchează procesarea ca fiind completă
+                self._processing_complete = True
+                
                 print(f"✅ Sesiunea live finalizată: {live_stats['files_processed']} fișiere procesate")
+                print("🔴 Dashboard refresh automat oprit - procesarea completă")
                 
         except Exception as e:
             print(f"❌ Eroare la finalizarea sesiunii live: {e}")
@@ -409,12 +431,13 @@ class DashboardManager:
             
         ], fluid=True)
         
-        # Adaugă un interval pentru refresh automat
+        # Adaugă un interval pentru refresh automat doar dacă procesarea nu este completă
         app.layout.children.append(
             dcc.Interval(
                 id='interval-component',
                 interval=3*1000,  # Actualizează la fiecare 3 secunde
-                n_intervals=0
+                n_intervals=0,
+                disabled=False  # Va fi dezactivat când procesarea este completă
             )
         )
         
@@ -433,7 +456,8 @@ class DashboardManager:
              Output('romania-heatmap', 'figure'),
              Output('ocr-performance-chart', 'figure'),
              Output('temporal-trends-chart', 'figure'),
-             Output('sessions-comparison-chart', 'figure')],
+             Output('sessions-comparison-chart', 'figure'),
+             Output('interval-component', 'disabled')],  # Adaugă control pentru interval
             [Input('refresh-btn', 'n_clicks'),
              Input('interval-component', 'n_intervals'),
              Input('date-picker-range', 'start_date'),
@@ -441,19 +465,35 @@ class DashboardManager:
              Input('county-dropdown', 'value')]
         )
         def update_dashboard(n_clicks, n_intervals, start_date, end_date, selected_county):
+            # Verifică dacă procesarea este completă pentru a opri intervalul
+            live_stats = self.get_live_stats()
+            
+            # Oprește intervalul dacă:
+            # 1. Procesarea este marcată ca fiind completă ȘI
+            # 2. Au trecut cel puțin 10 secunde de la finalizare (pentru a permite ultimele actualizări) ȘI  
+            # 3. Au existat cel puțin 5 refresh-uri pentru a afișa rezultatele finale
+            should_disable_interval = (
+                self._processing_complete and 
+                n_intervals > 5  # Permite cel puțin 5 refresh-uri (15 secunde) pentru a vedea rezultatele finale
+            )
+            
+            if should_disable_interval:
+                print("🛑 Intervalul dashboard oprit - procesarea completă și rezultatele afișate")
+            
             # Încarcă datele
             data = self._load_analytics_data(start_date, end_date, selected_county)
             
             # Creează graficele
             general_stats = self._create_general_stats_chart(data)
-            live_stats = self._create_live_stats_chart()  # Nou: grafic pentru statistici live
+            live_stats_chart = self._create_live_stats_chart()  # Nou: grafic pentru statistici live
             county_dist = self._create_county_distribution_chart(data)
             romania_heatmap = self._create_romania_heatmap(data)
             ocr_performance = self._create_ocr_performance_chart(data)
             temporal_trends = self._create_temporal_trends_chart(data)
             sessions_comparison = self._create_sessions_comparison_chart(data)
             
-            return general_stats, live_stats, county_dist, romania_heatmap, ocr_performance, temporal_trends, sessions_comparison
+            return (general_stats, live_stats_chart, county_dist, romania_heatmap, 
+                   ocr_performance, temporal_trends, sessions_comparison, should_disable_interval)
     
     def _load_analytics_data(self, start_date, end_date, county_filter):
         """Încarcă datele pentru analytics din baza de date și Excel"""
@@ -511,9 +551,28 @@ class DashboardManager:
         excel_path = os.path.join(self.output_folder, "Date_Persoane_OCR.xlsx")
         if os.path.exists(excel_path):
             try:
-                df = pd.read_excel(excel_path, sheet_name='Date_Persoane')
-                print(f"📊 Încărcat Excel cu {len(df)} înregistrări")
-                return df
+                # Verifică timpul de modificare pentru a evita încărcări inutile
+                current_modified = os.path.getmtime(excel_path)
+                
+                # Dacă fișierul nu s-a modificat și procesarea e completă, nu-l mai încărca
+                if (self._excel_last_modified == current_modified and 
+                    self._processing_complete):
+                    return None
+                
+                # Dacă s-a modificat sau este prima încărcare
+                if self._excel_last_modified != current_modified:
+                    df = pd.read_excel(excel_path, sheet_name='Date_Persoane')
+                    self._excel_last_modified = current_modified
+                    
+                    # Printează mesajul doar dacă procesarea nu este completă
+                    if not self._processing_complete:
+                        print(f"📊 Încărcat Excel cu {len(df)} înregistrări")
+                    
+                    return df
+                else:
+                    # Return cached data sau None dacă nu e nevoie de refresh
+                    return None
+                    
             except Exception as e:
                 print(f"⚠️ Eroare la încărcarea Excel: {e}")
                 return None
@@ -909,8 +968,15 @@ class DashboardManager:
         return export_path
 
 # Funcție utilitară pentru lansarea dashboard-ului
-def launch_dashboard(output_folder: str, port: int = 8050):
-    """Lansează dashboard-ul analytics cu gestionare îmbunătățită a porturilor"""
+def launch_dashboard(output_folder: str, port: int = 8050, analytics_manager_instance=None):
+    """
+    Lansează dashboard-ul analytics cu gestionare îmbunătățită a porturilor
+    
+    Args:
+        output_folder: Folderul cu datele de output
+        port: Portul pe care să ruleze (default 8050)
+        analytics_manager_instance: Instanță existentă de DashboardManager (opțional)
+    """
     import socket
     import threading
     import webbrowser
@@ -930,7 +996,14 @@ def launch_dashboard(output_folder: str, port: int = 8050):
     def start_server():
         """Pornește serverul Dash în thread separat"""
         try:
-            dashboard = DashboardManager(output_folder)
+            # Folosește instanța existentă sau creează una nouă
+            if analytics_manager_instance is not None:
+                dashboard = analytics_manager_instance
+                print("🔗 Folosesc instanța existentă de DashboardManager")
+            else:
+                dashboard = DashboardManager(output_folder)
+                print("🆕 Creez o nouă instanță de DashboardManager")
+                
             app = dashboard.create_interactive_dashboard()
             
             # Găsește un port liber

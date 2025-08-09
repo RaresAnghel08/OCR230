@@ -300,6 +300,14 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
         processing_active = False
         stop_processing = False
         
+        # 🔴 MARCHEAZĂ PROCESAREA CA FIIND COMPLETĂ PENTRU DASHBOARD
+        if dashboard_callback:
+            try:
+                dashboard_callback('processing_complete', True)
+                print("✅ Dashboard notificat că procesarea s-a terminat")
+            except Exception as e:
+                print(f"⚠️ Eroare la notificarea dashboard-ului: {e}")
+        
         # Actualizăm butonul înapoi la starea inițială (Start)
         if update_button_callback:
             update_button_callback(False)
