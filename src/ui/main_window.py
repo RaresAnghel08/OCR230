@@ -21,11 +21,26 @@ def relative_to_assets(path: str) -> Path:
 
 def run_main_window():
     # Show login window first and get user configuration
+    from src.ui.login import check_ong_in_db, get_user_config, show_login_window
+
     def on_login_success(user_config):
         # Start main window with user configuration
         _run_main_window_with_config(user_config)
-    
-    show_login_window(on_login_success)
+
+    # Check config.ini
+    user_config = get_user_config()
+    if user_config:
+        ong = user_config.get('ong')
+        admin_id = user_config.get('admin_id')
+        # Verifică dacă ONG și admin_id din config.ini există în DB
+        if ong and admin_id and check_ong_in_db(ong, admin_id):
+            print(f"✅ ONG și admin_id din config.ini există în database: {ong} ({admin_id})")
+            _run_main_window_with_config(user_config)
+        else:
+            print(f"❌ ONG sau admin_id din config.ini NU există în database: {ong} ({admin_id})")
+            show_login_window(on_login_success)
+    else:
+        show_login_window(on_login_success)
 
 def _run_main_window_with_config(user_config):
     folder_input = ""

@@ -107,10 +107,14 @@ def show_login_window(on_success_callback):
     """Show login/configuration window"""
 
     existing_config = check_existing_config()
+    prefill_email = ""
+    prefill_phone = ""
+    prefill_name = ""
     if existing_config:
         print(f"🔐 User already configured: {existing_config['name']} ({existing_config['ong']})")
-        on_success_callback(existing_config)
-        return
+        prefill_email = existing_config.get('email', "")
+        prefill_phone = existing_config.get('telephone', "")
+        prefill_name = existing_config.get('name', "")
 
     login_window = Tk()
     login_window.title("OCR230 - Configurare Utilizator")
@@ -148,6 +152,13 @@ def show_login_window(on_success_callback):
         canvas.create_text(80, y, anchor="nw", text=text, fill="#000", font=("Inter", 12, "bold"))
         entry = Entry(login_window, font=("Inter", 11), bg="white", relief="solid", bd=1)
         entry.place(x=80, y=y+25, width=440, height=30)
+        # Prefill logic
+        if text == "Nume complet:" and prefill_name:
+            entry.insert(0, prefill_name)
+        if text == "Email:" and prefill_email:
+            entry.insert(0, prefill_email)
+        if text == "Telefon:" and prefill_phone:
+            entry.insert(0, prefill_phone)
         entries[text] = entry
 
     status_label = canvas.create_text(300, 470, anchor="center", text="", fill="#FF0000", font=("Inter", 10))
@@ -189,13 +200,22 @@ def show_login_window(on_success_callback):
             })
         ])
 
-    Button(
-        login_window, text="Salvează și Continuă", command=validate_and_save,
-        font=("Inter", 12, "bold"), bg="#4CAF50", fg="white",
-        relief="raised", bd=2, padx=20, pady=8
-    ).place(x=200, y=480, width=200, height=40)
+    # Add the button after all widgets are placed
+    save_button = Button(
+        login_window,
+        text="Salvează și Continuă",
+        command=validate_and_save,
+        font=("Inter", 12, "bold"),
+        bg="#4CAF50",
+        fg="white",
+        relief="raised",
+        bd=2,
+        padx=20,
+        pady=8
+    )
+    save_button.place(x=200, y=480, width=200, height=40)
 
-    name_entry = list(entries.values())[0]
+    name_entry = entries["Nume complet:"]
     name_entry.focus()
 
     def on_close():
