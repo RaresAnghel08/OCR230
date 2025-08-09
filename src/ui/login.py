@@ -8,6 +8,33 @@ import configparser
 from pathlib import Path
 from tkinter import Tk, Canvas, Button, PhotoImage, Entry, messagebox
 from tkinter import ttk
+import psycopg2
+from dotenv import load_dotenv
+
+# Load .env for PostgreSQL connection
+load_dotenv(dotenv_path=os.path.join(Path(__file__).parent.parent.parent, '.env'))
+
+def check_ong_in_db(ong_name, admin_id):
+    host = os.environ.get('DATABASE_HOST')
+    user = os.environ.get('DATABASE_USER')
+    password = os.environ.get('DATABASE_PASSWORD')
+    dbname = os.environ.get('DATABASE_NAME')
+    try:
+        conn = psycopg2.connect(
+            host=host,
+            user=user,
+            password=password,
+            dbname=dbname
+        )
+        cur = conn.cursor()
+        cur.execute("SELECT 1 FROM ong WHERE nume = %s AND admin_id = %s LIMIT 1", (ong_name, admin_id))
+        result = cur.fetchone()
+        cur.close()
+        conn.close()
+        return bool(result)
+    except Exception as e:
+        print(f"Eroare conexiune PostgreSQL: {e}")
+        return False
 
 # Get the assets path
 OUTPUT_PATH = Path(__file__).parent
@@ -105,15 +132,15 @@ def show_login_window(on_success_callback):
     # Create login window
     login_window = Tk()
     login_window.title("OCR230 - Configurare Utilizator")
-    login_window.geometry("600x500")
+    login_window.geometry("600x540")
     login_window.configure(bg="#D9D9D9")
     login_window.resizable(False, False)
-    
+
     # Center the window
     login_window.update_idletasks()
     x = (login_window.winfo_screenwidth() // 2) - (600 // 2)
-    y = (login_window.winfo_screenheight() // 2) - (500 // 2)
-    login_window.geometry(f"600x500+{x}+{y}")
+    y = (login_window.winfo_screenheight() // 2) - (540 // 2)
+    login_window.geometry(f"600x540+{x}+{y}")
     
     # Set window icon
     icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
@@ -126,7 +153,7 @@ def show_login_window(on_success_callback):
     canvas = Canvas(
         login_window,
         bg="#D9D9D9",
-        height=500,
+        height=540,
         width=600,
         bd=0,
         highlightthickness=0,
@@ -162,7 +189,7 @@ def show_login_window(on_success_callback):
         fill="#000000",
         font=("Inter", 12, "bold")
     )
-    
+
     name_entry = Entry(
         login_window,
         font=("Inter", 11),
@@ -171,7 +198,7 @@ def show_login_window(on_success_callback):
         bd=1
     )
     name_entry.place(x=80, y=145, width=440, height=30)
-    
+
     canvas.create_text(
         80.0,
         190.0,
@@ -180,7 +207,7 @@ def show_login_window(on_success_callback):
         fill="#000000",
         font=("Inter", 12, "bold")
     )
-    
+
     ong_entry = Entry(
         login_window,
         font=("Inter", 11),
@@ -189,16 +216,34 @@ def show_login_window(on_success_callback):
         bd=1
     )
     ong_entry.place(x=80, y=215, width=440, height=30)
-    
+
     canvas.create_text(
         80.0,
         260.0,
+        anchor="nw",
+        text="ID Unic (admin):",
+        fill="#000000",
+        font=("Inter", 12, "bold")
+    )
+
+    admin_id_entry = Entry(
+        login_window,
+        font=("Inter", 11),
+        bg="white",
+        relief="solid",
+        bd=1
+    )
+    admin_id_entry.place(x=80, y=285, width=440, height=30)
+    
+    canvas.create_text(
+        80.0,
+        330.0,
         anchor="nw",
         text="Email:",
         fill="#000000",
         font=("Inter", 12, "bold")
     )
-    
+
     email_entry = Entry(
         login_window,
         font=("Inter", 11),
@@ -206,17 +251,17 @@ def show_login_window(on_success_callback):
         relief="solid",
         bd=1
     )
-    email_entry.place(x=80, y=285, width=440, height=30)
-    
+    email_entry.place(x=80, y=355, width=440, height=30)
+
     canvas.create_text(
         80.0,
-        330.0,
+        400.0,
         anchor="nw",
         text="Telefon:",
         fill="#000000",
         font=("Inter", 12, "bold")
     )
-    
+
     phone_entry = Entry(
         login_window,
         font=("Inter", 11),
@@ -224,12 +269,12 @@ def show_login_window(on_success_callback):
         relief="solid",
         bd=1
     )
-    phone_entry.place(x=80, y=355, width=440, height=30)
+    phone_entry.place(x=80, y=425, width=440, height=30)
     
     # Status label
     status_label = canvas.create_text(
         300.0,
-        410.0,
+        470.0,
         anchor="center",
         text="",
         fill="#FF0000",
@@ -237,45 +282,60 @@ def show_login_window(on_success_callback):
     )
     
     def validate_and_save():
-        """Validate input and save configuration"""
+        """Validate input and save configuration, apoi verifică ONG în PostgreSQL"""
         name = name_entry.get().strip()
         ong = ong_entry.get().strip()
+        admin_id = admin_id_entry.get().strip()
         email = email_entry.get().strip()
         phone = phone_entry.get().strip()
-        
+
         # Validation
         if not name:
             canvas.itemconfig(status_label, text="❌ Te rugăm să introduci numele complet")
             return
-        
         if not ong:
             canvas.itemconfig(status_label, text="❌ Te rugăm să introduci organizația")
             return
-        
         if not email or not validate_email(email):
             canvas.itemconfig(status_label, text="❌ Te rugăm să introduci un email valid")
             return
-        
         if not phone or not validate_phone(phone):
             canvas.itemconfig(status_label, text="❌ Te rugăm să introduci un număr de telefon valid (format: 0XXXXXXXXX)")
             return
-        
+
+        # Verifică ONG în PostgreSQL
+        canvas.itemconfig(status_label, text="⏳ Se verifică existența ONG-ului în baza de date...", fill="#0000AA")
+        login_window.update_idletasks()
+        if not check_ong_in_db(ong, admin_id):
+            canvas.itemconfig(status_label, text="❌ ONG-ul sau ID-ul nu există în baza de date!", fill="#FF0000")
+            return
+
         # Save configuration
         try:
             save_config(name, ong, email, phone)
+            # Save admin_id in config.ini
+            config_path = get_config_file_path()
+            config = configparser.ConfigParser()
+            config['USER'] = {
+                'name': name,
+                'ong': ong,
+                'email': email,
+                'telephone': phone,
+                'admin_id': admin_id
+            }
+            with open(config_path, 'w', encoding='utf-8') as configfile:
+                config.write(configfile)
             canvas.itemconfig(status_label, text="✅ Configurarea a fost salvată cu succes!", fill="#00AA00")
-            
-            # Close login window and call success callback
             login_window.after(1000, lambda: [
                 login_window.destroy(),
                 on_success_callback({
                     'name': name,
                     'ong': ong,
                     'email': email,
-                    'telephone': phone
+                    'telephone': phone,
+                    'admin_id': admin_id
                 })
             ])
-            
         except Exception as e:
             canvas.itemconfig(status_label, text=f"❌ Eroare la salvarea configurației: {e}")
     
@@ -292,7 +352,7 @@ def show_login_window(on_success_callback):
         padx=20,
         pady=8
     )
-    save_button.place(x=200, y=440, width=200, height=40)
+    save_button.place(x=200, y=480, width=200, height=40)
     
     # Info text
     canvas.create_text(
