@@ -5,6 +5,7 @@ from tkinter import filedialog
 import os
 from src.ocr.ocr import run_processing_threaded, is_processing_active, stop_current_processing
 from src.ui.splash import show_splash
+from src.ui.login import show_login_window, get_user_config
 from ..processing.coordonate import coordonate
 from tkinter.ttk import Progressbar
 from tkinter import messagebox
@@ -19,6 +20,14 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def run_main_window():
+    # Show login window first and get user configuration
+    def on_login_success(user_config):
+        # Start main window with user configuration
+        _run_main_window_with_config(user_config)
+    
+    show_login_window(on_login_success)
+
+def _run_main_window_with_config(user_config):
     folder_input = ""
     folder_output = ""
     root = Tk()
@@ -161,7 +170,7 @@ def run_main_window():
         28.0,
         55.0,
         anchor="nw",
-        text="Bun venit, user!",
+        text=f"Bun venit, {user_config['name']}!",
         fill="#000000",
         font=("Inter", 24 * -1),
         # move it a layer up
@@ -171,7 +180,7 @@ def run_main_window():
         28.0,
         88.0,
         anchor="nw",
-        text="ONG: user.ong",
+        text=f"ONG: {user_config['ong']}",
         fill="#000000",
         font=("Inter", 24 * -1)
     )
