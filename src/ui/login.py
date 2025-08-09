@@ -221,7 +221,7 @@ def show_login_window(on_success_callback):
         80.0,
         260.0,
         anchor="nw",
-        text="ID Unic (admin):",
+        text="ID Unic:",
         fill="#000000",
         font=("Inter", 12, "bold")
     )
