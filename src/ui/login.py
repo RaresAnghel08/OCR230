@@ -35,7 +35,7 @@ def check_ong_in_db(ong_name, admin_id):
 # ---------------------- CONFIG & PATH HELPERS ----------------------
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / "assets"
+ASSETS_PATH = OUTPUT_PATH / "Assets"
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -206,7 +206,12 @@ def show_login_window(on_success_callback):
         ) == 'yes':
             login_window.destroy()
             exit()
-
+    # Fundal și icon
+    icon_path = Path(__file__).parent.parent.parent / "Assets" / "favicon.ico"
+    try:
+        login_window.iconbitmap(str(icon_path))
+    except Exception:
+        pass
     login_window.protocol("WM_DELETE_WINDOW", on_close)
     login_window.mainloop()
 
