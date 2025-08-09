@@ -3,10 +3,10 @@ from dotenv import load_dotenv
 import psycopg2
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
-host = os.environ.get('DATABASE_HOST')
-user = os.environ.get('DATABASE_USER')
-password = os.environ.get('DATABASE_PASSWORD')
-dbname = os.environ.get('DATABASE_NAME')
+host = os.environ.get('PGHOST')
+user = os.environ.get('PGUSER')
+password = os.environ.get('PGPASSWORD')
+dbname = os.environ.get('PGDATABASE')
 
 try:
     conn = psycopg2.connect(host=host, user=user, password=password, dbname=dbname)
