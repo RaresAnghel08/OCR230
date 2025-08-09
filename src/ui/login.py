@@ -104,6 +104,22 @@ def check_existing_config():
 # ---------------------- UI LOGIN WINDOW ----------------------
 
 def show_login_window(on_success_callback):
+    # Test internet la pornire
+    def check_internet():
+        import socket
+        try:
+            # Test rapid DNS + socket
+            socket.create_connection(("8.8.8.8", 53), timeout=2)
+            return True
+        except Exception:
+            return False
+
+    if not check_internet():
+        messagebox.showerror(
+            "Eroare conexiune",
+            "Nu există conexiune la internet!\nAplicația OCR230 are nevoie de internet pentru autentificare și funcționare.",
+        )
+        exit()
     """Show login/configuration window"""
 
     existing_config = check_existing_config()
