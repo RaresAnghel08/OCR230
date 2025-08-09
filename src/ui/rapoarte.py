@@ -11,6 +11,11 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def show_rapoarte_window(output_folder=None, continue_callback=None):
+    # Permite transmiterea root pentru închidere corectă
+    import tkinter as tk
+    parent_root = None
+    if hasattr(show_rapoarte_window, "_root"):
+        parent_root = show_rapoarte_window._root
     window = Toplevel()
     window.geometry("800x600")
     window.configure(bg = "#D9D9D9")
@@ -62,8 +67,12 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
     # Calculăm statisticile din Excel dacă avem folderul
     stats = calculate_stats_from_excel(output_folder) if output_folder else None
 
-    def close_window():
+    def on_close():
         window.destroy()
+        if parent_root:
+            parent_root.quit()
+    def close_window():
+        on_close()
 
     def continue_to_results():
         """Închide fereastra de rapoarte și continuă cu deschiderea folderului și Excel-ului"""
@@ -90,29 +99,7 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         600.0,
         fill="#D9D9D9",
         outline="")
-    # Imagine pentru butonul Ajutor
-    button_image_ajutor = PhotoImage(file=relative_to_assets("button_ajutor.png"))
-    # Funcția de ajutor
-    def open_guide():
-        guide_path = PDF_PATH / "guide.pdf"
-        webbrowser.open(guide_path.as_uri())
-    Button_ajutor = Button(
-        image=button_image_ajutor,
-        borderwidth=0,
-        highlightthickness=0,
-        command=open_guide,
-        relief="flat",
-        activebackground="#D9D9D9",
-        background="#D9D9D9"
-    )
-    Button_ajutor.place(
-        x=723.0,
-        y=571.0,
-        width=61.0,
-        height=26.012451171875
-    )
-    # rise button_ajutor
-    Button_ajutor.lift()
+
     try:
         image_image_1 = PhotoImage(
             file=relative_to_assets("image_2.png"))
@@ -145,7 +132,7 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         487.0,
         572.0,
         anchor="nw",
-        text="ver. 2.5",
+        text="ver. 2.6",
         fill="#000000",
         font=("Inter", 14 * -1)
     )
@@ -414,7 +401,49 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
     )
     email_button.place(x=320, y=500, width=220, height=40)
     """Afișează fereastra de rapoarte cu date din fișierul Excel"""
-    
+    # Buton Ajutor cu fallback la text dacă imaginea nu se încarcă
+    def open_guide():
+        guide_path = PDF_PATH / "guide.pdf"
+        if not guide_path.exists():
+            from tkinter import messagebox
+            messagebox.showerror("Eroare", f"Fișierul ghid nu există: {guide_path}", parent=window)
+            print(f"[DEBUG] Ghidul nu există: {guide_path}")
+            return
+        print(f"[DEBUG] Deschid ghidul: {guide_path}")
+        webbrowser.open(guide_path.as_uri())
+
+    button_ajutor = None
+    try:
+        print("[DEBUG] Încerc să încarc imaginea Ajutor")
+        button_image_ajutor = PhotoImage(file=relative_to_assets("button_ajutor_2.png"))
+        window.button_image_ajutor = button_image_ajutor  # Previne garbage collection
+        print("[DEBUG] Imagine Ajutor încărcată cu succes")
+        Button_ajutor = Button(
+            window,
+            image=button_image_ajutor,
+            borderwidth=0,
+            highlightthickness=0,
+            command=open_guide,
+            relief="flat",
+            activebackground="#D9D9D9",
+            background="#D9D9D9"
+        )
+        canvas.create_window(723, 581, window=Button_ajutor, width=61, height=28)
+        print("[DEBUG] Buton Ajutor plasat cu succes")
+    except Exception as e:
+        print(f"[DEBUG] Eroare la încărcarea imaginii Ajutor: {e}")
+        button_ajutor = Button(
+            window,
+            text="Ajutor",
+            command=open_guide,
+            font=("Inter", 12, "bold"),
+            bg="#F9A825",
+            fg="white",
+            relief="solid",
+            bd=3
+        )
+        canvas.create_window(723, 580, window=button_ajutor, width=85, height=34)
+    window.protocol("WM_DELETE_WINDOW", on_close)
     return window
 
 
@@ -467,3 +496,14 @@ def calculate_stats_from_excel(output_folder):
     except Exception as e:
         print(f"Eroare la calcularea statisticilor: {e}")
         return None
+
+
+# === Permite rularea directă a fișierului pentru testare ===
+if __name__ == "__main__":
+    import tkinter as tk
+    root = tk.Tk()
+    root.withdraw()  # Ascunde fereastra principală
+    # Setează root ca atribut pentru închidere corectă
+    show_rapoarte_window._root = root
+    show_rapoarte_window(output_folder=None)
+    root.mainloop()

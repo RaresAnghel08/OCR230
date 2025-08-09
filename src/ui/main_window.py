@@ -120,7 +120,7 @@ def _run_main_window_with_config(user_config):
         x=723.0,
         y=571.0,
         width=61.0,
-        height=26.012451171875
+        height=28.0
     )
 
     canvas.create_rectangle(
@@ -143,7 +143,7 @@ def _run_main_window_with_config(user_config):
         487.0,
         572.0,
         anchor="nw",
-        text="ver. 2.5",
+        text="ver. 2.6",
         fill="#000000",
         font=("Inter", 14 * -1)
     )
