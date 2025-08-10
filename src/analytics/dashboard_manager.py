@@ -18,8 +18,9 @@ import sqlite3
 from pathlib import Path
 
 class DashboardManager:
-    def __init__(self, output_folder: str):
+    def __init__(self, output_folder: str, user_config: dict = None):
         self.output_folder = output_folder
+        self.user_config = user_config or {}
         self.db_path = os.path.join(output_folder, "analytics.db")
         self.sessions_file = os.path.join(output_folder, "processing_sessions.json")
         self.live_stats_file = os.path.join(output_folder, "live_stats.json")  # Pentru statistici live
@@ -309,10 +310,43 @@ class DashboardManager:
         """Creează dashboard-ul interactiv cu Dash"""
         app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
         
+        # Informații utilizator pentru personalizare
+        user_name = self.user_config.get('name', 'Utilizator')
+        user_ong = self.user_config.get('ong', 'Organizație')
+        user_email = self.user_config.get('email', '')
+        user_admin_id = self.user_config.get('admin_id', '')
+        
         app.layout = dbc.Container([
+            # Header personalizat cu informații utilizator
             dbc.Row([
                 dbc.Col([
-                    html.H1("📊 OCR230 - Dashboard Analytics", className="text-center mb-4"),
+                    dbc.Card([
+                        dbc.CardBody([
+                            html.H1("📊 OCR230 - Dashboard Analytics", 
+                                   className="text-center mb-2", 
+                                   style={'color': '#2c3e50'}),
+                            html.H4(f"👤 {user_name}", 
+                                   className="text-center mb-1", 
+                                   style={'color': '#34495e'}),
+                            html.H5(f"🏢 {user_ong}", 
+                                   className="text-center mb-1", 
+                                   style={'color': '#7f8c8d'}),
+                            html.P(f"📧 {user_email}" if user_email else "", 
+                                  className="text-center mb-1", 
+                                  style={'color': '#95a5a6', 'fontSize': '14px'}),
+                            html.P(f"🆔 ID: {user_admin_id}" if user_admin_id else "", 
+                                  className="text-center mb-1", 
+                                  style={'color': '#95a5a6', 'fontSize': '12px'}),
+                            html.P(f"📂 Folder: {self.output_folder}", 
+                                  className="text-center mb-0", 
+                                  style={'color': '#bdc3c7', 'fontSize': '11px'})
+                        ])
+                    ], color="light")
+                ])
+            ], className="mb-4"),
+            
+            dbc.Row([
+                dbc.Col([
                     html.Hr()
                 ])
             ]),
@@ -968,7 +1002,7 @@ class DashboardManager:
         return export_path
 
 # Funcție utilitară pentru lansarea dashboard-ului
-def launch_dashboard(output_folder: str, port: int = 8050, analytics_manager_instance=None):
+def launch_dashboard(output_folder: str, port: int = 8050, analytics_manager_instance=None, user_config: dict = None):
     """
     Lansează dashboard-ul analytics cu gestionare îmbunătățită a porturilor
     
@@ -976,6 +1010,7 @@ def launch_dashboard(output_folder: str, port: int = 8050, analytics_manager_ins
         output_folder: Folderul cu datele de output
         port: Portul pe care să ruleze (default 8050)
         analytics_manager_instance: Instanță existentă de DashboardManager (opțional)
+        user_config: Configurația utilizatorului pentru personalizare (opțional)
     """
     import socket
     import threading
@@ -999,9 +1034,12 @@ def launch_dashboard(output_folder: str, port: int = 8050, analytics_manager_ins
             # Folosește instanța existentă sau creează una nouă
             if analytics_manager_instance is not None:
                 dashboard = analytics_manager_instance
+                # Actualizează configurația utilizatorului dacă este furnizată
+                if user_config:
+                    dashboard.user_config = user_config
                 print("🔗 Folosesc instanța existentă de DashboardManager")
             else:
-                dashboard = DashboardManager(output_folder)
+                dashboard = DashboardManager(output_folder, user_config)
                 print("🆕 Creez o nouă instanță de DashboardManager")
                 
             app = dashboard.create_interactive_dashboard()
@@ -1043,7 +1081,15 @@ if __name__ == "__main__":
     test_folder = "test_output"
     os.makedirs(test_folder, exist_ok=True)
     
-    dashboard = DashboardManager(test_folder)
+    # Test cu configurație utilizator
+    test_user_config = {
+        'name': 'Ion Popescu',
+        'ong': 'ONG Test România',
+        'email': 'ion.popescu@test.ro',
+        'admin_id': 'TEST001'
+    }
+    
+    dashboard = DashboardManager(test_folder, test_user_config)
     
     # Simulare date pentru test
     test_session = {
@@ -1059,3 +1105,6 @@ if __name__ == "__main__":
     
     dashboard.log_processing_session(test_session)
     print("✅ Test dashboard creat cu succes!")
+    
+    # Test lansare dashboard
+    launch_dashboard(test_folder, user_config=test_user_config)

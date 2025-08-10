@@ -162,7 +162,7 @@ def initialize_reader(button_5_state):
     
     set_reader(reader)  # set reader-ul in process.py
 
-def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None, dashboard_callback=None):
+def run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None, dashboard_callback=None, user_config=None):
     global processing_active, stop_processing
     
     # Setăm starea de procesare
@@ -338,7 +338,7 @@ def run_processing(button_5_state, progress_bar, folder_input, folder_output, co
         if not stop_processing:
             try:
                 from src.ui.rapoarte import show_rapoarte_window
-                reports_window = show_rapoarte_window(folder_output, open_final_results)
+                reports_window = show_rapoarte_window(folder_output, open_final_results, user_config)
             except Exception as e:
                 print(f"Eroare la afișarea raportului: {e}")
                 # Dacă raportul nu poate fi afișat, deschide direct rezultatele
@@ -357,8 +357,8 @@ def run_processing_threaded(gpu_var, progress_bar, folder_input, folder_output, 
     threading.Thread(target=lambda: run_processing(gpu_var, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback)).start()
 '''
 
-def run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None, dashboard_callback=None):
-    threading.Thread(target=lambda: run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback, dashboard_callback)).start()
+def run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback=None, dashboard_callback=None, user_config=None):
+    threading.Thread(target=lambda: run_processing(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress_callback, root, update_button_callback, dashboard_callback, user_config)).start()
 
 def stop_current_processing():
     """Oprește procesarea curentă"""

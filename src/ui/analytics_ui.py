@@ -11,9 +11,10 @@ import os
 from datetime import datetime, timedelta
 
 class AnalyticsDashboardUI:
-    def __init__(self, parent, output_folder):
+    def __init__(self, parent, output_folder, user_config=None):
         self.parent = parent
         self.output_folder = output_folder
+        self.user_config = user_config or {}
         self.dashboard_thread = None
         self.dashboard_running = False
         
@@ -288,8 +289,8 @@ class AnalyticsDashboardUI:
                 messagebox.showerror("Eroare", f"Nu s-a găsit un port liber: {e}")
                 return
             
-            # Pornește dashboard-ul
-            self.dashboard_thread = launch_dashboard(self.output_folder, free_port)
+            # Pornește dashboard-ul cu configurația utilizatorului
+            self.dashboard_thread = launch_dashboard(self.output_folder, free_port, user_config=self.user_config)
             self.dashboard_running = True
             
             # Actualizează UI
@@ -572,13 +573,13 @@ class AnalyticsDashboardUI:
             self.analytics_window.destroy()
 
 # Funcție pentru lansarea UI-ului analytics din main window
-def show_analytics_dashboard(parent, output_folder):
+def show_analytics_dashboard(parent, output_folder, user_config=None):
     """Lansează fereastra analytics dashboard"""
     if not output_folder:
         messagebox.showwarning("Atenție", "Selectează mai întâi un folder de output.")
         return
     
-    analytics_ui = AnalyticsDashboardUI(parent, output_folder)
+    analytics_ui = AnalyticsDashboardUI(parent, output_folder, user_config)
     
 if __name__ == "__main__":
     # Test UI

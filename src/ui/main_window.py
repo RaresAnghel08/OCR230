@@ -372,17 +372,30 @@ def _run_main_window_with_config(user_config):
                 from src.analytics.dashboard_manager import launch_dashboard, DashboardManager
                 import threading
                 
-                # Creează instanța globală de analytics manager
+                # Creează instanța globală de analytics manager cu configurația utilizatorului
                 if analytics_manager is None:
-                    analytics_manager = DashboardManager(folder_output)
+                    analytics_manager = DashboardManager(folder_output, user_config)
                     analytics_manager.start_live_session()
-                    print("🚀 Sesiune live analytics începută!")
+                    print("🚀 Sesiune live analytics începută cu configurația utilizatorului!")
                 
                 def launch_analytics_dashboard():
                     """Lansează dashboard-ul analytics în background folosind instanța existentă"""
                     try:
-                        launch_dashboard(folder_output, 8050, analytics_manager)
-                        print("📊 Dashboard analytics lansat automat cu instanța unică!")
+                        launch_dashboard(folder_output, 8050, analytics_manager, user_config)
+                        print("📊 Dashboard analytics personalizat lansat automat!")
+                        
+                        # Actualizăm statusul în dashboard
+                        try:
+                            if dashboard_frame and 'analytics_status_label' in dashboard_widgets:
+                                dashboard_frame.itemconfig(
+                                    dashboard_widgets['analytics_status_label'], 
+                                    text="📊 Dashboard: ON", 
+                                    fill="#27AE60"  # Verde pentru ON
+                                )
+                                print("✅ Status dashboard actualizat la ON")
+                        except Exception as status_error:
+                            print(f"⚠️ Nu s-a putut actualiza statusul dashboard: {status_error}")
+                        
                     except Exception as e:
                         print(f"⚠️ Nu s-a putut lansa dashboard-ul automat: {e}")
                 
@@ -402,7 +415,7 @@ def _run_main_window_with_config(user_config):
             update_dashboard_stats('start_time', time.time())
             
             # Rulăm procesarea în thread separat cu callback pentru dashboard
-            run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress, root, update_button_state, update_dashboard_stats)
+            run_processing_threaded(button_5_state, progress_bar, folder_input, folder_output, coordonate, reset_progress, root, update_button_state, update_dashboard_stats, user_config)
     # Imagine pentru butonul Start (Button_start)
     button_image_start = PhotoImage(file=relative_to_assets("button_start.png"))
     # Pentru butonul Stop, folosim aceeași imagine (poate fi înlocuită cu o imagine specifică)
@@ -541,6 +554,9 @@ def _run_main_window_with_config(user_config):
         # Coloana 3 - Fișier curent
         dashboard_frame.create_text(600, 40, text="📄 Fișier Curent", font=("Inter", 10, "bold"), fill="#34495E")
         dashboard_widgets['current_file_label'] = dashboard_frame.create_text(600, 60, text="În așteptare...", font=("Inter", 8), fill="#7F8C8D", width=200)
+        
+        # Status Dashboard Analytics (adăugat nou)
+        dashboard_widgets['analytics_status_label'] = dashboard_frame.create_text(600, 85, text="📊 Dashboard: OFF", font=("Inter", 8), fill="#E74C3C")
         
         return dashboard_frame
     
@@ -710,6 +726,17 @@ def _run_main_window_with_config(user_config):
             'estimated_time_left': 0,
             'start_time': None
         })
+        
+        # Resetează statusul dashboard-ului analytics
+        try:
+            if dashboard_frame and 'analytics_status_label' in dashboard_widgets:
+                dashboard_frame.itemconfig(
+                    dashboard_widgets['analytics_status_label'], 
+                    text="📊 Dashboard: OFF", 
+                    fill="#E74C3C"  # Roșu pentru OFF
+                )
+        except Exception as e:
+            print(f"⚠️ Eroare la resetarea status dashboard: {e}")
         
         # Resetează și analytics manager-ul
         if analytics_manager:

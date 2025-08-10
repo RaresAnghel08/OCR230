@@ -10,7 +10,7 @@ PDF_PATH = OUTPUT_PATH / "assets"
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-def show_rapoarte_window(output_folder=None, continue_callback=None):
+def show_rapoarte_window(output_folder=None, continue_callback=None, user_config=None):
     # Permite transmiterea root pentru închidere corectă
     import tkinter as tk
     parent_root = None
@@ -307,7 +307,7 @@ def show_rapoarte_window(output_folder=None, continue_callback=None):
         """Deschide dashboard-ul de analiză avansată"""
         try:
             from src.ui.analytics_ui import show_analytics_dashboard
-            show_analytics_dashboard(window, output_folder)
+            show_analytics_dashboard(window, output_folder, user_config)
         except ImportError:
             from tkinter import messagebox
             messagebox.showinfo("Info", "Modulele de analiză nu sunt disponibile. Rulează 'pip install -r requirements.txt'")
