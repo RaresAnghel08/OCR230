@@ -21,9 +21,16 @@ class DashboardManager:
     def __init__(self, output_folder: str, user_config: dict = None):
         self.output_folder = output_folder
         self.user_config = user_config or {}
-        self.db_path = os.path.join(output_folder, "analytics.db")
-        self.sessions_file = os.path.join(output_folder, "processing_sessions.json")
-        self.live_stats_file = os.path.join(output_folder, "live_stats.json")  # Pentru statistici live
+        
+        # 🏠 Folosește AppData pentru fișierele persistente (ca login.py)
+        self.appdata_folder = self._get_appdata_folder()
+        
+        # Mutăm fișierele de configurare în AppData
+        self.db_path = os.path.join(self.appdata_folder, "analytics.db")
+        self.sessions_file = os.path.join(self.appdata_folder, "processing_sessions.json")
+        self.live_stats_file = os.path.join(self.appdata_folder, "live_stats.json")
+        self.search_index_folder = os.path.join(self.appdata_folder, "search_index")
+        
         self.current_session_id = None  # ID-ul sesiunii curente
         self._excel_last_modified = None  # Pentru a detecta modificări Excel
         self._processing_complete = False  # Flag pentru a opri refresh-urile inutile
@@ -34,7 +41,63 @@ class DashboardManager:
         self._cache_created_at = None
         self._stop_updates_after_complete = False
         
+        # Creează folderele necesare
+        os.makedirs(self.appdata_folder, exist_ok=True)
+        os.makedirs(self.search_index_folder, exist_ok=True)
+        
+        # Migrează datele existente din output folder în AppData (dacă există)
+        self._migrate_existing_data()
+        
         self.init_database()
+    
+    def _migrate_existing_data(self):
+        """Migrează datele existente din folderul de output în AppData"""
+        try:
+            # Lista fișierelor care trebuie migrate
+            files_to_migrate = [
+                ("analytics.db", self.db_path),
+                ("processing_sessions.json", self.sessions_file),
+                ("live_stats.json", self.live_stats_file)
+            ]
+            
+            for old_filename, new_path in files_to_migrate:
+                old_path = os.path.join(self.output_folder, old_filename)
+                
+                # Dacă fișierul există în output și nu există în AppData, îl migrează
+                if os.path.exists(old_path) and not os.path.exists(new_path):
+                    try:
+                        import shutil
+                        shutil.move(old_path, new_path)
+                        print(f"📦 Migrat {old_filename} în AppData")
+                    except Exception as e:
+                        print(f"⚠️ Nu s-a putut migra {old_filename}: {e}")
+                        # Încearcă să copieze măcar
+                        try:
+                            shutil.copy2(old_path, new_path)
+                            print(f"📋 Copiat {old_filename} în AppData")
+                        except Exception as e2:
+                            print(f"❌ Nu s-a putut copia {old_filename}: {e2}")
+            
+            # Migrează și folderul search_index dacă există
+            old_search_index = os.path.join(self.output_folder, "search_index")
+            if os.path.exists(old_search_index) and not os.path.exists(self.search_index_folder):
+                try:
+                    import shutil
+                    shutil.move(old_search_index, self.search_index_folder)
+                    print("📦 Migrat search_index în AppData")
+                except Exception as e:
+                    print(f"⚠️ Nu s-a putut migra search_index: {e}")
+                    
+        except Exception as e:
+            print(f"⚠️ Eroare la migrarea datelor: {e}")
+    
+    def _get_appdata_folder(self):
+        """Obține folderul AppData pentru OCR230 (același ca în login.py)"""
+        appdata_path = os.environ.get("APPDATA")
+        config_folder = os.path.join(appdata_path, "ocr230")
+        if not os.path.exists(config_folder):
+            os.makedirs(config_folder, exist_ok=True)
+        return config_folder
         
     def init_database(self):
         """Inițializează baza de date pentru analytics"""
@@ -1019,7 +1082,8 @@ class DashboardManager:
             return go.Figure().add_annotation(text="Nu există date disponibile")
         
         df = data['sessions'].copy()
-        df['session_date'] = pd.to_datetime(df['session_date'])
+        # Fix pentru formatele de dată mixte - folosim 'mixed' pentru auto-detect  
+        df['session_date'] = pd.to_datetime(df['session_date'], format='mixed', errors='coerce')
         df = df.sort_values('session_date')
         
         fig = make_subplots(rows=2, cols=1, 

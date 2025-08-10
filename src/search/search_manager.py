@@ -28,17 +28,73 @@ except ImportError as e:
 class SearchManager:
     def __init__(self, output_folder: str):
         self.output_folder = output_folder
-        self.db_path = os.path.join(output_folder, "search_index.db")
-        self.index_dir = os.path.join(output_folder, "search_index")
-        self.saved_searches_file = os.path.join(output_folder, "saved_searches.json")
         
+        # 🏠 Folosește AppData pentru fișierele persistente (ca login.py și dashboard_manager.py)
+        self.appdata_folder = self._get_appdata_folder()
+        
+        # Mutăm fișierele de search în AppData
+        self.db_path = os.path.join(self.appdata_folder, "search_index.db")
+        self.index_dir = os.path.join(self.appdata_folder, "search_index")
+        self.saved_searches_file = os.path.join(self.appdata_folder, "saved_searches.json")
+        
+        # Creează folderele necesare
+        os.makedirs(self.appdata_folder, exist_ok=True)
         os.makedirs(self.index_dir, exist_ok=True)
+        
+        # Migrează datele existente din output folder în AppData (dacă există)
+        self._migrate_existing_search_data()
         
         self.init_database()
         self.load_saved_searches()
         
         if SEARCH_DEPENDENCIES_AVAILABLE:
             self.init_search_index()
+    
+    def _migrate_existing_search_data(self):
+        """Migrează datele de search existente din folderul de output în AppData"""
+        try:
+            # Lista fișierelor care trebuie migrate
+            files_to_migrate = [
+                ("search_index.db", self.db_path),
+                ("saved_searches.json", self.saved_searches_file)
+            ]
+            
+            for old_filename, new_path in files_to_migrate:
+                old_path = os.path.join(self.output_folder, old_filename)
+                
+                # Dacă fișierul există în output și nu există în AppData, îl migrează
+                if os.path.exists(old_path) and not os.path.exists(new_path):
+                    try:
+                        import shutil
+                        shutil.move(old_path, new_path)
+                        print(f"🔍 Migrat {old_filename} în AppData")
+                    except Exception as e:
+                        print(f"⚠️ Nu s-a putut migra {old_filename}: {e}")
+                        
+            # Migrează și folderul search_index dacă există
+            old_search_index = os.path.join(self.output_folder, "search_index")
+            if os.path.exists(old_search_index) and not os.listdir(self.index_dir):
+                try:
+                    import shutil
+                    for item in os.listdir(old_search_index):
+                        old_item = os.path.join(old_search_index, item)
+                        new_item = os.path.join(self.index_dir, item)
+                        if os.path.isfile(old_item):
+                            shutil.move(old_item, new_item)
+                    print("🔍 Migrat conținutul search_index în AppData")
+                except Exception as e:
+                    print(f"⚠️ Nu s-a putut migra search_index: {e}")
+                    
+        except Exception as e:
+            print(f"⚠️ Eroare la migrarea datelor search: {e}")
+    
+    def _get_appdata_folder(self):
+        """Obține folderul AppData pentru OCR230 (același ca în login.py)"""
+        appdata_path = os.environ.get("APPDATA")
+        config_folder = os.path.join(appdata_path, "ocr230")
+        if not os.path.exists(config_folder):
+            os.makedirs(config_folder, exist_ok=True)
+        return config_folder
     
     def init_database(self):
         """Inițializează baza de date pentru search"""
