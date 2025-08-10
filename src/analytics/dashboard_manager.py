@@ -499,6 +499,28 @@ class DashboardManager:
     def _setup_callbacks(self, app):
         """Configurează callback-urile pentru dashboard"""
         
+        # Callback pentru popularea dropdown-ului cu județe
+        @app.callback(
+            Output('county-dropdown', 'options'),
+            [Input('refresh-btn', 'n_clicks'),
+             Input('interval-component', 'n_intervals')]
+        )
+        def update_county_dropdown(n_clicks, n_intervals):
+            try:
+                # Încarcă județele din datele disponibile
+                counties = self._get_available_counties()
+                options = [{'label': 'Toate Județele', 'value': 'all'}]
+                
+                for county in counties:
+                    # Formatează numele județului pentru afișare
+                    display_name = county.replace('-', ' ').title()
+                    options.append({'label': display_name, 'value': county})
+                
+                return options
+            except Exception as e:
+                print(f"⚠️ Eroare la actualizarea dropdown județe: {e}")
+                return [{'label': 'Toate Județele', 'value': 'all'}]
+        
         @app.callback(
             [Output('general-stats-chart', 'figure'),
              Output('live-stats-chart', 'figure'),
@@ -1081,6 +1103,64 @@ class DashboardManager:
             f.write(html_content)
         
         return export_path
+    
+    def _get_available_counties(self):
+        """Obține lista județelor disponibile din datele din baza de date și Excel"""
+        counties_set = set()
+        
+        try:
+            # 1. Încarcă județe din baza de date
+            conn = sqlite3.connect(self.db_path)
+            
+            # Încarcă din county_stats
+            county_query = "SELECT DISTINCT county_name FROM county_stats WHERE county_name IS NOT NULL AND county_name != ''"
+            cursor = conn.cursor()
+            cursor.execute(county_query)
+            db_counties = cursor.fetchall()
+            
+            for county in db_counties:
+                if county[0] and county[0].strip():
+                    counties_set.add(county[0].strip().upper())
+            
+            conn.close()
+            
+            # 2. Încarcă județe din Excel dacă există
+            excel_data = self._load_excel_data()
+            if excel_data is not None:
+                if 'ANAF_Apartin' in excel_data.columns:
+                    excel_counties = excel_data['ANAF_Apartin'].dropna().unique()
+                    for county in excel_counties:
+                        if county and str(county).strip():
+                            counties_set.add(str(county).strip().upper())
+                
+                # Încearcă și din coloana Judet dacă există
+                if 'Judet' in excel_data.columns:
+                    excel_judete = excel_data['Judet'].dropna().unique()
+                    for judet in excel_judete:
+                        if judet and str(judet).strip():
+                            counties_set.add(str(judet).strip().upper())
+            
+            # 3. Sortează județele
+            counties_list = sorted(list(counties_set))
+            
+            # Dacă nu avem județe, returnează o listă cu județe comune din România
+            if not counties_list:
+                counties_list = [
+                    'ALBA', 'ARAD', 'ARGES', 'BACAU', 'BIHOR', 'BISTRITA-NASAUD',
+                    'BOTOSANI', 'BRASOV', 'BRAILA', 'BUCURESTI', 'BUZAU', 'CARAS-SEVERIN',
+                    'CALARASI', 'CLUJ', 'CONSTANTA', 'COVASNA', 'DAMBOVITA', 'DOLJ',
+                    'GALATI', 'GIURGIU', 'GORJ', 'HARGHITA', 'HUNEDOARA', 'IALOMITA',
+                    'IASI', 'ILFOV', 'MARAMURES', 'MEHEDINTI', 'MURES', 'NEAMT',
+                    'OLT', 'PRAHOVA', 'SALAJ', 'SATU MARE', 'SIBIU', 'SUCEAVA',
+                    'TELEORMAN', 'TIMIS', 'TULCEA', 'VASLUI', 'VALCEA', 'VRANCEA'
+                ]
+            
+            print(f"📍 Județe găsite pentru dropdown: {counties_list}")
+            return counties_list
+            
+        except Exception as e:
+            print(f"⚠️ Eroare la încărcarea județelor: {e}")
+            return ['BUCURESTI', 'CLUJ', 'TIMIS', 'BRASOV', 'CONSTANTA']  # Fallback
 
 # Funcție utilitară pentru lansarea dashboard-ului
 def launch_dashboard(output_folder: str, port: int = 8050, analytics_manager_instance=None, user_config: dict = None):
