@@ -27,6 +27,13 @@ class DashboardManager:
         self.current_session_id = None  # ID-ul sesiunii curente
         self._excel_last_modified = None  # Pentru a detecta modificări Excel
         self._processing_complete = False  # Flag pentru a opri refresh-urile inutile
+        
+        # Cache pentru datele finale - pentru a opri update-urile după procesare
+        self._final_data_cache = None
+        self._final_charts_cache = {}
+        self._cache_created_at = None
+        self._stop_updates_after_complete = False
+        
         self.init_database()
         
     def init_database(self):
@@ -232,11 +239,20 @@ class DashboardManager:
                 conn.commit()
                 conn.close()
                 
-                # Marchează procesarea ca fiind completă
-                self._processing_complete = True
+                # MARCHEAZĂ procesarea ca fiind completă pentru a opri update-urile automate
+                self._processing_complete = True  # ACTIVAT pentru a opri update-urile dashboard
+                
+                # Păstrează datele în fișierul live pentru afișare continuă
+                final_stats = live_stats.copy()
+                final_stats['session_active'] = False
+                final_stats['processing_speed'] = 0
+                final_stats['estimated_time_left'] = 0
+                
+                with open(self.live_stats_file, 'w', encoding='utf-8') as f:
+                    json.dump(final_stats, f, ensure_ascii=False, indent=2)
                 
                 print(f"✅ Sesiunea live finalizată: {live_stats['files_processed']} fișiere procesate")
-                print("🔴 Dashboard refresh automat oprit - procesarea completă")
+                print("� Datele rămân disponibile în dashboard pentru vizualizare continuă")
                 
         except Exception as e:
             print(f"❌ Eroare la finalizarea sesiunii live: {e}")
@@ -499,35 +515,67 @@ class DashboardManager:
              Input('county-dropdown', 'value')]
         )
         def update_dashboard(n_clicks, n_intervals, start_date, end_date, selected_county):
-            # Verifică dacă procesarea este completă pentru a opri intervalul
-            live_stats = self.get_live_stats()
-            
-            # Oprește intervalul dacă:
-            # 1. Procesarea este marcată ca fiind completă ȘI
-            # 2. Au trecut cel puțin 10 secunde de la finalizare (pentru a permite ultimele actualizări) ȘI  
-            # 3. Au existat cel puțin 5 refresh-uri pentru a afișa rezultatele finale
-            should_disable_interval = (
-                self._processing_complete and 
-                n_intervals > 5  # Permite cel puțin 5 refresh-uri (15 secunde) pentru a vedea rezultatele finale
-            )
-            
-            if should_disable_interval:
-                print("🛑 Intervalul dashboard oprit - procesarea completă și rezultatele afișate")
-            
-            # Încarcă datele
-            data = self._load_analytics_data(start_date, end_date, selected_county)
-            
-            # Creează graficele
-            general_stats = self._create_general_stats_chart(data)
-            live_stats_chart = self._create_live_stats_chart()  # Nou: grafic pentru statistici live
-            county_dist = self._create_county_distribution_chart(data)
-            romania_heatmap = self._create_romania_heatmap(data)
-            ocr_performance = self._create_ocr_performance_chart(data)
-            temporal_trends = self._create_temporal_trends_chart(data)
-            sessions_comparison = self._create_sessions_comparison_chart(data)
-            
-            return (general_stats, live_stats_chart, county_dist, romania_heatmap, 
-                   ocr_performance, temporal_trends, sessions_comparison, should_disable_interval)
+                    # Verifică dacă procesarea este completă pentru a opri intervalul
+                    live_stats = self.get_live_stats()
+
+                    # OPREȘTE COMPLET UPDATE-URILE DUPĂ PROCESARE
+                    should_disable_interval = False
+
+                    # Verifică IMEDIAT dacă procesarea s-a terminat - fără să mai aștepte intervale
+                    if self._processing_complete:
+                        should_disable_interval = True
+                        print("✅ Procesarea completă - OPRESC IMEDIAT toate update-urile dashboard!")
+
+                        # Returnează ultimele chart-uri cached dacă sunt disponibile
+                        if hasattr(self, '_final_charts_cache') and self._final_charts_cache:
+                            return tuple(list(self._final_charts_cache.values()) + [should_disable_interval])
+                        else:
+                            # Dacă nu avem cache, creează unul gol pentru a opri complet update-urile
+                            empty_fig = go.Figure().add_annotation(text="Procesare completă - Dashboard oprit", x=0.5, y=0.5)
+                            empty_charts = [empty_fig] * 7  # 7 chart-uri
+                            return tuple(empty_charts + [should_disable_interval])
+
+                    # Verifică și prin live_stats dacă sesiunea nu mai este activă
+                    if live_stats and not live_stats.get('session_active', True):
+                        should_disable_interval = True
+                        print("✅ Sesiune inactivă - OPRESC IMEDIAT toate update-urile dashboard!")
+                        # Similar pentru sesiune inactivă
+                        if hasattr(self, '_final_charts_cache') and self._final_charts_cache:
+                            return tuple(list(self._final_charts_cache.values()) + [should_disable_interval])
+                        else:
+                            empty_fig = go.Figure().add_annotation(text="Sesiune inactivă - Dashboard oprit", x=0.5, y=0.5)
+                            empty_charts = [empty_fig] * 7
+                            return tuple(empty_charts + [should_disable_interval])
+
+                    # Încarcă datele doar dacă nu trebuie să oprim update-urile
+                    if should_disable_interval and hasattr(self, '_final_charts_cache') and self._final_charts_cache:
+                        # Returnează cache-ul final fără să mai facă query-uri
+                        return tuple(list(self._final_charts_cache.values()) + [should_disable_interval])
+
+                    data = self._load_analytics_data(start_date, end_date, selected_county)
+
+                    # Creează graficele
+                    general_stats = self._create_general_stats_chart(data)
+                    live_stats_chart = self._create_live_stats_chart()
+                    county_dist = self._create_county_distribution_chart(data)
+                    romania_heatmap = self._create_romania_heatmap(data)
+                    ocr_performance = self._create_ocr_performance_chart(data)
+                    temporal_trends = self._create_temporal_trends_chart(data)
+                    sessions_comparison = self._create_sessions_comparison_chart(data)
+
+                    # Salvează în cache pentru utilizare ulterioară
+                    self._final_charts_cache = {
+                        'general_stats': general_stats,
+                        'live_stats_chart': live_stats_chart,
+                        'county_dist': county_dist,
+                        'romania_heatmap': romania_heatmap,
+                        'ocr_performance': ocr_performance,
+                        'temporal_trends': temporal_trends,
+                        'sessions_comparison': sessions_comparison
+                    }
+
+                    return (general_stats, live_stats_chart, county_dist, romania_heatmap, 
+                           ocr_performance, temporal_trends, sessions_comparison, should_disable_interval)
     
     def _load_analytics_data(self, start_date, end_date, county_filter):
         """Încarcă datele pentru analytics din baza de date și Excel"""
@@ -604,8 +652,13 @@ class DashboardManager:
                     
                     return df
                 else:
-                    # Return cached data sau None dacă nu e nevoie de refresh
-                    return None
+                    # Returnează datele cached - ÎNTOTDEAUNA încarcă datele pentru chart-uri
+                    try:
+                        df = pd.read_excel(excel_path, sheet_name='Date_Persoane')
+                        return df
+                    except Exception as e:
+                        print(f"⚠️ Eroare la încărcarea Excel pentru cache: {e}")
+                        return None
                     
             except Exception as e:
                 print(f"⚠️ Eroare la încărcarea Excel: {e}")
@@ -745,21 +798,49 @@ class DashboardManager:
         """Creează graficul cu statistici live din sesiunea curentă"""
         live_stats = self.get_live_stats()
         
+        # Dacă nu avem date live, încarcă ultimele date din baza de date
+        if not live_stats:
+            # Încearcă să încărce datele din ultima sesiune
+            conn = sqlite3.connect(self.db_path)
+            try:
+                query = "SELECT * FROM processing_sessions ORDER BY session_date DESC LIMIT 1"
+                result = pd.read_sql_query(query, conn)
+                if not result.empty:
+                    latest_session = result.iloc[0]
+                    live_stats = {
+                        'files_processed': latest_session['files_processed'],
+                        'total_files': latest_session['files_processed'],  # Folosim același număr
+                        'cnp_valid': latest_session['cnp_valid'],
+                        'cnp_invalid': latest_session['cnp_invalid'],
+                        'processing_speed': 0,  # Procesarea s-a terminat
+                        'estimated_time_left': 0,
+                        'session_active': False
+                    }
+            except Exception as e:
+                print(f"⚠️ Nu s-au putut încărca datele din baza de date: {e}")
+            finally:
+                conn.close()
+        
+        # Dacă tot nu avem date, afișează mesaj
         if not live_stats:
             return go.Figure().add_annotation(
-                text="Nicio sesiune live activă",
+                text="Nu există date de procesare disponibile",
                 x=0.5, y=0.5,
                 showarrow=False,
                 font=dict(size=16, color="gray")
             )
         
+        # Determină statusul procesării
+        is_active = live_stats.get('session_active', False) or live_stats.get('processing_speed', 0) > 0
+        status_text = "🟢 Procesare ACTIVĂ" if is_active else "🔴 Procesare COMPLETĂ"
+        
         # Creează indicatori pentru sesiunea live
         fig = make_subplots(
             rows=2, cols=2,
-            subplot_titles=("Fișiere Procesate", "CNP Valide"),
+            subplot_titles=("Fișiere Procesate", f"CNP Valide - {status_text}"),
             specs=[[{"type": "indicator"}, {"type": "indicator"}],
                    [{"type": "indicator"}, {"type": "indicator"}]],
-            vertical_spacing=0.25  # Măresc spațiul vertical între rânduri și mai mult
+            vertical_spacing=0.25
         )
         
         # Fișiere procesate
