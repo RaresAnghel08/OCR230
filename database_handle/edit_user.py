@@ -11,7 +11,7 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def add_ong_to_db(ong_name, admin_id):
-	load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
+	load_dotenv(dotenv_path=os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.env')))
 	host = os.environ.get('PGHOST')
 	user = os.environ.get('PGUSER')
 	password = os.environ.get('PGPASSWORD')
