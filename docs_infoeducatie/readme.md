@@ -9,7 +9,7 @@ Poți testa aplicația OCR230 în două moduri:
 ## 2. Rulează din sursă (pentru dezvoltatori)
 - Clonează repository-ul de pe GitHub:
   ```
-  git clone https://github.com/F230-OCR/OCR230_infoeducatie.git
+  git clone https://github.com/RaresAnghel08/OCR230.git
   cd OCR230_infoeducatie
   ```
 - Instalează dependențele:
