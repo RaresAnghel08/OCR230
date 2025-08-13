@@ -3,7 +3,7 @@
 Poți testa aplicația OCR230 în două moduri:
 
 ## 1. Descarcă din Microsoft Store
-- Caută **F230-OCR**  în Microsoft Store sau intră pe [linkul de descărcare](https://apps.microsoft.com/detail/9N0198C2NVR1) și instalează aplicația.
+- Caută **F230-OCR**  în Microsoft Store sau intră pe [linkul de descărcare](https://apps.microsoft.com/detail/9pmm6w5qn2gv) și instalează aplicația.
 - Deschide aplicația.
 
 ## 2. Rulează din sursă (pentru dezvoltatori)

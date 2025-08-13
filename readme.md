@@ -3,9 +3,9 @@
 Acest proiect oferă o soluție eficientă pentru ONG-uri care doresc să extragă datele din formularele 230. Folosind tehnologia OCR (Optical Character Recognition), programul procesează imagini ale formularelor, extrage informațiile relevante și le salvează într-un format structurat. De asemenea, fișierele sunt organizate în foldere specifice, pe baza localităților, pentru o gestionare ușoară.
 
 ## Download
-- [English version](https://apps.microsoft.com/detail/9n0198c2nvr1?hl=en-GB&gl=en)
+- [English version](https://apps.microsoft.com/detail/9pmm6w5qn2gv?hl=en-GB&gl=en)
 
-- [Versiunea in română](https://apps.microsoft.com/detail/9n0198c2nvr1?hl=ro-RO&gl=RO)
+- [Versiunea in română](https://apps.microsoft.com/detail/9pmm6w5qn2gv?hl=ro-RO&gl=RO)
 
 - [Github Release](https://github.com/RaresAnghel08/OCR230/releases)
 
